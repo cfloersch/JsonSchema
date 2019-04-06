@@ -1,0 +1,31 @@
+{
+    "valueTests": [
+        {
+            "schema": { "required": [] },
+            "valid": false,
+            "message": "common.array.empty",
+            "msgData": {}
+        },
+        {
+            "schema": { "required": [ "a", { "$ref": "#" } ] },
+            "valid": false,
+            "message": "common.array.element.incorrectType",
+            "msgData": {
+                "index": 1,
+                "expected": [ "string" ],
+                "found": "object"
+            },
+            "msgParams": [ "index", "expected", "found" ]
+        },
+        {
+            "schema": { "required": [ "a", "a" ] },
+            "valid": false,
+            "message": "common.array.duplicateElements",
+            "msgData": {}
+        },
+        {
+            "schema": { "required": [ "a", "b", "c" ] },
+            "valid": true
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+[
+    {
+        "schema": {
+            "dependencies": {
+                "b": {},
+                "a++": {},
+                "c": null
+            }
+        },
+        "pointers": [
+            "/dependencies/a++",
+            "/dependencies/b"
+        ]
+    },
+    {
+        "schema": { "dependencies": "meh" },
+        "pointers": []
+    }
+]

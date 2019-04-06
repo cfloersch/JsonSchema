@@ -1,0 +1,164 @@
+{
+    "valueTests": [
+        {
+            "schema": {
+                "links": [ 1 ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "object",
+                "found": "integer"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "rel": "self" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.missingRequired",
+            "msgData": {
+                "index": 0,
+                "required": [ "href", "rel" ],
+                "missing": [ "href" ]
+            },
+            "msgParams": [ "missing" ]
+        },
+        {
+            "schema": {
+                "links": [ { "rel": 1.0, "href": "foo" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.rel.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "number"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": 1.0, "rel": "foo" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.href.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "number"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo{", "rel": "foo" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.href.notURITemplate",
+            "msgData": {
+                "index": 0,
+                "value": "foo{"
+            },
+            "msgParams": [ "value" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "title": [] } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.title.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "array"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "mediaType": null } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.mediaType.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "null"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "mediaType": "meh" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.mediaType.notMediaType",
+            "msgData": {
+                "index": 0,
+                "value": "meh"
+            },
+            "msgParams": [ "value" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "method": {} } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.method.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "object"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "encType": [] } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.enctype.incorrectType",
+            "msgData": {
+                "index": 0,
+                "expected": "string",
+                "found": "array"
+            },
+            "msgParams": [ "found" ]
+        },
+        {
+            "schema": {
+                "links": [ { "href": "foo", "rel": "foo", "encType": "meh" } ]
+            },
+            "valid": false,
+            "message": "draftv4.ldo.enctype.notMediaType",
+            "msgData": {
+                "index": 0,
+                "value": "meh"
+            },
+            "msgParams": [ "value" ]
+        }
+    ],
+    "pointerTests": [
+        {
+            "schema": {
+                "links": [
+                    { "href": "foo", "rel": "bar"},
+                    { "href": "foo", "rel": "bar", "targetSchema": {} }
+                ]
+            },
+            "pointers": [ "/links/1/targetSchema" ]
+        },
+        {
+            "schema": {
+                "links": [
+                    { "href": "foo", "rel": "bar", "schema": {} },
+                    { "href": "foo", "rel": "bar", "targetSchema": {} }
+                ]
+            },
+            "pointers": [ "/links/0/schema", "/links/1/targetSchema" ]
+        }
+    ]
+}

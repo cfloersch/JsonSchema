@@ -1,0 +1,56 @@
+{
+    "valueTests": [
+        {
+            "schema": { "type": "foo" },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "foo"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": { "type": [] },
+            "valid": false,
+            "message": "common.array.empty",
+            "msgData": {}
+        },
+        {
+            "schema": { "type": [ "boolean", 32.2, "object" ] },
+            "valid": false,
+            "message": "common.array.element.incorrectType",
+            "msgData": {
+                "index": 1,
+                "expected": "string",
+                "found": "number"
+            },
+            "msgParams": [ "index", "expected", "found" ]
+        },
+        {
+            "schema": { "type": [ "array", "strin", "object" ] },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "index": 1,
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "strin"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": { "type": [ "array", "array" ] },
+            "valid": false,
+            "message": "common.array.duplicateElements",
+            "msgData": {}
+        },
+        {
+            "schema": { "type": "object" },
+            "valid": true
+        },
+        {
+            "schema": { "type": [ "array", "null" ] },
+            "valid": true
+        }
+    ]
+}

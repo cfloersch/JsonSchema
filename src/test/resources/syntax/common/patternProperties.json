@@ -1,0 +1,41 @@
+{
+    "valueTests": [
+        {
+            "schema": {
+                "patternProperties": {
+                    "a++": {}
+                }
+            },
+            "valid": false,
+            "message": "common.patternProperties.member.notRegex",
+            "msgData": {
+                "propertyName": "a++"
+            },
+            "msgParams": [ "propertyName" ]
+        },
+        {
+            "schema": {
+                "patternProperties": {
+                    "^foo{8,}": {}
+                }
+            },
+            "valid": true
+        }
+    ],
+    "pointerTests": [
+        {
+            "schema": {
+                "patternProperties": {
+                    "b": {},
+                    "a++": {},
+                    "c": null
+                }
+            },
+            "pointers": [
+                "/patternProperties/a++",
+                "/patternProperties/b",
+                "/patternProperties/c"
+            ]
+        }
+    ]
+}

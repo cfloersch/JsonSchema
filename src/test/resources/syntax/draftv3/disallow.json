@@ -1,0 +1,82 @@
+{
+    "valueTests": [
+        {
+            "schema": {
+                "disallow": "string"
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "disallow": "any"
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "disallow": [ "boolean", { "$ref": "#/schema2" } ]
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "disallow": "hammer"
+            },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "hammer"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": { "disallow": [ "boolean", 32.2, "object" ] },
+            "valid": false,
+            "message": "common.array.element.incorrectType",
+            "msgData": {
+                "index": 1,
+                "expected": [ "object", "string" ],
+                "found": "number"
+            },
+            "msgParams": [ "index", "expected", "found" ]
+        },
+        {
+            "schema": { "disallow": [ "array", "strin", "object" ] },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "index": 1,
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "strin"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": {
+                "disallow": [ "string", "string" ]
+            },
+            "valid": false,
+            "message": "common.array.duplicateElements",
+            "msgData": {}
+        }
+    ],
+    "pointerTests": [
+        {
+            "schema": { "disallow": "string" },
+            "pointers": []
+        },
+        {
+            "schema": { "disallow": [ "string", "number" ] },
+            "pointers": []
+        },
+        {
+            "schema": { "disallow": [ "null", {}, "string", 1, false ] },
+            "pointers": [ "/disallow/1" ]
+        },
+        {
+            "schema": { "disallow": [ {}, {}, "string", {} ] },
+            "pointers": [ "/disallow/0", "/disallow/1", "/disallow/3" ]
+        }
+    ]
+}

@@ -1,0 +1,72 @@
+{
+    "valueTests": [
+        {
+            "schema": {
+                "dependencies": { "p": null }
+            },
+            "valid": false,
+            "message": "common.dependencies.value.incorrectType",
+            "msgData": {
+                "property": "p",
+                "expected": [ "array", "object" ],
+                "found": "null"
+            },
+            "msgParams": [ "property", "expected", "found" ]
+        },
+        {
+            "schema": {
+                "dependencies": { "p": [] }
+            },
+            "valid": false,
+            "message": "common.array.empty",
+            "msgData": {
+                "property": "p"
+            }
+        },
+        {
+            "schema": {
+                "dependencies": { "p": [ "a", false ] }
+            },
+            "valid": false,
+            "message": "common.array.element.incorrectType",
+            "msgData": {
+                "property": "p",
+                "index": 1,
+                "expected": [ "string" ],
+                "found": "boolean"
+            },
+            "msgParams": [ "index", "expected", "found" ]
+        },
+        {
+            "schema": {
+                "dependencies": { "p": [ "a", "a" ] }
+            },
+            "valid": false,
+            "message": "common.array.duplicateElements",
+            "msgData": {
+                "property": "p"
+            }
+        },
+        {
+            "schema": {
+                "dependencies": { "p": [ "a", "z" ] }
+            },
+            "valid": true
+        }
+    ],
+    "pointerTests": [
+        {
+            "schema": {
+                "dependencies": {
+                    "b": {},
+                    "a++": {},
+                    "c": null
+                }
+            },
+            "pointers": [
+                "/dependencies/a++",
+                "/dependencies/b"
+            ]
+        }
+    ]
+}

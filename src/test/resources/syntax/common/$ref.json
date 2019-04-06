@@ -1,0 +1,26 @@
+{
+    "valueTests": [
+        {
+            "schema": { "$ref": "+23:" },
+            "valid": false,
+            "message": "common.uri.invalid",
+            "msgData": {
+                "value": "+23:"
+            },
+            "msgParams": [ "value" ]
+        },
+        {
+            "schema": { "$ref": "/a/b/../c#" },
+            "valid": false,
+            "message": "common.uri.notNormalized",
+            "msgData": {
+                "value": "/a/b/../c#"
+            },
+            "msgParams": [ "value" ]
+        },
+        {
+            "schema": { "$ref": "foo://bar/baz#/~1var~1lib~1mysql" },
+            "valid": true
+        }
+    ]
+}

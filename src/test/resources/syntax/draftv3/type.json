@@ -1,0 +1,82 @@
+{
+    "valueTests": [
+        {
+            "schema": {
+                "type": "string"
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "type": "any"
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "type": [ "boolean", { "$ref": "#/schema2" } ]
+            },
+            "valid": true
+        },
+        {
+            "schema": {
+                "type": "hammer"
+            },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "hammer"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": { "type": [ "boolean", 32.2, "object" ] },
+            "valid": false,
+            "message": "common.array.element.incorrectType",
+            "msgData": {
+                "index": 1,
+                "expected": [ "object", "string" ],
+                "found": "number"
+            },
+            "msgParams": [ "index", "expected", "found" ]
+        },
+        {
+            "schema": { "type": [ "array", "strin", "object" ] },
+            "valid": false,
+            "message": "common.typeDisallow.primitiveType.unknown",
+            "msgData": {
+                "index": 1,
+                "valid": [ "array", "boolean", "integer", "null", "number", "object", "string" ],
+                "found": "strin"
+            },
+            "msgParams": [ "found", "valid" ]
+        },
+        {
+            "schema": {
+                "type": [ "string", "string" ]
+            },
+            "valid": false,
+            "message": "common.array.duplicateElements",
+            "msgData": {}
+        }
+    ],
+    "pointerTests": [
+        {
+            "schema": { "type": "string" },
+            "pointers": []
+        },
+        {
+            "schema": { "type": [ "string", "number" ] },
+            "pointers": []
+        },
+        {
+            "schema": { "type": [ "null", {}, "string", 1, false ] },
+            "pointers": [ "/type/1" ]
+        },
+        {
+            "schema": { "type": [ {}, {}, "string", {} ] },
+            "pointers": [ "/type/0", "/type/1", "/type/3" ]
+        }
+    ]
+}

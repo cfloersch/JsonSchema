@@ -28,8 +28,8 @@ import java.util.EnumSet;
  * @see ArraySchemaDigester
  * @see ObjectSchemaDigester
  */
-public interface Digester
-{
+public interface Digester {
+
     /**
      * Return the instance types handled by this digested form
      *
@@ -43,5 +43,5 @@ public interface Digester
      * @param schema the schema to digest
      * @return the digested form
      */
-    JsonNode digest(final JsonNode schema);
+    JsonNode digest(JsonNode schema);
 }

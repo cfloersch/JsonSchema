@@ -11,21 +11,20 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for {@code maxLength}
  */
-public final class MaxLengthValidator
-    extends PositiveIntegerValidator
-{
-    public MaxLengthValidator(final JsonNode digested)
+public final class MaxLengthValidator extends PositiveIntegerValidator {
+
+    public MaxLengthValidator(JsonNode digested)
     {
         super("maxLength", digested);
     }
+
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
-        final int size = value.codePointCount(0, value.length());
+        String value = data.getInstance().getNode().textValue();
+        int size = value.codePointCount(0, value.length());
 
         if (size > intValue)
             report.error(newMsg(data, bundle, "err.common.maxLength.tooLong")

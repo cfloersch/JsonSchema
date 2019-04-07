@@ -17,22 +17,20 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for draft v3's {@code disallow}
  */
-public final class DisallowKeywordValidator
-    extends DraftV3TypeKeywordValidator
-{
-    public DisallowKeywordValidator(final JsonNode digested)
+public final class DisallowKeywordValidator extends DraftV3TypeKeywordValidator {
+
+    public DisallowKeywordValidator(JsonNode digested)
     {
         super("disallow", digested);
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
-        final NodeType type = NodeType.getNodeType(instance);
+        JsonNode instance = data.getInstance().getNode();
+        NodeType type = NodeType.getNodeType(instance);
 
         if (types.contains(type)) {
             report.error(newMsg(data, bundle, "err.draftv3.disallow.type")
@@ -41,9 +39,9 @@ public final class DisallowKeywordValidator
             return;
         }
 
-        final SchemaTree tree = data.getSchema();
-        final JsonPointer schemaPointer = tree.getPointer();
-        final ObjectNode fullReport = FACTORY.objectNode();
+        SchemaTree tree = data.getSchema();
+        JsonPointer schemaPointer = tree.getPointer();
+        ObjectNode fullReport = FACTORY.objectNode();
 
         JsonPointer ptr;
         ListProcessingReport subReport;
@@ -51,8 +49,7 @@ public final class DisallowKeywordValidator
         int nrSuccess = 0;
 
         for (final int index: schemas) {
-            subReport = new ListProcessingReport(report.getLogLevel(),
-                LogLevel.FATAL);
+            subReport = new ListProcessingReport(report.getLogLevel(), LogLevel.FATAL);
             ptr = schemaPointer.append(JsonPointer.of(keyword, index));
             newData = data.withSchema(tree.setPointer(ptr));
             processor.process(subReport, newData);

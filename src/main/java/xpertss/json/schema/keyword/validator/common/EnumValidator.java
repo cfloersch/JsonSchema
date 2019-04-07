@@ -15,28 +15,24 @@ import com.google.common.base.Equivalence;
  *
  * @see JsonNumEquals
  */
-public final class EnumValidator
-    extends AbstractKeywordValidator
-{
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+public final class EnumValidator extends AbstractKeywordValidator {
+
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     private final JsonNode values;
 
-    public EnumValidator(final JsonNode digest)
+    public EnumValidator(JsonNode digest)
     {
         super("enum");
-
         values = digest.get(keyword);
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode node = data.getInstance().getNode();
+        JsonNode node = data.getInstance().getNode();
 
         for (final JsonNode enumValue: values)
             if (EQUIVALENCE.equivalent(enumValue, node))

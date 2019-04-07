@@ -20,9 +20,8 @@ import java.util.Map;
  *
  * <p>This stores property dependencies separately from schema dependencies.</p>
  */
-public final class DraftV4DependenciesDigester
-    extends AbstractDigester
-{
+public final class DraftV4DependenciesDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new DraftV4DependenciesDigester();
 
     public static Digester getInstance()
@@ -36,20 +35,19 @@ public final class DraftV4DependenciesDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
 
-        final ObjectNode propertyDeps = FACTORY.objectNode();
+        ObjectNode propertyDeps = FACTORY.objectNode();
         ret.put("propertyDeps", propertyDeps);
 
-        final ArrayNode schemaDeps = FACTORY.arrayNode();
+        ArrayNode schemaDeps = FACTORY.arrayNode();
         ret.put("schemaDeps", schemaDeps);
 
-        final List<String> list = Lists.newArrayList();
+        List<String> list = Lists.newArrayList();
 
-        final Map<String, JsonNode> map
-            = JacksonUtils.asMap(schema.get(keyword));
+        Map<String, JsonNode> map = JacksonUtils.asMap(schema.get(keyword));
 
         String key;
         JsonNode value;
@@ -69,20 +67,13 @@ public final class DraftV4DependenciesDigester
         return ret;
     }
 
-    private static JsonNode sortedSet(final JsonNode node)
+    private static JsonNode sortedSet(JsonNode node)
     {
-        final List<JsonNode> list = Lists.newArrayList(node);
+        List<JsonNode> list = Lists.newArrayList(node);
 
-        Collections.sort(list, new Comparator<JsonNode>()
-        {
-            @Override
-            public int compare(final JsonNode o1, final JsonNode o2)
-            {
-                return o1.textValue().compareTo(o2.textValue());
-            }
-        });
+        Collections.sort(list, Comparator.comparing(JsonNode::textValue));
 
-        final ArrayNode ret = FACTORY.arrayNode();
+        ArrayNode ret = FACTORY.arrayNode();
         ret.addAll(list);
         return ret;
     }

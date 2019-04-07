@@ -18,8 +18,7 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
  * an argument. They take the responsibility of building the appropriate {@link
  * FullData} and calling the processor again.</p>
  */
-public interface KeywordValidator
-{
+public interface KeywordValidator {
     /**
      * Validate the instance
      *
@@ -30,8 +29,6 @@ public interface KeywordValidator
      * @throws InvalidInstanceException instance is invalid, and the report has
      * been configured to throw an exception instead of logging errors
      */
-    void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    void validate(Processor<FullData, FullData> processor, ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException;
 }

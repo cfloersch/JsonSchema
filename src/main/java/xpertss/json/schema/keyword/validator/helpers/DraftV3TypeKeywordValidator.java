@@ -16,16 +16,14 @@ import java.util.List;
  * <p>Their validation logic differ, however their digest is the same; therefore
  * they are built in the same way.</p>
  */
-public abstract class DraftV3TypeKeywordValidator
-    extends AbstractKeywordValidator
-{
+public abstract class DraftV3TypeKeywordValidator extends AbstractKeywordValidator {
+
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     protected final EnumSet<NodeType> types = EnumSet.noneOf(NodeType.class);
     protected final List<Integer> schemas = Lists.newArrayList();
 
-    protected DraftV3TypeKeywordValidator(final String keyword,
-        final JsonNode digested)
+    protected DraftV3TypeKeywordValidator(String keyword, JsonNode digested)
     {
         super(keyword);
         for (final JsonNode element: digested.get(keyword))

@@ -6,8 +6,8 @@ import xpertss.json.schema.core.exceptions.ProcessingException;
 /**
  * Interface for a keyword validator factory
  */
-public interface KeywordValidatorFactory
-{
+public interface KeywordValidatorFactory {
+    
     /**
      * Create a validator for the instance
      *

@@ -18,9 +18,8 @@ import java.util.List;
  * and {@code patternProperties}, unless this keyword is {@code true} or a
  * schema, in which case additional properties are always allowed.</p>
  */
-public final class AdditionalPropertiesDigester
-    extends AbstractDigester
-{
+public final class AdditionalPropertiesDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new AdditionalPropertiesDigester();
 
     public static Digester getInstance()
@@ -34,11 +33,11 @@ public final class AdditionalPropertiesDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
-        final ArrayNode properties = FACTORY.arrayNode();
-        final ArrayNode patternProperties = FACTORY.arrayNode();
+        ObjectNode ret = FACTORY.objectNode();
+        ArrayNode properties = FACTORY.arrayNode();
+        ArrayNode patternProperties = FACTORY.arrayNode();
 
         /*
          * Start by presuming that additional properties are allowed. This will
@@ -58,15 +57,13 @@ public final class AdditionalPropertiesDigester
          */
         ret.put(keyword, false);
 
-        List<String> list;
+        List<String> list = Lists.newArrayList(schema.path("properties").fieldNames());
 
-        list = Lists.newArrayList(schema.path("properties").fieldNames());
         Collections.sort(list);
         for (final String s: list)
             properties.add(s);
 
-        list = Lists.newArrayList(schema.path("patternProperties")
-            .fieldNames());
+        list = Lists.newArrayList(schema.path("patternProperties").fieldNames());
         Collections.sort(list);
         for (final String s: list)
             patternProperties.add(s);

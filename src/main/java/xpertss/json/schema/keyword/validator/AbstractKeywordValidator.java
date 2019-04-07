@@ -18,18 +18,9 @@ import java.util.Collection;
  * <p>This class provides a template message for error reporting, with all
  * details about the current validation context already filled.</p>
  */
-public abstract class AbstractKeywordValidator
-    implements KeywordValidator
-{
-    private static final ExceptionProvider EXCEPTION_PROVIDER
-        = new ExceptionProvider()
-    {
-        @Override
-        public ProcessingException doException(final ProcessingMessage message)
-        {
-            return new InvalidInstanceException(message);
-        }
-    };
+public abstract class AbstractKeywordValidator implements KeywordValidator {
+
+    private static final ExceptionProvider EXCEPTION_PROVIDER = InvalidInstanceException::new;
 
     protected final String keyword;
 
@@ -38,27 +29,26 @@ public abstract class AbstractKeywordValidator
      *
      * @param keyword the keyword's name
      */
-    protected AbstractKeywordValidator(final String keyword)
+    protected AbstractKeywordValidator(String keyword)
     {
         this.keyword = keyword;
     }
 
-    protected final ProcessingMessage newMsg(final FullData data)
+    protected final ProcessingMessage newMsg(FullData data)
     {
         return data.newMessage().put("domain", "validation")
             .put("keyword", keyword)
             .setExceptionProvider(EXCEPTION_PROVIDER);
     }
 
-    protected final ProcessingMessage newMsg(final FullData data,
-        final MessageBundle bundle, final String key)
+    protected final ProcessingMessage newMsg(FullData data, MessageBundle bundle, String key)
     {
         return data.newMessage().put("domain", "validation")
             .put("keyword", keyword).setMessage(bundle.getMessage(key))
             .setExceptionProvider(EXCEPTION_PROVIDER);
     }
 
-    protected static <T> JsonNode toArrayNode(final Collection<T> collection)
+    protected static <T> JsonNode toArrayNode(Collection<T> collection)
     {
         final ArrayNode node = JacksonUtils.nodeFactory().arrayNode();
         for (final T element: collection)

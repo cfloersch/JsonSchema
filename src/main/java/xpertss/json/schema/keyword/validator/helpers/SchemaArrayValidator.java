@@ -7,12 +7,11 @@ import xpertss.json.schema.keyword.validator.AbstractKeywordValidator;
 /**
  * Helper validator class for keywords whose value is a schema array
  */
-public abstract class SchemaArrayValidator
-    extends AbstractKeywordValidator
-{
+public abstract class SchemaArrayValidator extends AbstractKeywordValidator {
+
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
-    protected SchemaArrayValidator(final String keyword)
+    protected SchemaArrayValidator(String keyword)
     {
         super(keyword);
     }

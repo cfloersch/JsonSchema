@@ -18,9 +18,8 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
  * reasons), {@link #validateDecimal(ProcessingReport, MessageBundle, FullData)}
  * otherwise (for accuracy reasons).</p>
  */
-public abstract class NumericValidator
-    extends AbstractKeywordValidator
-{
+public abstract class NumericValidator extends AbstractKeywordValidator {
+
     /**
      * The keyword value
      */
@@ -31,7 +30,7 @@ public abstract class NumericValidator
      */
     private final boolean isLong;
 
-    protected NumericValidator(final String keyword, final JsonNode digest)
+    protected NumericValidator(String keyword, JsonNode digest)
     {
         super(keyword);
         number = digest.get(keyword);
@@ -39,12 +38,10 @@ public abstract class NumericValidator
     }
 
     @Override
-    public final void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public final void validate(Processor<FullData, FullData> processor, ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
+        JsonNode instance = data.getInstance().getNode();
         if (valueIsLong(instance) && isLong)
             validateLong(report, bundle, data);
         else
@@ -59,8 +56,7 @@ public abstract class NumericValidator
      * @param bundle the message bundle to use
      * @param data the validation data
      */
-    protected abstract void validateLong(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected abstract void validateLong(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException;
 
     /**
@@ -71,8 +67,7 @@ public abstract class NumericValidator
      * @param bundle the message bundle to use
      * @param data the validation data
      */
-    protected abstract void validateDecimal(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected abstract void validateDecimal(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException;
 
     @Override
@@ -92,7 +87,7 @@ public abstract class NumericValidator
      * @param node the node to test
      * @return true if both conditions are true
      */
-    private static boolean valueIsLong(final JsonNode node)
+    private static boolean valueIsLong(JsonNode node)
     {
         return NodeType.getNodeType(node) == NodeType.INTEGER
             && node.canConvertToLong();

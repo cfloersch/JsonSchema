@@ -14,12 +14,11 @@ import java.util.EnumSet;
 /**
  * Keyword validator for draft v4's {@code type}
  */
-public final class DraftV4TypeValidator
-    extends AbstractKeywordValidator
-{
+public final class DraftV4TypeValidator extends AbstractKeywordValidator {
+
     private final EnumSet<NodeType> types = EnumSet.noneOf(NodeType.class);
 
-    public DraftV4TypeValidator(final JsonNode digest)
+    public DraftV4TypeValidator(JsonNode digest)
     {
         super("type");
         for (final JsonNode node: digest.get(keyword))
@@ -27,13 +26,10 @@ public final class DraftV4TypeValidator
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final NodeType type
-            = NodeType.getNodeType(data.getInstance().getNode());
+        NodeType type = NodeType.getNodeType(data.getInstance().getNode());
 
         if (!types.contains(type))
             report.error(newMsg(data, bundle, "err.common.typeNoMatch")

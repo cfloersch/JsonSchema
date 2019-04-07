@@ -6,7 +6,7 @@ import com.github.fge.jackson.JacksonUtils;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.processing.Processor;
 import xpertss.json.schema.core.report.ProcessingReport;
-import xpertss.json.schema.core.util.RhinoHelper;
+import xpertss.json.schema.core.util.RegexECMA262Helper;
 import xpertss.json.schema.keyword.validator.AbstractKeywordValidator;
 import xpertss.json.schema.processors.data.FullData;
 import com.github.fge.msgsimple.bundle.MessageBundle;
@@ -20,16 +20,15 @@ import java.util.Set;
 /**
  * Keyword validator for {@code additionalProperties}
  */
-public final class AdditionalPropertiesValidator
-    extends AbstractKeywordValidator
-{
+public final class AdditionalPropertiesValidator extends AbstractKeywordValidator {
+
     private static final Joiner TOSTRING_JOINER = Joiner.on("; or ");
 
     private final boolean additionalOK;
     private final Set<String> properties;
     private final Set<String> patternProperties;
 
-    public AdditionalPropertiesValidator(final JsonNode digest)
+    public AdditionalPropertiesValidator(JsonNode digest)
     {
         super("additionalProperties");
         additionalOK = digest.get(keyword).booleanValue();
@@ -48,24 +47,23 @@ public final class AdditionalPropertiesValidator
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
         if (additionalOK)
             return;
 
-        final JsonNode instance = data.getInstance().getNode();
-        final Set<String> fields = Sets.newHashSet(instance.fieldNames());
+        JsonNode instance = data.getInstance().getNode();
+        Set<String> fields = Sets.newHashSet(instance.fieldNames());
 
         fields.removeAll(properties);
 
-        final Set<String> tmp = Sets.newHashSet();
+        Set<String> tmp = Sets.newHashSet();
 
         for (final String field: fields)
             for (final String regex: patternProperties)
-                if (RhinoHelper.regMatch(regex, field))
+                if (RegexECMA262Helper.regMatch(regex, field))
                     tmp.add(field);
 
         fields.removeAll(tmp);
@@ -76,7 +74,7 @@ public final class AdditionalPropertiesValidator
         /*
          * Display extra properties in order in the report
          */
-        final ArrayNode node = JacksonUtils.nodeFactory().arrayNode();
+        ArrayNode node = JacksonUtils.nodeFactory().arrayNode();
         for (final String field: Ordering.natural().sortedCopy(fields))
             node.add(field);
         report.error(newMsg(data, bundle,
@@ -87,7 +85,7 @@ public final class AdditionalPropertiesValidator
     @Override
     public String toString()
     {
-        final StringBuilder sb = new StringBuilder(keyword + ": ");
+        StringBuilder sb = new StringBuilder(keyword + ": ");
 
         if (additionalOK)
             return sb.append("allowed").toString();
@@ -99,14 +97,13 @@ public final class AdditionalPropertiesValidator
 
         sb.append(", unless: ");
 
-        final Set<String> further = Sets.newLinkedHashSet();
+        Set<String> further = Sets.newLinkedHashSet();
 
         if (!properties.isEmpty())
             further.add("one property is any of: " + properties);
 
         if (!patternProperties.isEmpty())
-            further.add("a property matches any regex among: "
-                + patternProperties);
+            further.add("a property matches any regex among: " + patternProperties);
 
         sb.append(TOSTRING_JOINER.join(further));
 

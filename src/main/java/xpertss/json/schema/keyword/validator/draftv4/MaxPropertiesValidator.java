@@ -11,21 +11,18 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for draft v4's {@code maxProperties}
  */
-public final class MaxPropertiesValidator
-    extends PositiveIntegerValidator
-{
-    public MaxPropertiesValidator(final JsonNode digest)
+public final class MaxPropertiesValidator extends PositiveIntegerValidator {
+
+    public MaxPropertiesValidator(JsonNode digest)
     {
         super("maxProperties", digest);
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final int size = data.getInstance().getNode().size();
+        int size = data.getInstance().getNode().size();
         if (size > intValue)
             report.error(newMsg(data, bundle,
                 "err.draftv4.maxProperties.tooManyMembers")

@@ -13,25 +13,23 @@ import java.math.BigDecimal;
 /**
  * Keyword validator for {@code maximum}
  */
-public final class MaximumValidator
-    extends NumericValidator
-{
+public final class MaximumValidator extends NumericValidator {
+
     private final boolean exclusive;
 
-    public MaximumValidator(final JsonNode digest)
+    public MaximumValidator(JsonNode digest)
     {
         super("maximum", digest);
         exclusive = digest.path("exclusive").booleanValue();
     }
 
     @Override
-    protected void validateLong(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected void validateLong(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
-        final long instanceValue = instance.longValue();
-        final long longValue = number.longValue();
+        JsonNode instance = data.getInstance().getNode();
+        long instanceValue = instance.longValue();
+        long longValue = number.longValue();
 
         if (instanceValue < longValue)
             return;
@@ -51,15 +49,14 @@ public final class MaximumValidator
     }
 
     @Override
-    protected void validateDecimal(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected void validateDecimal(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
-        final BigDecimal instanceValue = instance.decimalValue();
-        final BigDecimal decimalValue = number.decimalValue();
+        JsonNode instance = data.getInstance().getNode();
+        BigDecimal instanceValue = instance.decimalValue();
+        BigDecimal decimalValue = number.decimalValue();
 
-        final int cmp = instanceValue.compareTo(decimalValue);
+        int cmp = instanceValue.compareTo(decimalValue);
 
         if (cmp < 0)
             return;

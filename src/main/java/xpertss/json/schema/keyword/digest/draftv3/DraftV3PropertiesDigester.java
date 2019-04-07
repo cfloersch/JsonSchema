@@ -16,9 +16,8 @@ import java.util.List;
  *
  * <p>This stores the same information as draft v4's {@code required}.</p>
  */
-public final class DraftV3PropertiesDigester
-    extends AbstractDigester
-{
+public final class DraftV3PropertiesDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new DraftV3PropertiesDigester();
 
     public static Digester getInstance()
@@ -32,15 +31,15 @@ public final class DraftV3PropertiesDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
         // TODO: return an array directly (same for "required" in v4)
-        final ObjectNode ret = FACTORY.objectNode();
-        final ArrayNode required = FACTORY.arrayNode();
+        ObjectNode ret = FACTORY.objectNode();
+        ArrayNode required = FACTORY.arrayNode();
         ret.put("required", required);
 
-        final JsonNode node = schema.get(keyword);
-        final List<String> list = Lists.newArrayList(node.fieldNames());
+        JsonNode node = schema.get(keyword);
+        List<String> list = Lists.newArrayList(node.fieldNames());
 
         Collections.sort(list);
 

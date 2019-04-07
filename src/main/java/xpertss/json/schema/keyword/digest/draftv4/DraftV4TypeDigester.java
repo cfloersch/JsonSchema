@@ -20,9 +20,8 @@ import java.util.EnumSet;
  *     <li>{@code { "type": [ "string" ] } }</li>
  * </ul>
  */
-public final class DraftV4TypeDigester
-    extends AbstractDigester
-{
+public final class DraftV4TypeDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new DraftV4TypeDigester();
 
     public static Digester getInstance()
@@ -36,15 +35,15 @@ public final class DraftV4TypeDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
-        final ArrayNode allowedTypes = FACTORY.arrayNode();
+        ObjectNode ret = FACTORY.objectNode();
+        ArrayNode allowedTypes = FACTORY.arrayNode();
         ret.put(keyword, allowedTypes);
 
-        final JsonNode node = schema.get(keyword);
+        JsonNode node = schema.get(keyword);
 
-        final EnumSet<NodeType> typeSet = EnumSet.noneOf(NodeType.class);
+        EnumSet<NodeType> typeSet = EnumSet.noneOf(NodeType.class);
 
         if (node.isTextual()) // Single type
             typeSet.add(NodeType.fromName(node.textValue()));

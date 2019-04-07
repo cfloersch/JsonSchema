@@ -15,25 +15,22 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for draft v4's {@code not}
  */
-public final class NotValidator
-    extends AbstractKeywordValidator
-{
+public final class NotValidator extends AbstractKeywordValidator {
+
     private static final JsonPointer PTR = JsonPointer.of("not");
 
-    public NotValidator(final JsonNode digest)
+    public NotValidator(JsonNode digest)
     {
         super("not");
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final SchemaTree tree = data.getSchema();
-        final ProcessingReport subReport
-            = new ListProcessingReport(report.getLogLevel(), LogLevel.FATAL);
+        SchemaTree tree = data.getSchema();
+        ProcessingReport subReport = new ListProcessingReport(report.getLogLevel(), LogLevel.FATAL);
 
         processor.process(subReport, data.withSchema(tree.append(PTR)));
 

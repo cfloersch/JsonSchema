@@ -15,17 +15,15 @@ import xpertss.json.schema.keyword.digest.AbstractDigester;
  * <p>A net result of all keywords using this digester is that only one instance
  * will ever be built.</p>
  */
-public final class NullDigester
-    extends AbstractDigester
-{
-    public NullDigester(final String keyword, final NodeType first,
-        final NodeType... other)
+public final class NullDigester extends AbstractDigester {
+
+    public NullDigester(String keyword, NodeType first, NodeType... other)
     {
         super(keyword, first, other);
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
         return FACTORY.nullNode();
     }

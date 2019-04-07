@@ -19,15 +19,14 @@ import java.math.BigDecimal;
  *
  * @see NumericValidator
  */
-public abstract class NumericDigester
-    extends AbstractDigester
-{
-    protected NumericDigester(final String keyword)
+public abstract class NumericDigester extends AbstractDigester {
+
+    protected NumericDigester(String keyword)
     {
         super(keyword, NodeType.INTEGER, NodeType.NUMBER);
     }
 
-    private static boolean valueIsLong(final JsonNode node)
+    private static boolean valueIsLong(JsonNode node)
     {
         if (!node.canConvertToLong())
             return false;
@@ -39,12 +38,12 @@ public abstract class NumericDigester
             .compareTo(BigDecimal.ZERO) == 0;
     }
 
-    protected final ObjectNode digestedNumberNode(final JsonNode schema)
+    protected final ObjectNode digestedNumberNode(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
 
-        final JsonNode node = schema.get(keyword);
-        final boolean isLong = valueIsLong(node);
+        JsonNode node = schema.get(keyword);
+        boolean isLong = valueIsLong(node);
         ret.put("valueIsLong", isLong);
 
         if (isLong) {
@@ -54,7 +53,7 @@ public abstract class NumericDigester
             return ret;
         }
 
-        final BigDecimal decimal = node.decimalValue();
+        BigDecimal decimal = node.decimalValue();
         ret.put(keyword, decimal.scale() == 0
             ? FACTORY.numberNode(decimal.toBigIntegerExact())
             : node);

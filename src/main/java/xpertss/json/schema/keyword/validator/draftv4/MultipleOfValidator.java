@@ -6,10 +6,9 @@ import xpertss.json.schema.keyword.validator.helpers.DivisorValidator;
 /**
  * Keyword validator for draft v4's {@code multipleOf}
  */
-public final class MultipleOfValidator
-    extends DivisorValidator
-{
-    public MultipleOfValidator(final JsonNode digest)
+public final class MultipleOfValidator extends DivisorValidator {
+
+    public MultipleOfValidator(JsonNode digest)
     {
         super("multipleOf", digest);
     }

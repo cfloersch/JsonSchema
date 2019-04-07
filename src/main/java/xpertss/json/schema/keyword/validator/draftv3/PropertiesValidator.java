@@ -15,15 +15,14 @@ import java.util.Set;
 /**
  * Keyword validator for draft v3's {@code properties}
  */
-public final class PropertiesValidator
-    extends AbstractKeywordValidator
-{
+public final class PropertiesValidator extends AbstractKeywordValidator {
+
     private final Set<String> required;
 
-    public PropertiesValidator(final JsonNode digest)
+    public PropertiesValidator(JsonNode digest)
     {
         super("properties");
-        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        ImmutableSet.Builder<String> builder = ImmutableSet.builder();
 
         for (final JsonNode element: digest.get("required"))
             builder.add(element.textValue());
@@ -32,14 +31,12 @@ public final class PropertiesValidator
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final Set<String> set = Sets.newLinkedHashSet(required);
-        set.removeAll(Sets.newHashSet(data.getInstance().getNode()
-            .fieldNames()));
+        Set<String> set = Sets.newLinkedHashSet(required);
+        set.removeAll(Sets.newHashSet(data.getInstance().getNode().fieldNames()));
 
         if (!set.isEmpty())
             report.error(newMsg(data, bundle, "err.common.object.missingMembers")

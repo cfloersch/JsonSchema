@@ -18,9 +18,8 @@ import java.util.List;
  * <p>Its role is simply enough to ensure that, for instance, {@code
  * ["a", "b"]} and {@code ["b", "a"]} produce the same output.</p>
  */
-public final class RequiredDigester
-    extends AbstractDigester
-{
+public final class RequiredDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new RequiredDigester();
 
     public static Digester getInstance()
@@ -34,22 +33,15 @@ public final class RequiredDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
-        final ArrayNode required = FACTORY.arrayNode();
+        ObjectNode ret = FACTORY.objectNode();
+        ArrayNode required = FACTORY.arrayNode();
         ret.put(keyword, required);
 
-        final List<JsonNode> list = Lists.newArrayList(schema.get(keyword));
+        List<JsonNode> list = Lists.newArrayList(schema.get(keyword));
 
-        Collections.sort(list, new Comparator<JsonNode>()
-        {
-            @Override
-            public int compare(final JsonNode o1, final JsonNode o2)
-            {
-                return o1.textValue().compareTo(o2.textValue());
-            }
-        });
+        Collections.sort(list, Comparator.comparing(JsonNode::textValue));
 
         required.addAll(list);
         return ret;

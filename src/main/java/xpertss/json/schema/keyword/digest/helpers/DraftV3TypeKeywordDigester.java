@@ -15,28 +15,27 @@ import java.util.EnumSet;
  * fundamental structure. Simple types and schema dependencies are stored
  * separately.</p>
  */
-public final class DraftV3TypeKeywordDigester
-    extends AbstractDigester
-{
+public final class DraftV3TypeKeywordDigester extends AbstractDigester {
+
     private static final String ANY = "any";
 
-    public DraftV3TypeKeywordDigester(final String keyword)
+    public DraftV3TypeKeywordDigester(String keyword)
     {
         super(keyword, NodeType.ARRAY, NodeType.values());
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
-        final ArrayNode simpleTypes = FACTORY.arrayNode();
+        ObjectNode ret = FACTORY.objectNode();
+        ArrayNode simpleTypes = FACTORY.arrayNode();
         ret.put(keyword, simpleTypes);
-        final ArrayNode schemas = FACTORY.arrayNode();
+        ArrayNode schemas = FACTORY.arrayNode();
         ret.put("schemas", schemas);
 
-        final JsonNode node = schema.get(keyword);
+        JsonNode node = schema.get(keyword);
 
-        final EnumSet<NodeType> set = EnumSet.noneOf(NodeType.class);
+        EnumSet<NodeType> set = EnumSet.noneOf(NodeType.class);
 
         if (node.isTextual()) // Single type
             putType(set, node.textValue());
@@ -67,7 +66,7 @@ public final class DraftV3TypeKeywordDigester
         return ret;
     }
 
-    private static void putType(final EnumSet<NodeType> types, final String s)
+    private static void putType(EnumSet<NodeType> types, String s)
     {
         if (ANY.equals(s)) {
             types.addAll(EnumSet.allOf(NodeType.class));

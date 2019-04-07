@@ -12,24 +12,22 @@ import java.math.BigDecimal;
  * Helper keyword validator for draft v4's {@code multipleOf} and draft v3's
  * {@code divisibleBy}
  */
-public abstract class DivisorValidator
-    extends NumericValidator
-{
-    protected DivisorValidator(final String keyword, final JsonNode digest)
+public abstract class DivisorValidator extends NumericValidator {
+
+    protected DivisorValidator(String keyword, JsonNode digest)
     {
         super(keyword, digest);
     }
 
     @Override
-    protected final void validateLong(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected final void validateLong(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode node = data.getInstance().getNode();
-        final long instanceValue = node.longValue();
-        final long longValue = number.longValue();
+        JsonNode node = data.getInstance().getNode();
+        long instanceValue = node.longValue();
+        long longValue = number.longValue();
 
-        final long remainder = instanceValue % longValue;
+        long remainder = instanceValue % longValue;
 
         if (remainder == 0L)
             return;
@@ -39,15 +37,14 @@ public abstract class DivisorValidator
     }
 
     @Override
-    protected final void validateDecimal(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    protected final void validateDecimal(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode node = data.getInstance().getNode();
-        final BigDecimal instanceValue = node.decimalValue();
-        final BigDecimal decimalValue = number.decimalValue();
+        JsonNode node = data.getInstance().getNode();
+        BigDecimal instanceValue = node.decimalValue();
+        BigDecimal decimalValue = number.decimalValue();
 
-        final BigDecimal remainder = instanceValue.remainder(decimalValue);
+        BigDecimal remainder = instanceValue.remainder(decimalValue);
 
         /*
          * We cannot use equality! As far as BigDecimal goes,

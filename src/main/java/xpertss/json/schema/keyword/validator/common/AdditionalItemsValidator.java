@@ -11,13 +11,12 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for {@code additionalItems}
  */
-public final class AdditionalItemsValidator
-    extends AbstractKeywordValidator
-{
+public final class AdditionalItemsValidator extends AbstractKeywordValidator {
+
     private final boolean additionalOK;
     private final int itemsSize;
 
-    public AdditionalItemsValidator(final JsonNode digest)
+    public AdditionalItemsValidator(JsonNode digest)
     {
         super("additionalItems");
         additionalOK = digest.get(keyword).booleanValue();
@@ -25,15 +24,14 @@ public final class AdditionalItemsValidator
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
         if (additionalOK)
             return;
 
-        final int size = data.getInstance().getNode().size();
+        int size = data.getInstance().getNode().size();
         if (size > itemsSize)
             report.error(newMsg(data, bundle,
                 "err.common.additionalItems.notAllowed")
@@ -43,7 +41,6 @@ public final class AdditionalItemsValidator
     @Override
     public String toString()
     {
-        return keyword + ": "
-            + (additionalOK ? "allowed" : itemsSize + " max");
+        return keyword + ": " + (additionalOK ? "allowed" : itemsSize + " max");
     }
 }

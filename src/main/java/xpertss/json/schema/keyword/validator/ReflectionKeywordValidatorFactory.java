@@ -13,17 +13,14 @@ import com.github.fge.msgsimple.load.MessageBundles;
  * A validator factory that uses reflection to create an instance of the
  * specified KeywordValidator class
  */
-public class ReflectionKeywordValidatorFactory
-    implements KeywordValidatorFactory
-{
+public class ReflectionKeywordValidatorFactory implements KeywordValidatorFactory {
+
     private static final String ERRMSG = "failed to build keyword validator";
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
 
     private final Constructor<? extends KeywordValidator> constructor;
 
-    public ReflectionKeywordValidatorFactory(String name,
-        Class<? extends KeywordValidator> clazz)
+    public ReflectionKeywordValidatorFactory(String name, Class<? extends KeywordValidator> clazz)
     {
         try {
             constructor = clazz.getConstructor(JsonNode.class);

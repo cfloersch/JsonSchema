@@ -18,31 +18,28 @@ import java.util.Set;
  *
  * @see JsonNumEquals
  */
-public final class UniqueItemsValidator
-    extends AbstractKeywordValidator
-{
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+public final class UniqueItemsValidator extends AbstractKeywordValidator {
+
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     private final boolean uniqueItems;
 
-    public UniqueItemsValidator(final JsonNode digest)
+    public UniqueItemsValidator(JsonNode digest)
     {
         super("uniqueItems");
         uniqueItems = digest.get(keyword).booleanValue();
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
         if (!uniqueItems)
             return;
 
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
-        final JsonNode node = data.getInstance().getNode();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        JsonNode node = data.getInstance().getNode();
 
         for (final JsonNode element: node)
             if (!set.add(EQUIVALENCE.wrap(element))) {

@@ -21,9 +21,8 @@ import java.util.SortedSet;
  *
  * <p>This stores property dependencies separately from schema dependencies.</p>
  */
-public final class DraftV3DependenciesDigester
-    extends AbstractDigester
-{
+public final class DraftV3DependenciesDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new DraftV3DependenciesDigester();
 
     public static Digester getInstance()
@@ -37,20 +36,19 @@ public final class DraftV3DependenciesDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
 
-        final ObjectNode propertyDeps = FACTORY.objectNode();
+        ObjectNode propertyDeps = FACTORY.objectNode();
         ret.put("propertyDeps", propertyDeps);
 
-        final ArrayNode schemaDeps = FACTORY.arrayNode();
+        ArrayNode schemaDeps = FACTORY.arrayNode();
         ret.put("schemaDeps", schemaDeps);
 
-        final List<String> list = Lists.newArrayList();
+        List<String> list = Lists.newArrayList();
 
-        final Map<String, JsonNode> map
-            = JacksonUtils.asMap(schema.get(keyword));
+        Map<String, JsonNode> map = JacksonUtils.asMap(schema.get(keyword));
 
         String key;
         JsonNode value;
@@ -81,20 +79,12 @@ public final class DraftV3DependenciesDigester
         return ret;
     }
 
-    private static JsonNode sortedSet(final JsonNode node)
+    private static JsonNode sortedSet(JsonNode node)
     {
-        final SortedSet<JsonNode> set
-            = Sets.newTreeSet(new Comparator<JsonNode>()
-            {
-                @Override
-                public int compare(final JsonNode o1, final JsonNode o2)
-                {
-                    return o1.textValue().compareTo(o2.textValue());
-                }
-            });
+        SortedSet<JsonNode> set = Sets.newTreeSet(Comparator.comparing(JsonNode::textValue));
 
         set.addAll(Sets.newHashSet(node));
-        final ArrayNode ret = FACTORY.arrayNode();
+        ArrayNode ret = FACTORY.arrayNode();
         ret.addAll(set);
         return ret;
     }

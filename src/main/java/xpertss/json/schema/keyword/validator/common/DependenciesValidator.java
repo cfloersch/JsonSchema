@@ -29,27 +29,23 @@ import java.util.Set;
  * <p>In spite of syntax differences, the digested data used to build the
  * validator is the same, which is why this validator is located here.</p>
  */
-public final class DependenciesValidator
-    extends AbstractKeywordValidator
-{
+public final class DependenciesValidator extends AbstractKeywordValidator {
+
     private final Multimap<String, String> propertyDeps;
     private final Set<String> schemaDeps;
 
-    public DependenciesValidator(final JsonNode digest)
+    public DependenciesValidator(JsonNode digest)
     {
         super("dependencies");
 
         /*
          * Property dependencies
          */
-        final ImmutableMultimap.Builder<String, String> mapBuilder
-            = ImmutableMultimap.builder();
-        final Map<String, JsonNode> map
-            = JacksonUtils.asMap(digest.get("propertyDeps"));
+        ImmutableMultimap.Builder<String, String> mapBuilder = ImmutableMultimap.builder();
+        Map<String, JsonNode> map = JacksonUtils.asMap(digest.get("propertyDeps"));
 
-        String key;
         for (final Map.Entry<String, JsonNode> entry: map.entrySet()) {
-            key = entry.getKey();
+            String key = entry.getKey();
             for (final JsonNode element: entry.getValue())
                 mapBuilder.put(key, element.textValue());
         }
@@ -59,8 +55,7 @@ public final class DependenciesValidator
         /*
          * Schema dependencies
          */
-        final ImmutableSet.Builder<String> setBuilder
-            = ImmutableSet.builder();
+        ImmutableSet.Builder<String> setBuilder = ImmutableSet.builder();
 
         for (final JsonNode node: digest.get("schemaDeps"))
             setBuilder.add(node.textValue());
@@ -69,13 +64,12 @@ public final class DependenciesValidator
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
-        final Set<String> fields = Sets.newHashSet(instance.fieldNames());
+        JsonNode instance = data.getInstance().getNode();
+        Set<String> fields = Sets.newHashSet(instance.fieldNames());
 
         Collection<String> collection;
         Set<String> set;
@@ -97,7 +91,7 @@ public final class DependenciesValidator
         if (schemaDeps.isEmpty())
             return;
 
-        final SchemaTree tree = data.getSchema();
+        SchemaTree tree = data.getSchema();
         FullData newData;
         JsonPointer pointer;
 

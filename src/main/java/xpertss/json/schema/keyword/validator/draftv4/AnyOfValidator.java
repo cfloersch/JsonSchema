@@ -16,25 +16,22 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for draft v4's {@code anyOf}
  */
-public final class AnyOfValidator
-    extends SchemaArrayValidator
-{
-    public AnyOfValidator(final JsonNode digest)
+public final class AnyOfValidator extends SchemaArrayValidator {
+
+    public AnyOfValidator(JsonNode digest)
     {
         super("anyOf");
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final SchemaTree tree = data.getSchema();
-        final JsonPointer schemaPointer = tree.getPointer();
-        final JsonNode schemas = tree.getNode().get(keyword);
-        final int size = schemas.size();
-        final ObjectNode fullReport = FACTORY.objectNode();
+        SchemaTree tree = data.getSchema();
+        JsonPointer schemaPointer = tree.getPointer();
+        JsonNode schemas = tree.getNode().get(keyword);
+        int size = schemas.size();
+        ObjectNode fullReport = FACTORY.objectNode();
 
         int nrSuccess = 0;
         ListProcessingReport subReport;
@@ -42,8 +39,7 @@ public final class AnyOfValidator
         FullData newData;
 
         for (int index = 0; index < size; index++) {
-            subReport = new ListProcessingReport(report.getLogLevel(),
-                LogLevel.FATAL);
+            subReport = new ListProcessingReport(report.getLogLevel(), LogLevel.FATAL);
             ptr = schemaPointer.append(JsonPointer.of(keyword, index));
             newData = data.withSchema(tree.setPointer(ptr));
             processor.process(subReport, newData);

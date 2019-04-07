@@ -11,19 +11,17 @@ import xpertss.json.schema.keyword.digest.AbstractDigester;
  * <p>As with all digesters, however, you are required to specify what types
  * this keyword supports.</p>
  */
-public final class SimpleDigester
-    extends AbstractDigester
-{
-    public SimpleDigester(final String keyword, final NodeType first,
-        final NodeType... other)
+public final class SimpleDigester extends AbstractDigester {
+
+    public SimpleDigester(String keyword, NodeType first, NodeType... other)
     {
         super(keyword, first, other);
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
         ret.put(keyword, schema.get(keyword));
         return ret;
     }

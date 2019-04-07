@@ -11,9 +11,8 @@ import xpertss.json.schema.keyword.digest.helpers.NumericDigester;
  * <p>This uses {@link NumericDigester} as a base, and also stores information
  * about the presence (or not) of {@code exclusiveMaximum}.</p>
  */
-public final class MaximumDigester
-    extends NumericDigester
-{
+public final class MaximumDigester extends NumericDigester {
+
     private static final Digester INSTANCE = new MaximumDigester();
 
     public static Digester getInstance()
@@ -26,9 +25,9 @@ public final class MaximumDigester
         super("maximum");
     }
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = digestedNumberNode(schema);
+        ObjectNode ret = digestedNumberNode(schema);
         ret.put("exclusive", schema.path("exclusiveMaximum").asBoolean(false));
         return ret;
     }

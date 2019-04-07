@@ -9,15 +9,13 @@ import java.util.EnumSet;
 /**
  * Base abstract digester class for all keyword digesters
  */
-public abstract class AbstractDigester
-    implements Digester
-{
+public abstract class AbstractDigester implements Digester {
+
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
     private final EnumSet<NodeType> types;
     protected final String keyword;
 
-    protected AbstractDigester(final String keyword, final NodeType first,
-        final NodeType... other)
+    protected AbstractDigester(String keyword, NodeType first, NodeType... other)
     {
         this.keyword = keyword;
         types = EnumSet.of(first, other);

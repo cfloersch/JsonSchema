@@ -13,22 +13,20 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Keyword validator for draft v3's {@code extends}
  */
-public final class ExtendsValidator
-    extends AbstractKeywordValidator
-{
-    public ExtendsValidator(final JsonNode digest)
+public final class ExtendsValidator extends AbstractKeywordValidator {
+
+    public ExtendsValidator(JsonNode digest)
     {
         super("extends");
     }
 
     @Override
-    public void validate(final Processor<FullData, FullData> processor,
-        final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    public void validate(Processor<FullData, FullData> processor, ProcessingReport report,
+                         MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final SchemaTree tree = data.getSchema();
-        final JsonNode node = tree.getNode().get(keyword);
+        SchemaTree tree = data.getSchema();
+        JsonNode node = tree.getNode().get(keyword);
 
         FullData newData;
 
@@ -41,11 +39,10 @@ public final class ExtendsValidator
         /*
          * Not an object? An array
          */
-        final int size = node.size();
-        JsonPointer pointer;
+        int size = node.size();
 
         for (int index = 0; index < size; index++) {
-            pointer = JsonPointer.of(keyword, index);
+            JsonPointer pointer = JsonPointer.of(keyword, index);
             newData = data.withSchema(tree.append(pointer));
             processor.process(report, newData);
         }

@@ -9,9 +9,8 @@ import xpertss.json.schema.keyword.digest.helpers.NumericDigester;
  *
  * @see NumericDigester
  */
-public final class MultipleOfDigester
-    extends NumericDigester
-{
+public final class MultipleOfDigester extends NumericDigester {
+
     private static final Digester INSTANCE = new MultipleOfDigester();
 
     public static Digester getInstance()
@@ -25,7 +24,7 @@ public final class MultipleOfDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
         return digestedNumberNode(schema);
     }

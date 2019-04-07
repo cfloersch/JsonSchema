@@ -13,11 +13,9 @@ import xpertss.json.schema.keyword.digest.Digester;
  * unless the keword is {@code false} <i>and</i> {@code items} is an array. In
  * this last case, the size of the {@code items} array is stored.</p>
  */
-public final class AdditionalItemsDigester
-    extends AbstractDigester
-{
-    private static final Digester INSTANCE
-        = new AdditionalItemsDigester();
+public final class AdditionalItemsDigester extends AbstractDigester {
+
+    private static final Digester INSTANCE = new AdditionalItemsDigester();
 
     public static Digester getInstance()
     {
@@ -30,9 +28,9 @@ public final class AdditionalItemsDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
 
         /*
          * First, let's assume that additionalItems is true or a schema
@@ -54,7 +52,7 @@ public final class AdditionalItemsDigester
         if (schema.get(keyword).asBoolean(true))
             return ret;
 
-        final JsonNode itemsNode = schema.path("items");
+        JsonNode itemsNode = schema.path("items");
 
         if (!itemsNode.isArray())
             return ret;

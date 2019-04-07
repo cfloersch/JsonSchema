@@ -5,6 +5,11 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.NodeType;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.SampleNodeProvider;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.report.ProcessingReport;
@@ -16,26 +21,23 @@ import xpertss.json.schema.core.util.DictionaryBuilder;
 import xpertss.json.schema.keyword.digest.Digester;
 import xpertss.json.schema.processors.data.SchemaContext;
 import xpertss.json.schema.processors.data.SchemaDigest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertSame;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-public final class SchemaDigesterTest
-{
+@RunWith(JUnitParamsRunner.class)
+public final class SchemaDigesterTest {
+
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
     private static final String K1 = "k1";
     private static final String K2 = "k2";
-    private static final EnumSet<NodeType> TYPES1
-        = EnumSet.of(NodeType.ARRAY, NodeType.STRING);
-    private static final EnumSet<NodeType> TYPES2
-        = EnumSet.of(NodeType.BOOLEAN, NodeType.NUMBER, NodeType.OBJECT);
+    private static final EnumSet<NodeType> TYPES1 = EnumSet.of(NodeType.ARRAY, NodeType.STRING);
+    private static final EnumSet<NodeType> TYPES2 = EnumSet.of(NodeType.BOOLEAN, NodeType.NUMBER, NodeType.OBJECT);
 
     private final ObjectNode digest1 = FACTORY.objectNode();
     private final ObjectNode digest2 = FACTORY.objectNode();
@@ -53,7 +55,7 @@ public final class SchemaDigesterTest
         schema.put(K2, K2);
     }
 
-    @BeforeMethod
+    @Before
     public void setupDigesters()
     {
         final DictionaryBuilder<Digester> builder = Dictionary.newBuilder();
@@ -71,19 +73,18 @@ public final class SchemaDigesterTest
         schemaDigester = new SchemaDigester(builder.freeze());
     }
 
-    @DataProvider
     public Iterator<Object[]> sampleData()
     {
         return SampleNodeProvider.getSamples(EnumSet.allOf(NodeType.class));
     }
 
-    @Test(dataProvider = "sampleData")
+    @Test
+    @Parameters(method = "sampleData")
     public void onlyRelevantDigestsAreBuilt(final JsonNode node)
         throws ProcessingException
     {
         final NodeType type = NodeType.getNodeType(node);
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
         final SchemaContext context = new SchemaContext(tree, type);
         final ProcessingReport report = mock(ProcessingReport.class);
 
@@ -110,13 +111,11 @@ public final class SchemaDigesterTest
     public void nonPresentKeywordDoesNotTriggerBuild()
         throws ProcessingException
     {
-        final ObjectNode node = FACTORY.objectNode();
+        ObjectNode node = FACTORY.objectNode();
         node.put(K1, K1);
-        final SchemaTree schemaTree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
-        final SchemaContext context
-            = new SchemaContext(schemaTree, NodeType.NULL);
-        final ProcessingReport report = mock(ProcessingReport.class);
+        SchemaTree schemaTree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
+        SchemaContext context = new SchemaContext(schemaTree, NodeType.NULL);
+        ProcessingReport report = mock(ProcessingReport.class);
 
         schemaDigester.process(report, context);
 

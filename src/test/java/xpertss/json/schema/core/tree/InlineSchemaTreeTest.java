@@ -1,32 +1,33 @@
 package xpertss.json.schema.core.tree;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import org.testng.collections.Sets;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.google.common.collect.Sets;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.exceptions.JsonReferenceException;
 import xpertss.json.schema.core.ref.JsonRef;
 import xpertss.json.schema.core.tree.key.SchemaKey;
 
-public final class InlineSchemaTreeTest
-{
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(JUnitParamsRunner.class)
+public final class InlineSchemaTreeTest {
+
     private SchemaTree schemaTree;
     private JsonNode lookups;
 
-    @BeforeClass
-    public void loadData()
+    public InlineSchemaTreeTest()
         throws IOException
     {
         final JsonNode data = JsonLoader.fromResource("/tree/retrieval.json");
@@ -36,7 +37,6 @@ public final class InlineSchemaTreeTest
         schemaTree = new InlineSchemaTree(SchemaKey.anonymousKey(), schema);
     }
 
-    @DataProvider
     public Iterator<Object[]> getLookups()
         throws JsonReferenceException, JsonPointerException
     {
@@ -51,11 +51,11 @@ public final class InlineSchemaTreeTest
         return set.iterator();
     }
 
-    @Test(dataProvider = "getLookups")
-    public void inlineSchemaTreeContainsDeclaredContext(final JsonRef ref,
-        final JsonPointer ptr)
+    @Test
+    @Parameters(method = "getLookups")
+    public void inlineSchemaTreeContainsDeclaredContext(JsonRef ref, JsonPointer ptr)
     {
         assertTrue(schemaTree.containsRef(ref));
-        assertEquals(schemaTree.matchingPointer(ref), ptr);
+        assertEquals(ptr, schemaTree.matchingPointer(ref));
     }
 }

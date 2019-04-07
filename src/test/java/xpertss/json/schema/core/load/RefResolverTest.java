@@ -2,6 +2,7 @@ package xpertss.json.schema.core.load;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.ProcessingReport;
@@ -11,11 +12,10 @@ import xpertss.json.schema.core.tree.key.SchemaKey;
 import xpertss.json.schema.core.util.ValueHolder;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.Test;
 
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class RefResolverTest
 {

@@ -1,25 +1,24 @@
 package xpertss.json.schema.keyword.validator.callback;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static xpertss.json.schema.TestUtils.anyReport;
 import static xpertss.json.schema.TestUtils.onlyOnce;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.fail;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.processing.Processor;
 import xpertss.json.schema.core.report.LogLevel;
@@ -38,11 +37,9 @@ import xpertss.json.schema.processors.data.FullData;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 
-@Test
-public abstract class CallbackValidatorTest
-{
-    protected static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
+public abstract class CallbackValidatorTest {
+
+    protected static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
     protected static final ProcessingMessage MSG = new ProcessingMessage();
 
@@ -59,9 +56,7 @@ public abstract class CallbackValidatorTest
     private ProcessingReport report;
     private KeywordValidator validator;
 
-    protected CallbackValidatorTest(
-        final Dictionary<KeywordValidatorFactory> dict,
-        final String keyword, final JsonPointer ptr1, final JsonPointer ptr2)
+    protected CallbackValidatorTest(Dictionary<KeywordValidatorFactory> dict, String keyword, JsonPointer ptr1, JsonPointer ptr2)
     {
         this.keyword = keyword;
         factory = dict.entries().get(keyword);
@@ -69,34 +64,26 @@ public abstract class CallbackValidatorTest
         this.ptr2 = ptr2;
     }
 
-    @BeforeMethod
-    protected final void initEnvironment()
+    @Before
+    public final void initEnvironment()
         throws ProcessingException
     {
-        if (factory == null)
-            return;
+        assertNotNull("no support for " + keyword + "??", factory);
 
-        final SchemaTree tree = new CanonicalSchemaTree(
-            SchemaKey.anonymousKey(), generateSchema());
-        final JsonTree instance = new SimpleJsonTree(generateInstance());
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), generateSchema());
+        JsonTree instance = new SimpleJsonTree(generateInstance());
         data = new FullData(tree, instance);
         report = mock(ProcessingReport.class);
         when(report.getLogLevel()).thenReturn(LogLevel.DEBUG);
         validator = factory.getKeywordValidator(generateDigest());
     }
 
-    @Test
-    public final void keywordExists()
-    {
-        assertNotNull(factory, "no support for " + keyword + "??");
-    }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public final void exceptionOnFirstProcessingWorks()
         throws ProcessingException
     {
-        processor = spy(new DummyProcessor(WantedState.EX, WantedState.OK, ptr1,
-            ptr2));
+        processor = spy(new DummyProcessor(WantedState.EX, WantedState.OK, ptr1, ptr2));
 
         try {
             validator.validate(processor, report, BUNDLE, data);
@@ -107,12 +94,11 @@ public abstract class CallbackValidatorTest
         verify(processor, onlyOnce()).process(anyReport(), any(FullData.class));
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public final void exceptionOnSecondProcessingWorks()
         throws ProcessingException
     {
-        processor = spy(new DummyProcessor(WantedState.OK, WantedState.EX, ptr1,
-            ptr2));
+        processor = spy(new DummyProcessor(WantedState.OK, WantedState.EX, ptr1, ptr2));
 
         try {
             validator.validate(processor, report, BUNDLE, data);
@@ -123,12 +109,11 @@ public abstract class CallbackValidatorTest
         verify(processor, times(2)).process(anyReport(), any(FullData.class));
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public final void OkThenOkWorks()
         throws ProcessingException
     {
-        processor = spy(new DummyProcessor(WantedState.OK, WantedState.OK, ptr1,
-            ptr2));
+        processor = spy(new DummyProcessor(WantedState.OK, WantedState.OK, ptr1, ptr2));
 
         validator.validate(processor, report, BUNDLE, data);
         verify(processor, times(2)).process(anyReport(), any(FullData.class));
@@ -139,12 +124,11 @@ public abstract class CallbackValidatorTest
     protected abstract void checkOkOk(final ProcessingReport report)
         throws ProcessingException;
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public final void OkThenKoWorks()
         throws ProcessingException
     {
-        processor = spy(new DummyProcessor(WantedState.OK, WantedState.KO, ptr1,
-            ptr2));
+        processor = spy(new DummyProcessor(WantedState.OK, WantedState.KO, ptr1, ptr2));
 
         validator.validate(processor, report, BUNDLE, data);
         verify(processor, times(2)).process(anyReport(), any(FullData.class));
@@ -155,12 +139,11 @@ public abstract class CallbackValidatorTest
     protected abstract void checkOkKo(final ProcessingReport report)
         throws ProcessingException;
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public final void KoThenKoWorks()
         throws ProcessingException
     {
-        processor = spy(new DummyProcessor(WantedState.KO, WantedState.KO, ptr1,
-            ptr2));
+        processor = spy(new DummyProcessor(WantedState.KO, WantedState.KO, ptr1, ptr2));
 
         validator.validate(processor, report, BUNDLE, data);
         verify(processor, times(2)).process(anyReport(), any(FullData.class));
@@ -235,8 +218,7 @@ public abstract class CallbackValidatorTest
             final JsonNode schema = input.getSchema().getNode();
 
             final JsonPointer ptr = schema == sub1 ? ptr1 : ptr2;
-            assertEquals(input.getSchema().getPointer(), ptr,
-                "schema pointer differs from expectations");
+            assertEquals("schema pointer differs from expectations", input.getSchema().getPointer(), ptr);
 
             final WantedState wanted = schema == sub1 ? wanted1 : wanted2;
             wanted.doIt(report);

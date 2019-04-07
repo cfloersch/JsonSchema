@@ -5,9 +5,8 @@ import xpertss.json.schema.library.validator.DraftV4ValidatorDictionary;
 
 import java.io.IOException;
 
-public abstract class DraftV4KeywordValidatorTest
-    extends AbstractKeywordValidatorTest
-{
+public abstract class DraftV4KeywordValidatorTest extends AbstractKeywordValidatorTest {
+
     protected DraftV4KeywordValidatorTest(final String keyword)
         throws IOException
     {

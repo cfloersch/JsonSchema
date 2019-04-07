@@ -17,9 +17,7 @@ import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 /**
  * Validator for the {@code date-time} format attribute
  */
-public final class DateTimeAttribute
-    extends AbstractDateFormatAttribute
-{
+public final class DateTimeAttribute extends AbstractDateFormatAttribute {
 
     private static final FormatAttribute INSTANCE = new DateTimeAttribute();
 
@@ -33,7 +31,7 @@ public final class DateTimeAttribute
 
     private DateTimeAttribute()
     {
-        super("date-time", "yyyy-MM-dd'T'HH:mm:ss((+|-)HH:mm|Z)", "yyyy-MM-dd'T'HH:mm:ss.[0-9]{1,12}((+|-)HH:mm|Z)");
+        super("date-time", "yyyy-MM-dd'T'HH:mm:ss((+|-)HH:mm|Z)", "yyyy-MM-dd'T'HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)");
     }
 
     @Override
@@ -49,9 +47,9 @@ public final class DateTimeAttribute
            .appendLiteral(':')
            .appendValue(SECOND_OF_MINUTE, 2)
            .optionalStart()
-           .appendFraction(NANO_OF_SECOND, 0, 12, true)
+           .appendFraction(NANO_OF_SECOND, 0, 9, true)
            .optionalEnd()
-           .appendOffsetId()
+           .appendOffset("+HH:mm", "Z")
            .toFormatter(Locale.getDefault(Locale.Category.FORMAT)).withResolverStyle(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
 
         //return DateTimeFormatter.ISO_OFFSET_DATE_TIME;

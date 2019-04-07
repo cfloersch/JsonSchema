@@ -1,24 +1,27 @@
 package xpertss.json.schema.core.util;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-public final class URIUtilsTest
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
-    @DataProvider
+@RunWith(JUnitParamsRunner.class)
+public final class URIUtilsTest {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+
     public Iterator<Object[]> schemeData()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -42,14 +45,13 @@ public final class URIUtilsTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "schemeData")
-    public void schemesAreCorrectlyNormalized(final String orig,
-        final String dst)
+    @Test
+    @Parameters(method = "schemeData")
+    public void schemesAreCorrectlyNormalized(String orig, String dst)
     {
-        assertEquals(URIUtils.normalizeScheme(orig), dst);
+        assertEquals(dst, URIUtils.normalizeScheme(orig));
     }
 
-    @DataProvider
     public Iterator<Object[]> uriData()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -79,13 +81,13 @@ public final class URIUtilsTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "uriData")
-    public void urisAreCorrectlyNormalized(final URI orig, final URI dst)
+    @Test
+    @Parameters(method = "uriData")
+    public void urisAreCorrectlyNormalized(URI orig, URI dst)
     {
-        assertEquals(URIUtils.normalizeURI(orig), dst);
+        assertEquals(dst, URIUtils.normalizeURI(orig));
     }
 
-    @DataProvider
     public Iterator<Object[]> schemaURIs()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -113,13 +115,13 @@ public final class URIUtilsTest
     }
 
 
-    @Test(dataProvider = "schemaURIs")
-    public void schemaURIsAreCorrectlyNormalized(final URI orig, final URI dst)
+    @Test
+    @Parameters(method = "schemaURIs")
+    public void schemaURIsAreCorrectlyNormalized(URI orig, URI dst)
     {
-        assertEquals(URIUtils.normalizeSchemaURI(orig), dst);
+        assertEquals(dst, URIUtils.normalizeSchemaURI(orig));
     }
 
-    @DataProvider
     public Iterator<Object[]> invalidPathURIs()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -149,18 +151,18 @@ public final class URIUtilsTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "invalidPathURIs")
-    public void invalidPathURIsAreRejected(final String uri, final String key)
+    @Test
+    @Parameters(method = "invalidPathURIs")
+    public void invalidPathURIsAreRejected(String uri, String key)
     {
         try {
             URIUtils.checkPathURI(URI.create(uri));
             fail("No exception thrown!");
         } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), BUNDLE.printf(key, uri));
+            assertEquals(BUNDLE.printf(key, uri), e.getMessage());
         }
     }
 
-    @DataProvider
     public Iterator<Object[]> invalidSchemaURIs()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -182,14 +184,15 @@ public final class URIUtilsTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "invalidSchemaURIs")
-    public void invalidSchemaURIsAreRejected(final String uri, final String key)
+    @Test
+    @Parameters(method = "invalidSchemaURIs")
+    public void invalidSchemaURIsAreRejected(String uri, String key)
     {
         try {
             URIUtils.checkSchemaURI(URI.create(uri));
             fail("No exception thrown!");
         } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), BUNDLE.printf(key, uri));
+            assertEquals(BUNDLE.printf(key, uri), e.getMessage());
         }
     }
 

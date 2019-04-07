@@ -5,9 +5,8 @@ import com.github.fge.jackson.NodeType;
 
 import java.io.IOException;
 
-public final class AdditionalItemsDigesterTest
-    extends CommonDigesterTest
-{
+public final class AdditionalItemsDigesterTest extends CommonDigesterTest {
+    
     public AdditionalItemsDigesterTest()
         throws IOException
     {

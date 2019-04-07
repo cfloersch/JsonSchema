@@ -4,19 +4,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public final class ObjectSchemaSelectorTest
-{
+
+@RunWith(JUnitParamsRunner.class)
+public final class ObjectSchemaSelectorTest {
+
     private final JsonNode testNode;
 
     public ObjectSchemaSelectorTest()
@@ -25,7 +29,6 @@ public final class ObjectSchemaSelectorTest
         testNode = JsonLoader.fromResource("/object/lookup.json");
     }
 
-    @DataProvider
     public Iterator<Object[]> testData()
         throws ProcessingException, JsonPointerException
     {
@@ -46,13 +49,12 @@ public final class ObjectSchemaSelectorTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "testData")
-    public void schemaPointersAreCorrectlyComputed(final JsonNode digest,
-        final String memberName, final List<JsonPointer> ret)
+    @Test
+    @Parameters(method = "testData")
+    public void schemaPointersAreCorrectlyComputed(JsonNode digest, String memberName, List<JsonPointer> ret)
     {
-        final ObjectSchemaSelector selector = new ObjectSchemaSelector(digest);
-        final List<JsonPointer> actual
-            = Lists.newArrayList(selector.selectSchemas(memberName));
-        assertEquals(actual, ret, "schema lookup differs from expectations");
+        ObjectSchemaSelector selector = new ObjectSchemaSelector(digest);
+        List<JsonPointer> actual = Lists.newArrayList(selector.selectSchemas(memberName));
+        assertEquals("schema lookup differs from expectations", ret, actual);
     }
 }

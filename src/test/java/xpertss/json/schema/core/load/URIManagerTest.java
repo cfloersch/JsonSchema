@@ -3,6 +3,8 @@ package xpertss.json.schema.core.load;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonNumEquals;
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.load.configuration.LoadingConfiguration;
 import xpertss.json.schema.core.load.download.URIDownloader;
@@ -11,26 +13,23 @@ import xpertss.json.schema.core.ref.JsonRef;
 import xpertss.json.schema.core.report.LogLevel;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static org.junit.Assert.assertTrue;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-public final class URIManagerTest
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class URIManagerTest {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private URIDownloader mock;
 
-    @BeforeMethod
+    @Before
     public void setUp()
     {
         mock = mock(URIDownloader.class);
@@ -103,7 +102,7 @@ public final class URIManagerTest
     }
 
     @Test
-    void managerParsesNonstandardJSON()
+    public void managerParsesNonstandardJSON()
         throws IOException, ProcessingException
     {
         // get resource URIs for standard and nonstandard sources

@@ -2,6 +2,8 @@ package xpertss.json.schema.testsuite;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
+import junitparams.Parameters;
+import org.junit.Test;
 import xpertss.json.schema.SchemaVersion;
 import xpertss.json.schema.cfg.ValidationConfiguration;
 import xpertss.json.schema.core.exceptions.ProcessingException;
@@ -9,18 +11,16 @@ import xpertss.json.schema.core.report.ProcessingReport;
 import xpertss.json.schema.main.JsonSchemaFactory;
 import xpertss.json.schema.main.JsonValidator;
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-@Test
-public abstract class TestSuite
-{
+
+public abstract class TestSuite {
+    
     private final JsonValidator validator;
     private final JsonNode testSuite;
 
@@ -34,7 +34,6 @@ public abstract class TestSuite
         testSuite = JsonLoader.fromResource("/testsuite/" + fileName + ".json");
     }
 
-    @DataProvider
     public final Iterator<Object[]> getAllTests()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -50,18 +49,13 @@ public abstract class TestSuite
         return list.iterator();
     }
 
-    @Test(
-        dataProvider = "getAllTests",
-        invocationCount = 10,
-        threadPoolSize = 4
-    )
-    public final void testsFromTestSuitePass(final String description,
-        final JsonNode schema, final JsonNode data, final boolean valid)
+    @Test
+    @Parameters(method = "getAllTests")
+    public final void testsFromTestSuitePass(String description, JsonNode schema, JsonNode data, boolean valid)
         throws ProcessingException
     {
         final ProcessingReport report = validator.validate(schema, data);
 
-        assertEquals(report.isSuccess(), valid,
-            "test failed (description: " + description + ')');
+        assertEquals("test failed (description: " + description + ")", valid, report.isSuccess());
     }
 }

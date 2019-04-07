@@ -1,18 +1,18 @@
 package xpertss.json.schema.keyword.special;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.TestUtils.anyMessage;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.assertMessage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.fail;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -58,11 +58,10 @@ public final class NotKeywordTest
             : factory.getKeywordValidator(FACTORY.nullNode());
     }
 
-    @BeforeMethod
+    @Before
     public void initEnvironment()
     {
-        if (validator == null)
-            return;
+        assertNotNull("no support for not??", validator);
 
         final ObjectNode schema = FACTORY.objectNode();
         schema.put("not", FACTORY.objectNode());
@@ -75,13 +74,8 @@ public final class NotKeywordTest
         when(report.getLogLevel()).thenReturn(LogLevel.DEBUG);
     }
 
-    @Test
-    public void keywordExists()
-    {
-        assertNotNull(validator, "no support for not??");
-    }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void exceptionIsCorrectlyThrown()
     {
         processor = new DummyProcessor(WantedState.EX);
@@ -93,7 +87,7 @@ public final class NotKeywordTest
         }
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void successfulSubSchemaLeadsToFailure()
         throws ProcessingException
     {
@@ -112,7 +106,7 @@ public final class NotKeywordTest
             BUNDLE.getMessage("err.draftv4.not.fail"));
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void failingSubSchemaLeadsToSuccess()
         throws ProcessingException
     {

@@ -1,14 +1,16 @@
 package xpertss.json.schema.cfg;
 
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.library.DraftV4Library;
 import xpertss.json.schema.library.Library;
 import xpertss.json.schema.messages.JsonSchemaConfigurationBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 public final class ValidationConfigurationTest
 {
@@ -17,7 +19,7 @@ public final class ValidationConfigurationTest
 
     private ValidationConfigurationBuilder cfg;
 
-    @BeforeMethod
+    @Before
     public void initConfiguration()
     {
         cfg = ValidationConfiguration.newBuilder();

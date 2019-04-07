@@ -1,16 +1,19 @@
 package xpertss.json.schema.core.util;
 
 import com.google.common.collect.ImmutableList;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public final class RegexECMA262HelperTest
-{
-    @DataProvider
+
+@RunWith(JUnitParamsRunner.class)
+public final class RegexECMA262HelperTest {
+
     public Iterator<Object[]> ecma262regexes()
     {
         return ImmutableList.of(
@@ -21,19 +24,13 @@ public final class RegexECMA262HelperTest
         ).iterator();
     }
 
-    @Test(
-        dataProvider = "ecma262regexes",
-        invocationCount = 10,
-        threadPoolSize = 4
-    )
-    public void regexesAreCorrectlyAnalyzed(final String regex,
-        final boolean valid)
+    @Test
+    @Parameters(method = "ecma262regexes")
+    public void regexesAreCorrectlyAnalyzed(String regex, boolean valid)
     {
-        assertEquals(RegexECMA262Helper.regexIsValid(regex), valid);
-        assertEquals(RhinoHelper.regexIsValid(regex), valid);
+        assertEquals(valid, RegexECMA262Helper.regexIsValid(regex));
     }
 
-    @DataProvider
     public Iterator<Object[]> regexTestCases()
     {
         return ImmutableList.of(
@@ -46,15 +43,10 @@ public final class RegexECMA262HelperTest
         ).iterator();
     }
 
-    @Test(
-        dataProvider = "regexTestCases",
-        invocationCount = 10,
-        threadPoolSize = 4
-    )
-    public void regexMatchingIsDoneCorrectly(final String regex,
-        final String input, final boolean valid)
+    @Test
+    @Parameters(method = "regexTestCases")
+    public void regexMatchingIsDoneCorrectly(String regex, String input, boolean valid)
     {
-        assertEquals(RegexECMA262Helper.regMatch(regex, input), valid);
-        assertEquals(RhinoHelper.regMatch(regex, input), valid);
+        assertEquals(valid, RegexECMA262Helper.regMatch(regex, input));
     }
 }

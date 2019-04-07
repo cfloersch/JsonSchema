@@ -10,6 +10,11 @@ import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.SampleNodeProvider;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.tree.key.SchemaKey;
@@ -24,25 +29,22 @@ import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static xpertss.json.schema.TestUtils.*;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-@Test
-public abstract class SyntaxCheckersTest
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
+@RunWith(JUnitParamsRunner.class)
+public abstract class SyntaxCheckersTest {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
 
     /*
      * The keyword
@@ -79,14 +81,12 @@ public abstract class SyntaxCheckersTest
      * @param keyword the keyword to test
      * @throws JsonProcessingException source JSON (if any) is not legal JSON
      */
-    protected SyntaxCheckersTest(final Dictionary<SyntaxChecker> dict,
-        final String prefix, final String keyword)
+    protected SyntaxCheckersTest(Dictionary<SyntaxChecker> dict, String prefix, String keyword)
         throws JsonProcessingException
     {
         this.keyword = keyword;
         checker = dict.entries().get(keyword);
-        invalidTypes = checker == null ? null
-            : EnumSet.complementOf(checker.getValidTypes());
+        invalidTypes = checker == null ? null : EnumSet.complementOf(checker.getValidTypes());
         /*
          * Try and load the data and affect pointers. Barf on invalid JSON.
          *
@@ -95,9 +95,8 @@ public abstract class SyntaxCheckersTest
          */
         JsonNode valueTestsNode, pointerTestsNode;
         try {
-            final String resource = "/syntax/" + prefix + '/' + keyword
-                + ".json";
-            final JsonNode data = JsonLoader.fromResource(resource);
+            String resource = "/syntax/" + prefix + '/' + keyword + ".json";
+            JsonNode data = JsonLoader.fromResource(resource);
             valueTestsNode = data.path("valueTests");
             pointerTestsNode = data.path("pointerTests");
         } catch (JsonProcessingException oops) {
@@ -111,52 +110,39 @@ public abstract class SyntaxCheckersTest
         pointerTests = pointerTestsNode;
     }
 
-    @BeforeMethod
+    @Before
     public final void init()
     {
+        assertNotNull("keyword " + keyword + " is not supported??", checker);
         pointers = Lists.newArrayList();
         report = mock(ProcessingReport.class);
     }
 
-    /*
-     * First test: check the keyword's presence in the dictionary. All other
-     * tests depend on this one.
-     */
-    @Test
-    public final void keywordIsSupportedInThisDictionary()
-    {
-        assertNotNull(checker, "keyword " + keyword + " is not supported??");
-    }
 
     /*
      * Second test: check that invalid values are reported as such. Test common
      * to all keywords.
      */
-    @DataProvider
-    public final Iterator<Object[]> invalidTypes()
+    public Iterator<Object[]> invalidTypes()
     {
         return SampleNodeProvider.getSamples(invalidTypes);
     }
 
-    @Test(
-        dependsOnMethods = "keywordIsSupportedInThisDictionary",
-        dataProvider = "invalidTypes"
-    )
+    @Test
+    @Parameters(method = "invalidTypes")
     public final void invalidTypesAreReportedAsErrors(final JsonNode node)
         throws ProcessingException
     {
-        final SchemaTree tree = treeFromValue(keyword, node);
-        final NodeType type = NodeType.getNodeType(node);
-        final ArgumentCaptor<ProcessingMessage> captor
-            = ArgumentCaptor.forClass(ProcessingMessage.class);
+        SchemaTree tree = treeFromValue(keyword, node);
+        NodeType type = NodeType.getNodeType(node);
+        ArgumentCaptor<ProcessingMessage> captor = ArgumentCaptor.forClass(ProcessingMessage.class);
 
         checker.checkSyntax(pointers, BUNDLE, report, tree);
 
         verify(report).error(captor.capture());
 
-        final ProcessingMessage msg = captor.getValue();
-        final String message = BUNDLE.printf("common.incorrectType", type,
-            EnumSet.complementOf(invalidTypes));
+        ProcessingMessage msg = captor.getValue();
+        String message = BUNDLE.printf("common.incorrectType", type, EnumSet.complementOf(invalidTypes));
         assertMessage(msg).isSyntaxError(keyword, message, tree)
             .hasField("expected", EnumSet.complementOf(invalidTypes))
             .hasField("found", type);
@@ -166,13 +152,12 @@ public abstract class SyntaxCheckersTest
      * Third test: value tests. If no value tests were found, don't bother:
      * BasicSyntaxCheckerTest has covered that for us.
      */
-    @DataProvider
-    protected final Iterator<Object[]> getValueTests()
+    protected Iterator<Object[]> getValueTests()
     {
         if (valueTests.isMissingNode())
             return Iterators.emptyIterator();
 
-        final List<Object[]> list = Lists.newArrayList();
+        List<Object[]> list = Lists.newArrayList();
 
         String msg;
         JsonNode msgNode;
@@ -191,16 +176,12 @@ public abstract class SyntaxCheckersTest
         return list.iterator();
     }
 
-    @Test(
-        dependsOnMethods = "keywordIsSupportedInThisDictionary",
-        dataProvider = "getValueTests"
-    )
-    public final void valueTestsSucceed(final JsonNode schema,
-        final String msg, final boolean success, final ObjectNode msgData)
+    @Test
+    @Parameters(method = "getValueTests")
+    public final void valueTestsSucceed(JsonNode schema, String msg, boolean success, ObjectNode msgData)
         throws ProcessingException
     {
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
 
         checker.checkSyntax(pointers, BUNDLE, report, tree);
 
@@ -209,14 +190,12 @@ public abstract class SyntaxCheckersTest
             return;
         }
 
-        final ArgumentCaptor<ProcessingMessage> captor
-            = ArgumentCaptor.forClass(ProcessingMessage.class);
+        ArgumentCaptor<ProcessingMessage> captor = ArgumentCaptor.forClass(ProcessingMessage.class);
         verify(report).error(captor.capture());
 
         final ProcessingMessage message = captor.getValue();
 
-        assertMessage(message).isSyntaxError(keyword, msg, tree)
-            .hasContents(msgData);
+        assertMessage(message).isSyntaxError(keyword, msg, tree).hasContents(msgData);
     }
 
     /*
@@ -224,8 +203,7 @@ public abstract class SyntaxCheckersTest
      *
      * Non relevant keywrods will not have set it
      */
-    @DataProvider
-    protected final Iterator<Object[]> getPointerTests()
+    protected Iterator<Object[]> getPointerTests()
     {
         if (pointerTests.isMissingNode())
             return Iterators.emptyIterator();
@@ -240,12 +218,9 @@ public abstract class SyntaxCheckersTest
         return list.iterator();
     }
 
-    @Test(
-        dependsOnMethods = "keywordIsSupportedInThisDictionary",
-        dataProvider = "getPointerTests"
-    )
-    public final void pointerDelegationWorksCorrectly(final JsonNode schema,
-        final ArrayNode expectedPointers)
+    @Test
+    @Parameters(method = "getPointerTests")
+    public final void pointerDelegationWorksCorrectly(JsonNode schema, ArrayNode expectedPointers)
         throws ProcessingException, JsonPointerException
     {
         final SchemaTree tree
@@ -257,25 +232,22 @@ public abstract class SyntaxCheckersTest
         for (final JsonNode node: expectedPointers)
             expected.add(new JsonPointer(node.textValue()));
 
-        assertEquals(pointers, expected);
+        assertEquals(expected, pointers);
     }
 
     /*
      * Utility methods
      */
-    private static SchemaTree treeFromValue(final String keyword,
-        final JsonNode node)
+    private static SchemaTree treeFromValue(String keyword, JsonNode node)
     {
         final ObjectNode schema = JacksonUtils.nodeFactory().objectNode();
         schema.put(keyword, node);
         return new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
     }
 
-    private static String buildMessage(final String key, final JsonNode params,
-        final JsonNode data)
+    private static String buildMessage(String key, JsonNode params, JsonNode data)
     {
-        final ProcessingMessage message = new ProcessingMessage()
-            .setMessage(BUNDLE.getMessage(key));
+        ProcessingMessage message = new ProcessingMessage().setMessage(BUNDLE.getMessage(key));
         if (params != null) {
             String name;
             JsonNode value;

@@ -1,11 +1,11 @@
 package xpertss.json.schema.core.exceptions;
 
+import org.junit.Test;
 import xpertss.json.schema.core.report.LogLevel;
 import xpertss.json.schema.core.report.ProcessingMessage;
-import org.testng.annotations.Test;
 
+import static org.junit.Assert.assertEquals;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
-import static org.testng.Assert.*;
 
 public final class ProcessingExceptionTest
 {

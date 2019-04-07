@@ -1,33 +1,29 @@
 package xpertss.json.schema.core.load.uri;
 
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public final class URITranslatorTest
-{
-    private static final URI SRCPATH
-        = URI.create("http://my.site/schemas/");
-    private static final URI DSTPATH
-        = URI.create("resource:/com/mycompany/schemas/");
-    private static final URI SRCPATH2
-        = URI.create("http://json-schema.org/");
-    private static final URI DSTPATH2
-        = URI.create("file:/usr/share/json-schema/schemas/");
-    private static final URI SRCSCHEMA1
-        = URI.create("http://my.site/schemas/schema1.json");
-    private static final URI DSTSCHEMA1
-        = URI.create("ftp://schemas.org/pub/fge/schema1.json");
-    private static final URI SRCSCHEMA2
-        = URI.create("http://json-schema.org/draft-03/schema");
-    private static final URI DSTSCHEMA2
-        = URI.create("resource:/draftv3/schema");
+
+@RunWith(JUnitParamsRunner.class)
+public final class URITranslatorTest {
+
+    private static final URI SRCPATH = URI.create("http://my.site/schemas/");
+    private static final URI DSTPATH= URI.create("resource:/com/mycompany/schemas/");
+    private static final URI SRCPATH2 = URI.create("http://json-schema.org/");
+    private static final URI DSTPATH2 = URI.create("file:/usr/share/json-schema/schemas/");
+    private static final URI SRCSCHEMA1 = URI.create("http://my.site/schemas/schema1.json");
+    private static final URI DSTSCHEMA1 = URI.create("ftp://schemas.org/pub/fge/schema1.json");
+    private static final URI SRCSCHEMA2 = URI.create("http://json-schema.org/draft-03/schema");
+    private static final URI DSTSCHEMA2 = URI.create("resource:/draftv3/schema");
 
     private URITranslatorConfiguration cfg;
     private URITranslator translator;
@@ -41,10 +37,9 @@ public final class URITranslatorTest
         cfg = URITranslatorConfiguration.byDefault();
         translator = new URITranslator(cfg);
 
-        assertEquals(translator.translate(source), expected);
+        assertEquals(expected, translator.translate(source));
     }
 
-    @DataProvider
     public Iterator<Object[]> pathRedirectionData()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -70,7 +65,8 @@ public final class URITranslatorTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "pathRedirectionData")
+    @Test
+    @Parameters(method = "pathRedirectionData")
     public void pathRedirectionsWork(final URI from, final URI to)
     {
         cfg = URITranslatorConfiguration.newBuilder()
@@ -78,10 +74,9 @@ public final class URITranslatorTest
             .addPathRedirect(SRCPATH2, DSTPATH2).freeze();
         translator = new URITranslator(cfg);
 
-        assertEquals(translator.translate(from), to);
+        assertEquals(to, translator.translate(from));
     }
 
-    @DataProvider
     public Iterator<Object[]> schemaRedirectionData()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -102,13 +97,14 @@ public final class URITranslatorTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "schemaRedirectionData")
+    @Test
+    @Parameters(method = "schemaRedirectionData")
     public void schemaRedirectionsWork(final URI from, final URI to)
     {
         cfg = URITranslatorConfiguration.newBuilder()
             .addSchemaRedirect(SRCSCHEMA1, DSTSCHEMA1)
             .addSchemaRedirect(SRCSCHEMA2, DSTSCHEMA2).freeze();
         translator = new URITranslator(cfg);
-        assertEquals(translator.translate(from), to);
+        assertEquals(to, translator.translate(from));
     }
 }

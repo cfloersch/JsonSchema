@@ -5,9 +5,8 @@ import com.github.fge.jackson.NodeType;
 
 import java.io.IOException;
 
-public final class MaxLengthDigesterTest
-    extends CommonDigesterTest
-{
+public final class MaxLengthDigesterTest extends CommonDigesterTest {
+    
     public MaxLengthDigesterTest()
         throws IOException
     {

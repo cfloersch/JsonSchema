@@ -1,5 +1,7 @@
 package xpertss.json.schema.core.processing;
 
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.MessageProvider;
@@ -7,13 +9,12 @@ import xpertss.json.schema.core.report.ProcessingReport;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.base.Function;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.TestUtils.*;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class ProcessorMapTest
 {
@@ -27,7 +28,7 @@ public final class ProcessorMapTest
     private In input;
     private ProcessingReport report;
 
-    @BeforeMethod
+    @Before
     @SuppressWarnings("unchecked")
     public void initProcessors()
     {
@@ -46,8 +47,7 @@ public final class ProcessorMapTest
             new ProcessorMap<Key, In, Out>(fn).addEntry(null, null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullKey"));
+            assertEquals(BUNDLE.getMessage("processing.nullKey"), e.getMessage());
         }
     }
 
@@ -58,8 +58,7 @@ public final class ProcessorMapTest
             new ProcessorMap<Key, In, Out>(fn).addEntry(Key.ONE, null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullProcessor"));
+            assertEquals(BUNDLE.getMessage("processing.nullProcessor"), e.getMessage());
         }
     }
 
@@ -71,8 +70,7 @@ public final class ProcessorMapTest
                 .setDefaultProcessor(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullProcessor"));
+            assertEquals(BUNDLE.getMessage("processing.nullProcessor"), e.getMessage());
         }
     }
 
@@ -83,8 +81,7 @@ public final class ProcessorMapTest
             new ProcessorMap<Key, In, Out>(null).getProcessor();
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullFunction"));
+            assertEquals(BUNDLE.getMessage("processing.nullFunction"), e.getMessage());
         }
     }
 

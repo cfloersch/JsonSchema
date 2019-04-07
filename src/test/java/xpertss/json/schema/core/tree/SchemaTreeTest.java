@@ -8,6 +8,11 @@ import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.SampleNodeProvider;
 import xpertss.json.schema.core.exceptions.JsonReferenceException;
 import xpertss.json.schema.core.exceptions.ProcessingException;
@@ -16,27 +21,27 @@ import xpertss.json.schema.core.tree.key.SchemaKey;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.testng.Assert.*;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 
-public final class SchemaTreeTest
-{
+
+@RunWith(JUnitParamsRunner.class)
+public final class SchemaTreeTest {
+
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     private final JsonNodeFactory factory = JacksonUtils.nodeFactory();
     private JsonNode data;
     private JsonNode schema;
 
-    @BeforeClass
-    public void init()
+    public SchemaTreeTest()
         throws IOException
     {
         data = JsonLoader.fromResource("/tree/context.json");
@@ -58,10 +63,9 @@ public final class SchemaTreeTest
 
         schemaTree = new CanonicalSchemaTree(SchemaKey.forJsonRef(ref), node);
         assertSame(schemaTree.getContext(), ref);
-        assertEquals(schemaTree.toString(), "CanonicalSchemaTree{key=loaded from JSON ref foo://bar#, pointer=, URI context=foo://bar#}");
+        assertEquals("CanonicalSchemaTree{key=loaded from JSON ref foo://bar#, pointer=, URI context=foo://bar#}", schemaTree.toString());
     }
 
-    @DataProvider
     public Iterator<Object[]> sampleIds()
     {
         return ImmutableSet.of(
@@ -71,9 +75,9 @@ public final class SchemaTreeTest
         ).iterator();
     }
 
-    @Test(dataProvider = "sampleIds")
-    public void topMostIdIsResolvedAgainstLoadingRef(final String loading,
-        final String id)
+    @Test
+    @Parameters(method = "sampleIds")
+    public void topMostIdIsResolvedAgainstLoadingRef(String loading, String id)
         throws ProcessingException
     {
         final JsonRef loadingRef = JsonRef.fromString(loading);
@@ -88,7 +92,6 @@ public final class SchemaTreeTest
         assertEquals(tree.getContext(), resolved);
     }
 
-    @DataProvider
     public Iterator<Object[]> getContexts()
     {
         final JsonNode node = data.get("lookups");
@@ -104,28 +107,26 @@ public final class SchemaTreeTest
         return set.iterator();
     }
 
-    @Test(dataProvider = "getContexts")
-    public void pointerAppendCorrectlyCalculatesContext(final String path,
-        final String s)
+    @Test
+    @Parameters(method = "getContexts")
+    public void pointerAppendCorrectlyCalculatesContext(String path, String s)
         throws JsonPointerException, JsonReferenceException
     {
         final JsonPointer ptr = new JsonPointer(path);
         final JsonRef scope = JsonRef.fromString(s);
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
 
         assertEquals(tree.append(ptr).getContext(), scope);
     }
 
-    @Test(dataProvider = "getContexts")
-    public void pointerSetCorrectlyCalculatesContext(final String path,
-        final String s)
+    @Test
+    @Parameters(method = "getContexts")
+    public void pointerSetCorrectlyCalculatesContext(String path, String s)
         throws JsonPointerException, JsonReferenceException
     {
         final JsonPointer ptr = new JsonPointer(path);
         final JsonRef scope = JsonRef.fromString(s);
-        SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), schema);
         final JsonRef origRef = tree.getContext();
 
         tree = tree.setPointer(ptr);
@@ -134,13 +135,13 @@ public final class SchemaTreeTest
         assertEquals(tree.getContext(), origRef);
     }
 
-    @DataProvider
     public Iterator<Object[]> nonSchemas()
     {
         return SampleNodeProvider.getSamplesExcept(NodeType.OBJECT);
     }
 
-    @Test(dataProvider = "nonSchemas")
+    @Test
+    @Parameters(method = "nonSchemas")
     public void nonSchemasYieldAnEmptyRef(final JsonNode node)
     {
         final SchemaTree tree
@@ -148,7 +149,6 @@ public final class SchemaTreeTest
         assertEquals(tree.getDollarSchema(), JsonRef.emptyRef());
     }
 
-    @DataProvider
     public Iterator<Object[]> nonStringDollarSchemas()
     {
         return SampleNodeProvider.getSamples(NodeType.STRING);
@@ -163,18 +163,17 @@ public final class SchemaTreeTest
         assertEquals(tree.getDollarSchema(), JsonRef.emptyRef());
     }
 
-    @Test(dataProvider = "nonStringDollarSchemas")
+    @Test
+    @Parameters(method = "nonStringDollarSchemas")
     public void nonTextualDollarSchemasYieldAnEmptyRef(final JsonNode node)
     {
         final ObjectNode testNode = FACTORY.objectNode();
         testNode.put("$schema", node);
 
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
         assertEquals(tree.getDollarSchema(), JsonRef.emptyRef());
     }
 
-    @DataProvider
     public Iterator<Object[]> nonLegalDollarSchemas()
     {
         return ImmutableList.of(
@@ -184,18 +183,17 @@ public final class SchemaTreeTest
         ).iterator();
     }
 
-    @Test(dataProvider = "nonLegalDollarSchemas")
+    @Test
+    @Parameters(method = "nonLegalDollarSchemas")
     public void nonAbsoluteDollarSchemasYieldAnEmptyRef(final String s)
     {
         final ObjectNode testNode = FACTORY.objectNode();
         testNode.put("$schema", FACTORY.textNode(s));
 
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
         assertEquals(tree.getDollarSchema(), JsonRef.emptyRef());
     }
 
-    @DataProvider
     public Iterator<Object[]> legalDollarSchemas()
     {
         return ImmutableList.of(
@@ -206,7 +204,8 @@ public final class SchemaTreeTest
         ).iterator();
     }
 
-    @Test(dataProvider = "legalDollarSchemas")
+    @Test
+    @Parameters(method = "legalDollarSchemas")
     public void legalDollarSchemasAreReturnedCorrectly(final String s)
         throws JsonReferenceException
     {
@@ -214,8 +213,7 @@ public final class SchemaTreeTest
         final ObjectNode testNode = FACTORY.objectNode();
         testNode.put("$schema", FACTORY.textNode(s));
 
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), testNode);
         assertEquals(tree.getDollarSchema(), ref);
     }
 
@@ -224,11 +222,9 @@ public final class SchemaTreeTest
         throws IOException
     {
         final JsonNode node = JsonLoader.fromResource("/draftv4/schema");
-        final SchemaTree tree
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
-        final SchemaTree tree2
-            = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
+        SchemaTree tree = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
+        SchemaTree tree2 = new CanonicalSchemaTree(SchemaKey.anonymousKey(), node);
 
-        assertNotEquals(tree, tree2);
+        assertFalse(tree.equals(tree2));
     }
 }

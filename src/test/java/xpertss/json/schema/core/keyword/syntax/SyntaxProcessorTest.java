@@ -7,6 +7,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.SampleNodeProvider;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.tree.key.SchemaKey;
@@ -23,25 +28,22 @@ import xpertss.json.schema.core.tree.SchemaTree;
 import xpertss.json.schema.core.util.ValueHolder;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static xpertss.json.schema.TestUtils.*;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
 
-public final class SyntaxProcessorTest
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
+@RunWith(JUnitParamsRunner.class)
+public final class SyntaxProcessorTest {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
     private static final String K1 = "k1";
     private static final String K2 = "k2";
@@ -51,17 +53,15 @@ public final class SyntaxProcessorTest
     private SyntaxProcessor processor;
     private SyntaxChecker checker;
 
-    @BeforeMethod
+    @Before
     public void initialize()
     {
         report = spy(new TestProcessingReport());
-        final DictionaryBuilder<SyntaxChecker> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<SyntaxChecker> builder = Dictionary.newBuilder();
 
         checker = mock(SyntaxChecker.class);
         builder.addEntry(K1, checker);
-        builder.addEntry(K2, new SyntaxChecker()
-        {
+        builder.addEntry(K2, new SyntaxChecker() {
             @Override
             public EnumSet<NodeType> getValidTypes()
             {
@@ -81,13 +81,13 @@ public final class SyntaxProcessorTest
         processor = new SyntaxProcessor(BUNDLE, builder.freeze());
     }
 
-    @DataProvider
     public Iterator<Object[]> notSchemas()
     {
         return SampleNodeProvider.getSamplesExcept(NodeType.OBJECT);
     }
 
-    @Test(dataProvider = "notSchemas")
+    @Test
+    @Parameters(method = "notSchemas")
     public void syntaxProcessorYellsOnNonSchemas(final JsonNode node)
         throws ProcessingException
     {
@@ -125,15 +125,7 @@ public final class SyntaxProcessorTest
         // They appear in alphabetical order in the report!
         ignored.add("bar");
         ignored.add("foo");
-        final Iterable<String> iterable = Iterables.transform(ignored,
-            new Function<JsonNode, String>()
-            {
-                @Override
-                public String apply(final JsonNode input)
-                {
-                    return input.textValue();
-                }
-            });
+        final Iterable<String> iterable = StreamSupport.stream(ignored.spliterator(), false).map(JsonNode::textValue).collect(Collectors.toList());
 
         final ArgumentCaptor<ProcessingMessage> captor
             = ArgumentCaptor.forClass(ProcessingMessage.class);
@@ -182,7 +174,7 @@ public final class SyntaxProcessorTest
         final ValueHolder<SchemaTree> holder = ValueHolder.hold("schema", tree);
 
         processor.process(report, holder);
-        verify(checker, never()).checkSyntax(anyCollectionOf(JsonPointer.class),
+        verify(checker, never()).checkSyntax(anyCollection(),
             any(MessageBundle.class), anyReport(), anySchema());
     }
 

@@ -5,9 +5,8 @@ import xpertss.json.schema.library.format.CommonFormatAttributesDictionary;
 
 import java.io.IOException;
 
-public abstract class CommonFormatAttributeTest
-    extends AbstractFormatAttributeTest
-{
+public abstract class CommonFormatAttributeTest extends AbstractFormatAttributeTest {
+
     protected CommonFormatAttributeTest(final String fmt)
         throws IOException
     {

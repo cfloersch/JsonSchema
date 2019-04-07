@@ -5,9 +5,8 @@ import com.github.fge.jackson.NodeType;
 
 import java.io.IOException;
 
-public final class MinimumDigesterTest
-    extends CommonDigesterTest
-{
+public final class MinimumDigesterTest extends CommonDigesterTest {
+    
     public MinimumDigesterTest()
         throws IOException
     {

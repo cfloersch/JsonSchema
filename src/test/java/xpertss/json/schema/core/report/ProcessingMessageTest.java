@@ -5,20 +5,21 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
-import xpertss.json.schema.core.exceptions.ExceptionProvider;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Lists;
-import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
-import static org.testng.Assert.*;
 
 public final class ProcessingMessageTest
 {
@@ -73,7 +74,7 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasField("foo", "bar");
     }
 
-    @Test(dependsOnMethods = "settingStringFieldWorks")
+    @Test
     public void settingNullStringSetsNullNode()
     {
         final ProcessingMessage msg = new ProcessingMessage()
@@ -92,7 +93,7 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasField("foo", node);
     }
 
-    @Test(dependsOnMethods = "settingAnyObjectSetsToString")
+    @Test
     public void settingNullObjectSetsNullNode()
     {
         final Object o = null;
@@ -110,7 +111,7 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasField("foo", foo);
     }
 
-    @Test(dependsOnMethods = "settingAnyJsonNodeWorks")
+    @Test
     public void nodesAreUnalteredWhenSubmitted()
     {
         final ObjectNode foo = FACTORY.objectNode();
@@ -123,7 +124,7 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasField("foo", node);
     }
 
-    @Test(dependsOnMethods = "settingAnyJsonNodeWorks")
+    @Test
     public void settingNullJsonNodeSetsNullNode()
     {
         final JsonNode node = null;
@@ -145,7 +146,7 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasField("foo", node);
     }
 
-    @Test(dependsOnMethods = "submittedCollectionAppliesToStringToElements")
+    @Test
     public void submittingNullCollectionSetsNullNode()
     {
         final Collection<Object> foo = null;
@@ -154,11 +155,10 @@ public final class ProcessingMessageTest
         assertMessage(msg).hasNullField("foo");
     }
 
-    @Test(dependsOnMethods = "submittedCollectionAppliesToStringToElements")
+    @Test
     public void nullElementInCollectionSetsNullNode()
     {
-        final List<Object> list = Lists.newArrayList(
-            new Object(), null, new Object());
+        final List<Object> list = Lists.newArrayList(new Object(), null, new Object());
         final ArrayNode node = FACTORY.arrayNode();
         node.add(list.get(0).toString());
         node.add(FACTORY.nullNode());
@@ -174,15 +174,7 @@ public final class ProcessingMessageTest
         throws ProcessingException
     {
         final ProcessingMessage testMessage = new ProcessingMessage();
-        testMessage.setExceptionProvider(new ExceptionProvider()
-        {
-            @Override
-            public ProcessingException doException(
-                final ProcessingMessage message)
-            {
-                return new Foo(message);
-            }
-        });
+        testMessage.setExceptionProvider(Foo::new);
 
         try {
             throw testMessage.asException();

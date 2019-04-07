@@ -9,6 +9,8 @@ import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.cfg.ValidationConfiguration;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.keyword.syntax.checkers.SyntaxChecker;
@@ -30,19 +32,17 @@ import xpertss.json.schema.messages.JsonSchemaValidationBundle;
 import xpertss.json.schema.processors.data.FullData;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.assertMessage;
 import static org.mockito.Mockito.mock;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 public final class ValidationProcessorTest
 {
@@ -64,7 +64,7 @@ public final class ValidationProcessorTest
 
     private Processor<FullData, FullData> processor;
 
-    @BeforeMethod
+    @Before
     public void init()
     {
         final Keyword keyword = Keyword.newBuilder(K1)
@@ -108,7 +108,7 @@ public final class ValidationProcessorTest
         assertEquals(COUNT.get(), 1);
     }
 
-    @Test(timeOut = 1000)
+    @Test(timeout = 1000)
     public void circularReferencingDuringValidationIsDetected()
         throws IOException, ProcessingException, JsonPointerException
     {

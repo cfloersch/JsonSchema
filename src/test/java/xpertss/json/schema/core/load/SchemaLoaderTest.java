@@ -1,6 +1,7 @@
 package xpertss.json.schema.core.load;
 
 import com.github.fge.jackson.JacksonUtils;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.load.configuration.LoadingConfiguration;
 import xpertss.json.schema.core.load.configuration.LoadingConfigurationBuilder;
@@ -12,16 +13,16 @@ import xpertss.json.schema.core.report.LogLevel;
 import xpertss.json.schema.core.tree.SchemaTree;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class SchemaLoaderTest
 {
@@ -80,8 +81,7 @@ public final class SchemaLoaderTest
 
         final SchemaTree tree = loader.get(URI.create(location));
 
-        assertEquals(tree.getLoadingRef().toURI(),
-                URI.create("http://toto/b#"));
+        assertEquals(URI.create("http://toto/b#"), tree.getLoadingRef().toURI());
     }
 
     @Test

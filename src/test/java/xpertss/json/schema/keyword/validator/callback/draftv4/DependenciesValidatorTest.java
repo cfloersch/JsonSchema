@@ -10,9 +10,8 @@ import xpertss.json.schema.core.report.ProcessingReport;
 import static xpertss.json.schema.TestUtils.*;
 import static org.mockito.Mockito.*;
 
-public final class DependenciesValidatorTest
-    extends DraftV4CallbackValidatorTest
-{
+public final class DependenciesValidatorTest extends DraftV4CallbackValidatorTest {
+    
     public DependenciesValidatorTest()
     {
         super("dependencies", JsonPointer.of("dependencies", "a"),

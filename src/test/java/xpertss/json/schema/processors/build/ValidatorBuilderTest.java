@@ -1,17 +1,17 @@
 package xpertss.json.schema.processors.build;
 
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.fail;
 
 import java.util.List;
 import java.util.Map;
 
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JacksonUtils;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.processing.Processor;
 import xpertss.json.schema.core.report.ProcessingReport;

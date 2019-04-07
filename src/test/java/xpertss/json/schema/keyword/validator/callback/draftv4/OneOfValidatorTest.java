@@ -13,9 +13,8 @@ import static xpertss.json.schema.TestUtils.*;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
 
-public final class OneOfValidatorTest
-    extends DraftV4CallbackValidatorTest
-{
+public final class OneOfValidatorTest extends DraftV4CallbackValidatorTest {
+
     public OneOfValidatorTest()
     {
         super("oneOf", JsonPointer.of("oneOf", 0), JsonPointer.of("oneOf", 1));
@@ -25,8 +24,7 @@ public final class OneOfValidatorTest
     protected void checkOkOk(final ProcessingReport report)
         throws ProcessingException
     {
-        final ArgumentCaptor<ProcessingMessage> captor
-            = ArgumentCaptor.forClass(ProcessingMessage.class);
+        ArgumentCaptor<ProcessingMessage> captor = ArgumentCaptor.forClass(ProcessingMessage.class);
 
         verify(report).error(captor.capture());
 
@@ -55,8 +53,7 @@ public final class OneOfValidatorTest
     protected void checkKoKo(final ProcessingReport report)
         throws ProcessingException
     {
-        final ArgumentCaptor<ProcessingMessage> captor
-            = ArgumentCaptor.forClass(ProcessingMessage.class);
+        ArgumentCaptor<ProcessingMessage> captor = ArgumentCaptor.forClass(ProcessingMessage.class);
 
         verify(report).error(captor.capture());
 

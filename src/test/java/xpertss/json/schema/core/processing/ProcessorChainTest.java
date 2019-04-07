@@ -1,5 +1,6 @@
 package xpertss.json.schema.core.processing;
 
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.AbstractProcessingReport;
@@ -9,11 +10,11 @@ import xpertss.json.schema.core.report.ProcessingMessage;
 import xpertss.json.schema.core.report.ProcessingReport;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class ProcessorChainTest
 {
@@ -27,8 +28,7 @@ public final class ProcessorChainTest
             ProcessorChain.startWith(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullProcessor"));
+            assertEquals(BUNDLE.getMessage("processing.nullProcessor"), e.getMessage());
         }
     }
 
@@ -42,8 +42,7 @@ public final class ProcessorChainTest
             ProcessorChain.startWith(p).chainWith(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullProcessor"));
+            assertEquals(BUNDLE.getMessage("processing.nullProcessor"), e.getMessage());
         }
     }
 

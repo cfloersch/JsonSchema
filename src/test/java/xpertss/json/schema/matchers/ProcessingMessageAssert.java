@@ -4,30 +4,31 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
+import org.fest.assertions.GenericAssert;
 import xpertss.json.schema.core.report.LogLevel;
 import xpertss.json.schema.core.report.ProcessingMessage;
 import xpertss.json.schema.core.tree.SchemaTree;
 import xpertss.json.schema.core.util.AsJson;
-import org.fest.assertions.GenericAssert;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static org.fest.assertions.Assertions.*;
-import static org.testng.Assert.*;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public final class ProcessingMessageAssert
     extends GenericAssert<ProcessingMessageAssert, ProcessingMessage>
 {
     private final JsonNode msg;
 
-    public static ProcessingMessageAssert assertMessage(
-        final ProcessingMessage message)
+    public static ProcessingMessageAssert assertMessage(ProcessingMessage message)
     {
         return new ProcessingMessageAssert(message);
     }
 
-    private ProcessingMessageAssert(final ProcessingMessage actual)
+    private ProcessingMessageAssert(ProcessingMessage actual)
     {
         super(ProcessingMessageAssert.class, actual);
         msg = actual.asJson();
@@ -118,7 +119,7 @@ public final class ProcessingMessageAssert
     public ProcessingMessageAssert hasMessage(final String expected)
     {
         final String message = msg.get("message").textValue();
-        assertThat(message).isEqualTo(expected);
+        assertEquals(expected, message);
         return this;
     }
 
@@ -173,7 +174,7 @@ public final class ProcessingMessageAssert
          * OK? Let's check contents with Map.equals().
          */
         expectedMap.keySet().retainAll(actualMap.keySet());
-        assertEquals(actualMap, expectedMap, "different map contents");
+        assertEquals("different map contents", actualMap, expectedMap);
         return this;
     }
 }

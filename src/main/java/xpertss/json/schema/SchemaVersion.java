@@ -20,11 +20,20 @@ import java.net.URI;
 public enum SchemaVersion
 {
     /**
-     * Draft v4 (default version)
+     * Draft v7 hyperschema
+     */
+    DRAFTV7_HYPERSCHEMA("http://json-schema.org/draft-07/hyper-schema#", "/draftv7/hyper-schema"),
+    /**
+     * Draft v7 (default version)
      */
     DRAFTV7("http://json-schema.org/draft-07/schema#", "/draftv7/schema"),
+
     /**
-     * Draft v4 (default version)
+     * Draft v6 hyperschema
+     */
+    DRAFTV6_HYPERSCHEMA("http://json-schema.org/draft-06/hyper-schema#", "/draftv6/hyper-schema"),
+    /**
+     * Draft v6 (default version)
      */
     DRAFTV6("http://json-schema.org/draft-06/schema#", "/draftv6/schema"),
 

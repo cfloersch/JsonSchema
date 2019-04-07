@@ -5,9 +5,8 @@ import com.github.fge.jackson.NodeType;
 
 import java.io.IOException;
 
-public final class EnumDigesterTest
-    extends CommonDigesterTest
-{
+public final class EnumDigesterTest extends CommonDigesterTest {
+    
     public EnumDigesterTest()
         throws IOException
     {

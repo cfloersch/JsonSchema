@@ -1,28 +1,29 @@
 package xpertss.json.schema.core.report;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-public final class AbstractProcessingReportTest
-{
+@RunWith(JUnitParamsRunner.class)
+public final class AbstractProcessingReportTest {
+
     /*
      * All levels except fatal
      */
-    private static final EnumSet<LogLevel> LEVELS
-        = EnumSet.complementOf(EnumSet.of(LogLevel.NONE));
+    private static final EnumSet<LogLevel> LEVELS = EnumSet.complementOf(EnumSet.of(LogLevel.NONE));
 
-    @DataProvider
     public Iterator<Object[]> getLogLevels()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -36,7 +37,8 @@ public final class AbstractProcessingReportTest
         return list.iterator();
     }
 
-    @Test(dataProvider = "getLogLevels")
+    @Test
+    @Parameters(method = "getLogLevels")
     public void logThresholdIsRespected(final LogLevel logLevel)
         throws ProcessingException
     {
@@ -74,11 +76,11 @@ public final class AbstractProcessingReportTest
         assertMessage(message).hasLevel(LogLevel.FATAL);
     }
 
-    @Test(dataProvider = "getLogLevels")
+    @Test
+    @Parameters(method = "getLogLevels")
     public void exceptionThresholdIsRespected(final LogLevel logLevel)
     {
-        final ProcessingReport report
-            = new LogThreshold(LogLevel.DEBUG, logLevel);
+        ProcessingReport report = new LogThreshold(LogLevel.DEBUG, logLevel);
         final ProcessingMessage message = new ProcessingMessage();
         final int expected = LogLevel.NONE.ordinal() - logLevel.ordinal();
         int actual = 0;
@@ -110,14 +112,12 @@ public final class AbstractProcessingReportTest
             actual++;
         }
 
-        assertEquals(actual, expected);
+        assertEquals(expected, actual);
     }
 
-    private static class LogThreshold
-        extends AbstractProcessingReport
-    {
-        private LogThreshold(final LogLevel logLevel,
-            final LogLevel exceptionThreshold)
+    private static class LogThreshold extends AbstractProcessingReport {
+
+        private LogThreshold(LogLevel logLevel, LogLevel exceptionThreshold)
         {
             super(logLevel, exceptionThreshold);
         }

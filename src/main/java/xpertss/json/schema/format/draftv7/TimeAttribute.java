@@ -42,7 +42,7 @@ public final class TimeAttribute
            .optionalStart()
            .appendFraction(NANO_OF_SECOND, 0, 12, true)
            .optionalEnd()
-           .appendOffsetId()
+           .appendOffset("+HH:MM", "Z")
            .toFormatter(Locale.getDefault(Locale.Category.FORMAT)).withResolverStyle(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
     }
 }

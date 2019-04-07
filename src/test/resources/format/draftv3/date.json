@@ -4,12 +4,46 @@
         "valid": true
     },
     {
+        "data": "2016-02-29",
+        "valid": true
+    },
+    {
+        "data": "2012-13-02",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "2012-13-02",
+            "expected": [ "yyyy-MM-dd" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "2012-12-32",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "2012-12-32",
+            "expected": [ "yyyy-MM-dd" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "2019-02-29",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "2019-02-29",
+            "expected": [ "yyyy-MM-dd" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
         "data": "12-12-02",
         "valid": false,
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "12-12-02",
-            "expected": "yyyy-MM-dd"
+            "expected": [ "yyyy-MM-dd" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -19,7 +53,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "20121202",
-            "expected": "yyyy-MM-dd"
+            "expected": [ "yyyy-MM-dd" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -29,7 +63,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "2012/12/02",
-            "expected": "yyyy-MM-dd"
+            "expected": [ "yyyy-MM-dd" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -39,7 +73,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "1922-02-30",
-            "expected": "yyyy-MM-dd"
+            "expected": [ "yyyy-MM-dd" ]
         },
         "msgParams": [ "value", "expected" ]
     }

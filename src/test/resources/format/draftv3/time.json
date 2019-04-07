@@ -4,12 +4,42 @@
         "valid": true
     },
     {
+        "data": "25:33:33",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "25:33:33",
+            "expected": ["HH:mm:ss" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "24:63:33",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "24:63:33",
+            "expected": ["HH:mm:ss" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "24:33:63",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "24:33:63",
+            "expected": ["HH:mm:ss" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
         "data": "2:33:33",
         "valid": false,
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "2:33:33",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -19,7 +49,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "8pm",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -29,7 +59,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "24:00:00",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -39,7 +69,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "12:60:00",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -49,7 +79,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "12:22:60",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     },
@@ -59,7 +89,7 @@
         "message": "err.format.invalidDate",
         "msgData": {
             "value": "20:00",
-            "expected": "HH:mm:ss"
+            "expected": ["HH:mm:ss" ]
         },
         "msgParams": [ "value", "expected" ]
     }

@@ -5,10 +5,11 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.testng.Assert.*;
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 
 public final class JsonTreeTest
 {
@@ -16,7 +17,7 @@ public final class JsonTreeTest
     private JsonNode testNode;
     private ObjectNode childObject;
 
-    @BeforeClass
+    @Before
     public void init()
     {
         childObject = factory.objectNode();
@@ -32,7 +33,7 @@ public final class JsonTreeTest
     {
         final JsonTree tree = new SimpleJsonTree(testNode);
         assertSame(tree.getNode(), testNode);
-        assertEquals(tree.getPointer(), JsonPointer.empty());
+        assertEquals(JsonPointer.empty(), tree.getPointer());
     }
 
     @Test
@@ -42,6 +43,6 @@ public final class JsonTreeTest
         final JsonPointer ptr = JsonPointer.of("object", "a");
         tree = tree.append(ptr);
         assertSame(tree.getNode(), childObject.get("a"));
-        assertEquals(tree.getPointer(), ptr);
+        assertEquals(ptr, tree.getPointer());
     }
 }

@@ -1,13 +1,16 @@
 package xpertss.json.schema.core.util;
 
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class DictionaryBuilderTest
 {
@@ -20,7 +23,7 @@ public final class DictionaryBuilderTest
 
     private DictionaryBuilder<Object> builder;
 
-    @BeforeMethod
+    @Before
     public void createBuilder()
     {
         builder = Dictionary.newBuilder();

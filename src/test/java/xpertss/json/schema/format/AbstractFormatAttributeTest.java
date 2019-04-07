@@ -5,6 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.JacksonUtils;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.NodeType;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.report.ProcessingMessage;
 import xpertss.json.schema.core.report.ProcessingReport;
@@ -20,25 +25,19 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Lists;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-@Test
-public abstract class AbstractFormatAttributeTest
-{
-    protected static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
-    protected static final SchemaTree SCHEMA_TREE = new CanonicalSchemaTree(
-        SchemaKey.anonymousKey(), JacksonUtils.nodeFactory().objectNode());
+@RunWith(JUnitParamsRunner.class)
+public abstract class AbstractFormatAttributeTest {
+
+    protected static final SchemaTree SCHEMA_TREE = new CanonicalSchemaTree(SchemaKey.anonymousKey(), JacksonUtils.nodeFactory().objectNode());
+    protected static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
 
     protected final FormatAttribute attribute;
     protected final String fmt;
@@ -47,19 +46,15 @@ public abstract class AbstractFormatAttributeTest
 
     private final JsonNode testNode;
 
-    protected AbstractFormatAttributeTest(
-        final Dictionary<FormatAttribute> dict, final String prefix,
-        final String fmt)
+    protected AbstractFormatAttributeTest(Dictionary<FormatAttribute> dict, String prefix, String fmt)
         throws IOException
     {
-        final String resourceName = String.format("/format/%s/%s.json",
-            prefix, fmt);
         this.fmt = fmt;
-        testNode = JsonLoader.fromResource(resourceName);
+        testNode = JsonLoader.fromResource(String.format("/format/%s/%s.json", prefix, fmt));
         attribute = dict.entries().get(fmt);
     }
 
-    @BeforeMethod
+    @Before
     public final void initReport()
     {
         report = mock(ProcessingReport.class);
@@ -68,11 +63,10 @@ public abstract class AbstractFormatAttributeTest
     @Test
     public final void formatAttributeIsSupported()
     {
-        assertNotNull(attribute, "no support for format attribute " + fmt);
+        assertNotNull("no support for format attribute " + fmt, attribute);
     }
 
-    @DataProvider
-    public final Iterator<Object[]> testData()
+    public final Object[] testData()
     {
         final List<Object[]> list = Lists.newArrayList();
 
@@ -89,15 +83,12 @@ public abstract class AbstractFormatAttributeTest
                 node.get("valid").booleanValue(), msg, msgData });
         }
 
-        return list.iterator();
+        return list.toArray();
     }
 
-    @Test(
-        dataProvider = "testData",
-        dependsOnMethods = "formatAttributeIsSupported"
-    )
-    public final void instanceIsCorrectlyAnalyzed(final JsonNode instance,
-        final boolean valid, final String msg, final ObjectNode msgData)
+    @Test
+    @Parameters(method = "testData")
+    public final void instanceIsCorrectlyAnalyzed(JsonNode instance, boolean valid, String msg, ObjectNode msgData)
         throws ProcessingException
     {
         final JsonTree tree = new SimpleJsonTree(instance);
@@ -110,22 +101,19 @@ public abstract class AbstractFormatAttributeTest
             return;
         }
 
-        final ArgumentCaptor<ProcessingMessage> captor
-            = ArgumentCaptor.forClass(ProcessingMessage.class);
+        ArgumentCaptor<ProcessingMessage> captor = ArgumentCaptor.forClass(ProcessingMessage.class);
 
         verify(report).error(captor.capture());
 
-        final ProcessingMessage message = captor.getValue();
+        ProcessingMessage message = captor.getValue();
 
         assertMessage(message).isFormatMessage(fmt, msg).hasContents(msgData)
             .hasField("value", instance);
     }
 
-    private static String buildMessage(final String key, final JsonNode params,
-        final JsonNode data)
+    private static String buildMessage(String key, JsonNode params, JsonNode data)
     {
-        final ProcessingMessage message = new ProcessingMessage()
-            .setMessage(BUNDLE.getMessage(key));
+        ProcessingMessage message = new ProcessingMessage().setMessage(BUNDLE.getMessage(key));
         if (params != null) {
             String name;
             JsonNode value;

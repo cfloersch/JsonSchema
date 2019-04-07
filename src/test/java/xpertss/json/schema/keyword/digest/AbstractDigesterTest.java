@@ -4,52 +4,52 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.JsonLoader;
 import com.github.fge.jackson.JsonNumEquals;
 import com.github.fge.jackson.NodeType;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import xpertss.json.schema.core.util.Dictionary;
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Lists;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-@Test
-public abstract class AbstractDigesterTest
-{
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+
+@RunWith(JUnitParamsRunner.class)
+public abstract class AbstractDigesterTest {
+
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     private final String keyword;
     private final Digester digester;
     private final EnumSet<NodeType> types;
     private final JsonNode data;
 
-    protected AbstractDigesterTest(final Dictionary<Digester> dict,
-        final String prefix, final String keyword, final NodeType first,
-        final NodeType... other)
+    protected AbstractDigesterTest(Dictionary<Digester> dict, String prefix, String keyword, NodeType first, NodeType... other)
         throws IOException
     {
         digester = dict.entries().get(keyword);
         types = EnumSet.of(first, other);
         this.keyword = keyword;
-        final String resourceName = String.format("/keyword/digest/%s/%s.json",
-            prefix, keyword);
+        String resourceName = String.format("/keyword/digest/%s/%s.json", prefix, keyword);
         data = JsonLoader.fromResource(resourceName);
     }
 
-    @Test
+    @Before
     public final void keywordExists()
     {
-        assertNotNull(digester, keyword + " is not supported??");
-        assertEquals(digester.supportedTypes(), types,
-            "keyword does not declare to support the appropriate type set");
+        assertNotNull(keyword + " is not supported??", digester);
+        assertEquals("keyword does not declare to support the appropriate type set", digester.supportedTypes(), types);
     }
 
-    @DataProvider
     public final Iterator<Object[]> getTestData()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -64,11 +64,10 @@ public abstract class AbstractDigesterTest
         return list.iterator();
     }
 
-    @Test(dependsOnMethods = "keywordExists", dataProvider = "getTestData")
-    public final void digestsAreCorrectlyComputed(final JsonNode digest,
-        final JsonNode source)
+    @Test
+    @Parameters(method = "getTestData")
+    public final void digestsAreCorrectlyComputed(JsonNode digest, JsonNode source)
     {
-        assertTrue(EQUIVALENCE.equivalent(digester.digest(source), digest),
-            "incorrect digest form");
+        assertTrue("incorrect digest form", EQUIVALENCE.equivalent(digester.digest(source), digest));
     }
 }

@@ -1,17 +1,17 @@
 package xpertss.json.schema.keyword.special;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.TestUtils.anyMessage;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.assertMessage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.fail;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -57,11 +57,10 @@ public final class ExtendsKeywordTest
             : factory.getKeywordValidator(FACTORY.nullNode());
     }
 
-    @BeforeMethod
+    @Before
     public void initEnvironment()
     {
-        if (validator == null)
-            return;
+        assertNotNull("no support for extends??", validator);
 
         final ObjectNode schema = FACTORY.objectNode();
         schema.put("extends", FACTORY.objectNode());
@@ -75,13 +74,8 @@ public final class ExtendsKeywordTest
         msg = new ProcessingMessage().setMessage(FOO);
     }
 
-    @Test
-    public void keywordExists()
-    {
-        assertNotNull(validator, "no support for extends??");
-    }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void exceptionIsCorrectlyThrown()
     {
         processor = new DummyProcessor(WantedState.EX, msg);
@@ -93,7 +87,7 @@ public final class ExtendsKeywordTest
         }
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void failingSubSchemaLeadsToFailure()
         throws ProcessingException
     {
@@ -111,7 +105,7 @@ public final class ExtendsKeywordTest
         assertMessage(message).hasMessage(FOO);
     }
 
-    @Test(dependsOnMethods = "keywordExists")
+    @Test
     public void successfulSubSchemaLeadsToSuccess()
         throws ProcessingException
     {
@@ -178,7 +172,7 @@ public final class ExtendsKeywordTest
             final FullData input)
             throws ProcessingException
         {
-            assertEquals(input.getSchema().getPointer(), PTR);
+            assertEquals(PTR, input.getSchema().getPointer());
             wanted.doIt(report, message);
             return input;
         }

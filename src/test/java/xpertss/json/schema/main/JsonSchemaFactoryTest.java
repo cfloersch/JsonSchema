@@ -1,12 +1,13 @@
 package xpertss.json.schema.main;
 
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.messages.JsonSchemaConfigurationBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public final class JsonSchemaFactoryTest
 {
@@ -15,7 +16,7 @@ public final class JsonSchemaFactoryTest
 
     private JsonSchemaFactoryBuilder builder;
 
-    @BeforeMethod
+    @Before
     public void initBuilder()
     {
         builder = JsonSchemaFactory.newBuilder();
@@ -28,7 +29,7 @@ public final class JsonSchemaFactoryTest
             builder.setLoadingConfiguration(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(), BUNDLE.getMessage("nullLoadingCfg"));
+            assertEquals(BUNDLE.getMessage("nullLoadingCfg"), e.getMessage());
         }
     }
 
@@ -39,8 +40,7 @@ public final class JsonSchemaFactoryTest
             builder.setValidationConfiguration(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("nullValidationCfg"));
+            assertEquals(BUNDLE.getMessage("nullValidationCfg"), e.getMessage());
         }
     }
 
@@ -51,8 +51,7 @@ public final class JsonSchemaFactoryTest
             builder.setReportProvider(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("nullReportProvider"));
+            assertEquals(BUNDLE.getMessage("nullReportProvider"), e.getMessage());
         }
     }
 }

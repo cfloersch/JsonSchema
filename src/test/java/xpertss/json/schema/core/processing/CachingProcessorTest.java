@@ -1,5 +1,7 @@
 package xpertss.json.schema.core.processing;
 
+import org.junit.Before;
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.MessageProvider;
@@ -7,12 +9,12 @@ import xpertss.json.schema.core.report.ProcessingReport;
 import xpertss.json.schema.core.util.equivalence.Equivalences;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
+import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.TestUtils.*;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
 public final class CachingProcessorTest
 {
@@ -23,7 +25,7 @@ public final class CachingProcessorTest
 
     private Processor<In, Out> processor;
 
-    @BeforeMethod
+    @Before
     @SuppressWarnings("unchecked")
     public void init()
     {
@@ -38,8 +40,7 @@ public final class CachingProcessorTest
             new CachingProcessor<In, Out>(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullProcessor"));
+            assertEquals(BUNDLE.getMessage("processing.nullProcessor"), e.getMessage());
         }
     }
 
@@ -50,8 +51,7 @@ public final class CachingProcessorTest
             new CachingProcessor<In, Out>(processor, null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.nullEquivalence"));
+            assertEquals(BUNDLE.getMessage("processing.nullEquivalence"), e.getMessage());
         }
     }
 
@@ -62,8 +62,7 @@ public final class CachingProcessorTest
             new CachingProcessor<In, Out>(processor, Equivalences.<In>identity(), -2);
             fail("No exception thrown!!");
         } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("processing.invalidCacheSize"));
+            assertEquals(BUNDLE.getMessage("processing.invalidCacheSize"), e.getMessage());
         }
     }
 
@@ -116,7 +115,7 @@ public final class CachingProcessorTest
             p.process(report, input);
             fail("No exception thrown!!");
         } catch (ProcessingException e) {
-            assertSame(e, exception);
+            assertSame(exception, e);
         }
     }
 

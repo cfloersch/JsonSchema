@@ -1,16 +1,17 @@
 package xpertss.json.schema.core.ref;
 
+import org.junit.Test;
 import xpertss.json.schema.core.exceptions.JsonReferenceException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.ProcessingMessage;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.*;
-import static org.testng.Assert.*;
 
 public final class JsonRefTest
 {
@@ -24,7 +25,7 @@ public final class JsonRefTest
             JsonRef.fromURI(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(), BUNDLE.getMessage("jsonRef.nullURI"));
+            assertEquals(BUNDLE.getMessage("jsonRef.nullURI"), e.getMessage());
         }
     }
 
@@ -36,8 +37,7 @@ public final class JsonRefTest
             JsonRef.fromString(null);
             fail("No exception thrown!!");
         } catch (NullPointerException e) {
-            assertEquals(e.getMessage(),
-                BUNDLE.getMessage("jsonRef.nullInput"));
+            assertEquals(BUNDLE.getMessage("jsonRef.nullInput"), e.getMessage());
         }
     }
 

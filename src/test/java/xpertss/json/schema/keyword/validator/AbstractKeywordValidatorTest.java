@@ -1,20 +1,23 @@
 package xpertss.json.schema.keyword.validator;
 
+import static org.junit.Assert.assertNotNull;
 import static xpertss.json.schema.TestUtils.anyMessage;
 import static xpertss.json.schema.matchers.ProcessingMessageAssert.assertMessage;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -36,35 +39,30 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Lists;
 
-@Test
-public abstract class AbstractKeywordValidatorTest
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
+@RunWith(JUnitParamsRunner.class)
+public abstract class AbstractKeywordValidatorTest {
+    
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
 
     private final String keyword;
     private final KeywordValidatorFactory factory;
     private final JsonNode testNode;
 
-    protected AbstractKeywordValidatorTest(
-        final Dictionary<KeywordValidatorFactory> dict,
-        final String prefix, final String keyword)
+    protected AbstractKeywordValidatorTest(Dictionary<KeywordValidatorFactory> dict, String prefix, String keyword)
         throws IOException
     {
         this.keyword = keyword;
         factory = dict.entries().get(keyword);
-        final String resourceName
-            = String.format("/keyword/validators/%s/%s.json", prefix, keyword);
+        String resourceName = String.format("/keyword/validators/%s/%s.json", prefix, keyword);
         testNode = JsonLoader.fromResource(resourceName);
     }
 
-    @Test
+    @Before
     public final void keywordExists()
     {
-        assertNotNull(factory, "no support for " + keyword + "??");
+        assertNotNull("no support for " + keyword + "??", factory);
     }
 
-    @DataProvider
     protected final Iterator<Object[]> getValueTests()
     {
         final List<Object[]> list = Lists.newArrayList();
@@ -86,10 +84,9 @@ public abstract class AbstractKeywordValidatorTest
     }
 
     // Unfortunately, the suppress warning annotation is needed
-    @Test(dataProvider = "getValueTests", dependsOnMethods = "keywordExists")
-    public final void instancesAreValidatedCorrectly(final JsonNode digest,
-        final JsonNode node, final String msg, final boolean valid,
-        final ObjectNode msgData)
+    @Test
+    @Parameters(method = "getValueTests")
+    public final void instancesAreValidatedCorrectly(JsonNode digest, JsonNode node, String msg, boolean valid, ObjectNode msgData)
         throws IllegalAccessException, InvocationTargetException,
         InstantiationException, ProcessingException
     {
@@ -122,11 +119,9 @@ public abstract class AbstractKeywordValidatorTest
             .hasContents(msgData);
     }
 
-    private static String buildMessage(final String key, final JsonNode params,
-        final JsonNode data)
+    private static String buildMessage(String key, JsonNode params, JsonNode data)
     {
-        final ProcessingMessage message = new ProcessingMessage()
-            .setMessage(BUNDLE.getMessage(key));
+        ProcessingMessage message = new ProcessingMessage().setMessage(BUNDLE.getMessage(key));
         if (params != null) {
             String name;
             JsonNode value;

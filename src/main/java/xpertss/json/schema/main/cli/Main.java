@@ -24,8 +24,8 @@ import java.util.List;
 
 import static xpertss.json.schema.main.cli.RetCode.*;
 
-public final class Main
-{
+public final class Main {
+
     private static final HelpFormatter HELP = new CustomHelpFormatter();
 
     private static final ObjectMapper MAPPER = JacksonUtils.newMapper();
@@ -33,7 +33,7 @@ public final class Main
     private final JsonSchemaFactory factory;
     private final SyntaxValidator syntaxValidator;
 
-    public static void main(final String... args)
+    public static void main(String... args)
         throws IOException, ProcessingException
     {
         final OptionParser parser = new OptionParser();
@@ -124,17 +124,14 @@ public final class Main
         syntaxValidator = factory.getSyntaxValidator();
     }
 
-    private void proceed(final Reporter reporter, final List<File> files,
-        final boolean isSyntax)
+    private void proceed(Reporter reporter, List<File> files, boolean isSyntax)
         throws IOException, ProcessingException
     {
-
-        final RetCode retCode = isSyntax ? doSyntax(reporter, files)
-            : doValidation(reporter, files);
+        RetCode retCode = isSyntax ? doSyntax(reporter, files) : doValidation(reporter, files);
         System.exit(retCode.get());
     }
 
-    private RetCode doSyntax(final Reporter reporter, final List<File> files)
+    private RetCode doSyntax(Reporter reporter, List<File> files)
         throws IOException
     {
         RetCode retcode, ret = ALL_OK;
@@ -152,12 +149,11 @@ public final class Main
         return ret;
     }
 
-    private RetCode doValidation(final Reporter reporter,
-        final List<File> files)
+    private RetCode doValidation(Reporter reporter, List<File> files)
         throws IOException, ProcessingException
     {
-        final File schemaFile = files.remove(0);
-        final String uri = schemaFile.toURI().normalize().toString();
+        File schemaFile = files.remove(0);
+        String uri = schemaFile.toURI().normalize().toString();
         JsonNode node;
 
         node = MAPPER.readTree(schemaFile);
@@ -166,7 +162,7 @@ public final class Main
             return SCHEMA_SYNTAX_ERROR;
         }
 
-        final JsonSchema schema = factory.getJsonSchema(uri);
+        JsonSchema schema = factory.getJsonSchema(uri);
 
         RetCode ret = ALL_OK, retcode;
 
@@ -183,8 +179,7 @@ public final class Main
     private static String getCwd()
         throws IOException
     {
-        final File cwd = new File(System.getProperty("user.dir", "."))
-            .getCanonicalFile();
+        File cwd = new File(System.getProperty("user.dir", ".")).getCanonicalFile();
         return URIUtils.normalizeURI(cwd.toURI()).toString();
     }
 }

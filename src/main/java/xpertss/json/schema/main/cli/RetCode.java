@@ -1,7 +1,7 @@
 package xpertss.json.schema.main.cli;
 
-enum RetCode
-{
+enum RetCode {
+    
     ALL_OK(0),
     CMD_ERROR(2),
     VALIDATION_FAILURE(100),

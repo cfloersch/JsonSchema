@@ -48,23 +48,12 @@ import java.util.Map;
  * @see JsonSchemaFactoryBuilder
  */
 @Immutable
-public final class JsonSchemaFactory
-    implements Frozen<JsonSchemaFactoryBuilder>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
-    private static final MessageBundle CORE_BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class JsonSchemaFactory implements Frozen<JsonSchemaFactoryBuilder> {
 
-    private static final Function<SchemaContext, JsonRef> FUNCTION
-        = new Function<SchemaContext, JsonRef>()
-    {
-        @Override
-        public JsonRef apply(final SchemaContext input)
-        {
-            return input.getSchema().getDollarSchema();
-        }
-    };
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+    private static final MessageBundle CORE_BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+
+    private static final Function<SchemaContext, JsonRef> FUNCTION = input -> input.getSchema().getDollarSchema();
 
     /*
      * Elements provided by the builder
@@ -110,17 +99,15 @@ public final class JsonSchemaFactory
      * @param builder the builder
      * @see JsonSchemaFactoryBuilder#freeze()
      */
-    JsonSchemaFactory(final JsonSchemaFactoryBuilder builder)
+    JsonSchemaFactory(JsonSchemaFactoryBuilder builder)
     {
         reportProvider = builder.reportProvider;
         loadingCfg = builder.loadingCfg;
         validationCfg = builder.validationCfg;
 
         loader = new SchemaLoader(loadingCfg);
-        final Processor<SchemaContext, ValidatorList> processor
-            = buildProcessor();
-        validator = new JsonValidator(loader,
-            new ValidationProcessor(validationCfg, processor), reportProvider);
+        Processor<SchemaContext, ValidatorList> processor = buildProcessor();
+        validator = new JsonValidator(loader, new ValidationProcessor(validationCfg, processor), reportProvider);
         syntaxValidator = new SyntaxValidator(validationCfg);
     }
 
@@ -155,7 +142,7 @@ public final class JsonSchemaFactory
      * @throws ProcessingException schema is a {@link MissingNode}
      * @throws NullPointerException schema is null
      */
-    public JsonSchema getJsonSchema(final JsonNode schema)
+    public JsonSchema getJsonSchema(JsonNode schema)
         throws ProcessingException
     {
         BUNDLE.checkNotNull(schema, "nullSchema");
@@ -175,14 +162,13 @@ public final class JsonSchemaFactory
      * resolving the pointer against the schema leads to a {@link MissingNode}
      * @throws NullPointerException schema is null, or pointer is null
      */
-    public JsonSchema getJsonSchema(final JsonNode schema, final String ptr)
+    public JsonSchema getJsonSchema(JsonNode schema, String ptr)
         throws ProcessingException
     {
         BUNDLE.checkNotNull(schema, "nullSchema");
         CORE_BUNDLE.checkNotNull(ptr, "nullPointer");
-        final JsonPointer pointer;
         try {
-            pointer = new JsonPointer(ptr);
+            JsonPointer pointer = new JsonPointer(ptr);
             return validator.buildJsonSchema(schema, pointer);
         } catch (JsonPointerException ignored) {
             // Cannot happen
@@ -198,7 +184,7 @@ public final class JsonSchemaFactory
      * @throws ProcessingException failed to load from this URI
      * @throws NullPointerException URI is null
      */
-    public JsonSchema getJsonSchema(final String uri)
+    public JsonSchema getJsonSchema(String uri)
         throws ProcessingException
     {
         CORE_BUNDLE.checkNotNull(uri, "nullURI");
@@ -233,14 +219,12 @@ public final class JsonSchemaFactory
 
     private Processor<SchemaContext, ValidatorList> buildProcessor()
     {
-        final RefResolver resolver = new RefResolver(loader);
+        RefResolver resolver = new RefResolver(loader);
 
-        final Map<JsonRef, Library> libraries = validationCfg.getLibraries();
-        final Library defaultLibrary = validationCfg.getDefaultLibrary();
-        final ValidationChain defaultChain
-            = new ValidationChain(resolver, defaultLibrary, validationCfg);
-        final ProcessorMap<JsonRef, SchemaContext, ValidatorList> map
-            = new ProcessorMap<JsonRef, SchemaContext, ValidatorList>(FUNCTION);
+        Map<JsonRef, Library> libraries = validationCfg.getLibraries();
+        Library defaultLibrary = validationCfg.getDefaultLibrary();
+        ValidationChain defaultChain = new ValidationChain(resolver, defaultLibrary, validationCfg);
+        ProcessorMap<JsonRef, SchemaContext, ValidatorList> map = new ProcessorMap<JsonRef, SchemaContext, ValidatorList>(FUNCTION);
         map.setDefaultProcessor(defaultChain);
 
         JsonRef ref;
@@ -253,9 +237,7 @@ public final class JsonSchemaFactory
             map.addEntry(ref, chain);
         }
 
-        final Processor<SchemaContext, ValidatorList> processor
-            = map.getProcessor();
-        return new CachingProcessor<SchemaContext, ValidatorList>(processor,
-            SchemaContextEquivalence.getInstance(), validationCfg.getCacheSize());
+        Processor<SchemaContext, ValidatorList> processor = map.getProcessor();
+        return new CachingProcessor<>(processor, SchemaContextEquivalence.getInstance(), validationCfg.getCacheSize());
     }
 }

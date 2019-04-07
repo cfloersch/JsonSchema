@@ -35,10 +35,9 @@ import javax.annotation.concurrent.Immutable;
  * @see JsonSchemaFactory#getValidator()
  */
 @Immutable
-public final class JsonValidator
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class JsonValidator {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final SchemaLoader loader;
     private final ValidationProcessor processor;
@@ -51,9 +50,7 @@ public final class JsonValidator
      * @param processor the validation processor
      * @param reportProvider the report provider
      */
-    JsonValidator(final SchemaLoader loader,
-        final ValidationProcessor processor,
-        final ReportProvider reportProvider)
+    JsonValidator(SchemaLoader loader, ValidationProcessor processor, ReportProvider reportProvider)
     {
         this.loader = loader;
         this.processor = processor;
@@ -76,12 +73,11 @@ public final class JsonValidator
      *
      * @since 2.1.8
      */
-    public ProcessingReport validate(final JsonNode schema,
-        final JsonNode instance, final boolean deepCheck)
+    public ProcessingReport validate(JsonNode schema, JsonNode instance, boolean deepCheck)
         throws ProcessingException
     {
-        final ProcessingReport report = reportProvider.newReport();
-        final FullData data = buildData(schema, instance, deepCheck);
+        ProcessingReport report = reportProvider.newReport();
+        FullData data = buildData(schema, instance, deepCheck);
         return ProcessingResult.of(processor, report, data).getReport();
     }
 
@@ -98,8 +94,7 @@ public final class JsonValidator
      * @throws ProcessingException an exception occurred during validation
      * @throws NullPointerException the schema or instance is null
      */
-    public ProcessingReport validate(final JsonNode schema,
-        final JsonNode instance)
+    public ProcessingReport validate(JsonNode schema, JsonNode instance)
         throws ProcessingException
     {
         return validate(schema, instance, false);
@@ -123,13 +118,11 @@ public final class JsonValidator
      *
      * @since 2.1.8
      */
-    public ProcessingReport validateUnchecked(final JsonNode schema,
-        final JsonNode instance, final boolean deepCheck)
+    public ProcessingReport validateUnchecked(JsonNode schema, JsonNode instance, boolean deepCheck)
     {
-        final ProcessingReport report = reportProvider.newReport();
-        final FullData data = buildData(schema, instance, deepCheck);
-        return ProcessingResult.uncheckedResult(processor, report, data)
-            .getReport();
+        ProcessingReport report = reportProvider.newReport();
+        FullData data = buildData(schema, instance, deepCheck);
+        return ProcessingResult.uncheckedResult(processor, report, data).getReport();
     }
 
     /**
@@ -146,8 +139,7 @@ public final class JsonValidator
      * @return a validation report
      * @throws NullPointerException the schema or instance is null
      */
-    public ProcessingReport validateUnchecked(final JsonNode schema,
-        final JsonNode instance)
+    public ProcessingReport validateUnchecked(JsonNode schema, JsonNode instance)
     {
         return validateUnchecked(schema, instance, false);
     }
@@ -162,10 +154,10 @@ public final class JsonValidator
      * leads to a {@link MissingNode}
      * @throws NullPointerException the schema or pointer is null
      */
-    JsonSchema buildJsonSchema(final JsonNode schema, final JsonPointer pointer)
+    JsonSchema buildJsonSchema(JsonNode schema, JsonPointer pointer)
         throws ProcessingException
     {
-        final SchemaTree tree = loader.load(schema).setPointer(pointer);
+        SchemaTree tree = loader.load(schema).setPointer(pointer);
         if (tree.getNode().isMissingNode())
             throw new JsonReferenceException(new ProcessingMessage()
                 .setMessage(BUNDLE.getMessage("danglingRef")));
@@ -181,15 +173,14 @@ public final class JsonValidator
      * JSON Schema
      * @throws NullPointerException URI is null
      */
-    JsonSchema buildJsonSchema(final String uri)
+    JsonSchema buildJsonSchema(String uri)
         throws ProcessingException
     {
-        final JsonRef ref = JsonRef.fromString(uri);
+        JsonRef ref = JsonRef.fromString(uri);
         if (!ref.isLegal())
             throw new JsonReferenceException(new ProcessingMessage()
                 .setMessage(BUNDLE.getMessage("illegalJsonRef")));
-        final SchemaTree tree
-            = loader.get(ref.getLocator()).setPointer(ref.getPointer());
+        SchemaTree tree = loader.get(ref.getLocator()).setPointer(ref.getPointer());
         if (tree.getNode().isMissingNode())
             throw new JsonReferenceException(new ProcessingMessage()
                 .setMessage(BUNDLE.getMessage("danglingRef")));
@@ -206,13 +197,13 @@ public final class JsonValidator
         return processor;
     }
 
-    private FullData buildData(final JsonNode schema, final JsonNode instance,
+    private FullData buildData(JsonNode schema, JsonNode instance,
         final boolean deepCheck)
     {
         BUNDLE.checkNotNull(schema, "nullSchema");
         BUNDLE.checkNotNull(instance, "nullInstance");
-        final SchemaTree schemaTree = loader.load(schema);
-        final JsonTree tree = new SimpleJsonTree(instance);
+        SchemaTree schemaTree = loader.load(schema);
+        JsonTree tree = new SimpleJsonTree(instance);
         return new FullData(schemaTree, tree, deepCheck);
     }
 }

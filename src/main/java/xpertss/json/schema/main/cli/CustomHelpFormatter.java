@@ -12,9 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-final class CustomHelpFormatter
-    implements HelpFormatter
-{
+final class CustomHelpFormatter implements HelpFormatter {
+
     private static final List<String> HELP_PREAMBLE = ImmutableList.of(
         "Syntax:",
         "    java -jar jsonschema.jar [options] schema file [file...]",
@@ -40,8 +39,7 @@ final class CustomHelpFormatter
         .add("that the current directory is that prefix using --fakeroot.")
         .build();
 
-    private static final String LINE_SEPARATOR
-        = System.getProperty("line.separator", "\n");
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 
     private static final Joiner JOINER = Joiner.on(LINE_SEPARATOR);
     static final Joiner OPTIONS_JOINER = Joiner.on(", ");
@@ -49,10 +47,9 @@ final class CustomHelpFormatter
     private final List<String> lines = Lists.newArrayList();
 
     @Override
-    public String format(final Map<String, ? extends OptionDescriptor> options)
+    public String format(Map<String, ? extends OptionDescriptor> options)
     {
-        final Set<OptionDescriptor> opts = new LinkedHashSet<OptionDescriptor>(
-            options.values());
+        Set<OptionDescriptor> opts = new LinkedHashSet<OptionDescriptor>(options.values());
 
         lines.addAll(HELP_PREAMBLE);
 
@@ -79,9 +76,9 @@ final class CustomHelpFormatter
         return JOINER.join(lines) + LINE_SEPARATOR;
     }
 
-    private static String optionsToString(final Collection<String> names)
+    private static String optionsToString(Collection<String> names)
     {
-        final List<String> list = Lists.newArrayList();
+        List<String> list = Lists.newArrayList();
         for (final String name : names)
             list.add((name.length() == 1 ? "-" : "--") + name);
         return OPTIONS_JOINER.join(list);

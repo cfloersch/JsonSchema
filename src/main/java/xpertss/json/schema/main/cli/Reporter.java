@@ -9,10 +9,8 @@ import java.io.IOException;
 
 interface Reporter
 {
-    RetCode validateSchema(final SyntaxValidator validator,
-        final String fileName, final JsonNode node)
+    RetCode validateSchema(SyntaxValidator validator, String fileName, JsonNode node)
         throws IOException;
-    RetCode validateInstance(final JsonSchema schema,
-        final String fileName, final JsonNode node)
+    RetCode validateInstance(JsonSchema schema, String fileName, JsonNode node)
         throws IOException, ProcessingException;
 }

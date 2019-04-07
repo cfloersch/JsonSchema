@@ -68,8 +68,7 @@ public interface JsonSchema {
      *
      * @since 2.1.8
      */
-    ProcessingReport validateUnchecked(JsonNode instance,
-                                              boolean deepCheck);
+    ProcessingReport validateUnchecked(JsonNode instance, boolean deepCheck);
     /**
      * Validate an instance and return a processing report (unchecked version)
      *

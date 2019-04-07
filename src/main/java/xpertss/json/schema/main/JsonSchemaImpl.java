@@ -3,9 +3,6 @@ package xpertss.json.schema.main;
 import com.fasterxml.jackson.databind.JsonNode;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.processing.ProcessingResult;
-import xpertss.json.schema.core.processing.Processor;
-import xpertss.json.schema.core.report.ListProcessingReport;
-import xpertss.json.schema.core.report.MessageProvider;
 import xpertss.json.schema.core.report.ProcessingReport;
 import xpertss.json.schema.core.report.ReportProvider;
 import xpertss.json.schema.core.tree.SchemaTree;
@@ -26,8 +23,8 @@ import javax.annotation.concurrent.Immutable;
  * {@link JsonSchemaFactory} to obtain an instance of this class.</p>
  */
 @Immutable
-final class JsonSchemaImpl implements JsonSchema
-{
+final class JsonSchemaImpl implements JsonSchema {
+
     private final ValidationProcessor processor;
     private final SchemaTree schema;
     private final ReportProvider reportProvider;
@@ -39,34 +36,27 @@ final class JsonSchemaImpl implements JsonSchema
      * @param schema the schema to bind to this instance
      * @param reportProvider the report provider
      */
-    JsonSchemaImpl(final ValidationProcessor processor, final SchemaTree schema,
-                   final ReportProvider reportProvider)
+    JsonSchemaImpl(ValidationProcessor processor, SchemaTree schema, ReportProvider reportProvider)
     {
         this.processor = processor;
         this.schema = schema;
         this.reportProvider = reportProvider;
     }
 
-    private ProcessingReport doValidate(final JsonNode node,
-        final boolean deepCheck)
+    private ProcessingReport doValidate(JsonNode node, boolean deepCheck)
         throws ProcessingException
     {
-        final FullData data = new FullData(schema, new SimpleJsonTree(node),
-            deepCheck);
-        final ProcessingReport report = reportProvider.newReport();
-        final ProcessingResult<FullData> result
-            =  ProcessingResult.of(processor, report, data);
+        FullData data = new FullData(schema, new SimpleJsonTree(node), deepCheck);
+        ProcessingReport report = reportProvider.newReport();
+        ProcessingResult<FullData> result =  ProcessingResult.of(processor, report, data);
         return result.getReport();
     }
 
-    private ProcessingReport doValidateUnchecked(final JsonNode node,
-        final boolean deepCheck)
+    private ProcessingReport doValidateUnchecked(JsonNode node, boolean deepCheck)
     {
-        final FullData data = new FullData(schema, new SimpleJsonTree(node),
-            deepCheck);
-        final ProcessingReport report = reportProvider.newReport();
-        final ProcessingResult<FullData> result
-            =  ProcessingResult.uncheckedResult(processor, report, data);
+        FullData data = new FullData(schema, new SimpleJsonTree(node), deepCheck);
+        ProcessingReport report = reportProvider.newReport();
+        ProcessingResult<FullData> result =  ProcessingResult.uncheckedResult(processor, report, data);
         return result.getReport();
     }
 
@@ -74,8 +64,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public ProcessingReport validate(final JsonNode instance,
-        final boolean deepCheck)
+    public ProcessingReport validate(JsonNode instance, boolean deepCheck)
         throws ProcessingException
     {
         return doValidate(instance, deepCheck);
@@ -85,7 +74,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public ProcessingReport validate(final JsonNode instance)
+    public ProcessingReport validate(JsonNode instance)
         throws ProcessingException
     {
         return validate(instance, false);
@@ -95,8 +84,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public ProcessingReport validateUnchecked(final JsonNode instance,
-        final boolean deepCheck)
+    public ProcessingReport validateUnchecked(JsonNode instance, boolean deepCheck)
     {
         return doValidateUnchecked(instance, deepCheck);
     }
@@ -105,7 +93,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public ProcessingReport validateUnchecked(final JsonNode instance)
+    public ProcessingReport validateUnchecked(JsonNode instance)
     {
         return doValidateUnchecked(instance, false);
     }
@@ -114,7 +102,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public boolean validInstance(final JsonNode instance)
+    public boolean validInstance(JsonNode instance)
         throws ProcessingException
     {
         return doValidate(instance, false).isSuccess();
@@ -124,7 +112,7 @@ final class JsonSchemaImpl implements JsonSchema
      * {@inheritDoc}
      */
     @Override
-    public boolean validInstanceUnchecked(final JsonNode instance)
+    public boolean validInstanceUnchecked(JsonNode instance)
     {
         return doValidateUnchecked(instance, false).isSuccess();
     }

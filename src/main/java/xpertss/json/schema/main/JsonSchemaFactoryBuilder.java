@@ -27,11 +27,9 @@ import javax.annotation.concurrent.NotThreadSafe;
  * @see ReportProvider
  */
 @NotThreadSafe
-public final class JsonSchemaFactoryBuilder
-    implements Thawed<JsonSchemaFactory>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+public final class JsonSchemaFactoryBuilder implements Thawed<JsonSchemaFactory> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
 
     ReportProvider reportProvider;
     LoadingConfiguration loadingCfg;
@@ -69,8 +67,7 @@ public final class JsonSchemaFactoryBuilder
      * @return this
      * @throws NullPointerException provider is null
      */
-    public JsonSchemaFactoryBuilder setReportProvider(
-        final ReportProvider reportProvider)
+    public JsonSchemaFactoryBuilder setReportProvider(ReportProvider reportProvider)
     {
         BUNDLE.checkNotNull(reportProvider, "nullReportProvider");
         this.reportProvider = reportProvider;
@@ -84,8 +81,7 @@ public final class JsonSchemaFactoryBuilder
      * @return this
      * @throws NullPointerException configuration is null
      */
-    public JsonSchemaFactoryBuilder setLoadingConfiguration(
-        final LoadingConfiguration loadingCfg)
+    public JsonSchemaFactoryBuilder setLoadingConfiguration(LoadingConfiguration loadingCfg)
     {
         BUNDLE.checkNotNull(loadingCfg, "nullLoadingCfg");
         this.loadingCfg = loadingCfg;
@@ -99,8 +95,7 @@ public final class JsonSchemaFactoryBuilder
      * @return this
      * @throws NullPointerException configuration is null
      */
-    public JsonSchemaFactoryBuilder setValidationConfiguration(
-        final ValidationConfiguration validationCfg)
+    public JsonSchemaFactoryBuilder setValidationConfiguration(ValidationConfiguration validationCfg)
     {
         BUNDLE.checkNotNull(validationCfg, "nullValidationCfg");
         this.validationCfg = validationCfg;

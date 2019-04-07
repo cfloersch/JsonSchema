@@ -11,22 +11,18 @@ import java.io.IOException;
 
 import static xpertss.json.schema.main.cli.RetCode.*;
 
-enum Reporters
-    implements Reporter
-{
+enum Reporters implements Reporter {
+
     DEFAULT
     {
         @Override
-        public RetCode validateSchema(final SyntaxValidator validator,
-            final String fileName, final JsonNode node)
+        public RetCode validateSchema(SyntaxValidator validator, String fileName, JsonNode node)
             throws IOException
         {
-            final ListProcessingReport report
-                = (ListProcessingReport) validator.validateSchema(node);
-            final boolean success = report.isSuccess();
+            ListProcessingReport report = (ListProcessingReport) validator.validateSchema(node);
+            boolean success = report.isSuccess();
             System.out.println("--- BEGIN " + fileName + "---");
-            System.out.println("validation: " + (success ? "SUCCESS"
-                : "FAILURE"));
+            System.out.println("validation: " + (success ? "SUCCESS" : "FAILURE"));
             if (!success)
                 System.out.println(JacksonUtils.prettyPrint(report.asJson()));
             System.out.println("--- END " + fileName + "---");
@@ -34,19 +30,15 @@ enum Reporters
         }
 
         @Override
-        public RetCode validateInstance(final JsonSchema schema,
-            final String fileName, final JsonNode node)
+        public RetCode validateInstance(JsonSchema schema, String fileName, JsonNode node)
             throws IOException, ProcessingException
         {
-            final ListProcessingReport report
-                = (ListProcessingReport) schema.validate(node, true);
-            final boolean success = report.isSuccess();
+            ListProcessingReport report = (ListProcessingReport) schema.validate(node, true);
+            boolean success = report.isSuccess();
             System.out.println("--- BEGIN " + fileName + "---");
-            System.out.println("validation: " + (success ? "SUCCESS"
-                : "FAILURE"));
+            System.out.println("validation: " + (success ? "SUCCESS" : "FAILURE"));
             if (!success)
-                System.out.println(JacksonUtils.prettyPrint(report
-                    .asJson()));
+                System.out.println(JacksonUtils.prettyPrint(report.asJson()));
             System.out.println("--- END " + fileName + "---");
             return success ? ALL_OK : VALIDATION_FAILURE;
         }
@@ -54,8 +46,7 @@ enum Reporters
     BRIEF
     {
         @Override
-        public RetCode validateSchema(final SyntaxValidator validator,
-            final String fileName, final JsonNode node)
+        public RetCode validateSchema(SyntaxValidator validator, String fileName, JsonNode node)
             throws IOException
         {
             final boolean valid = validator.schemaIsValid(node);
@@ -64,8 +55,7 @@ enum Reporters
         }
 
         @Override
-        public RetCode validateInstance(final JsonSchema schema,
-            final String fileName, final JsonNode node)
+        public RetCode validateInstance(JsonSchema schema, String fileName, JsonNode node)
             throws IOException, ProcessingException
         {
             final boolean valid = schema.validInstance(node);
@@ -76,16 +66,14 @@ enum Reporters
     QUIET
     {
         @Override
-        public RetCode validateSchema(final SyntaxValidator validator,
-            final String fileName, final JsonNode node)
+        public RetCode validateSchema(SyntaxValidator validator, String fileName, JsonNode node)
             throws IOException
         {
             return validator.schemaIsValid(node) ? ALL_OK : SCHEMA_SYNTAX_ERROR;
         }
 
         @Override
-        public RetCode validateInstance(final JsonSchema schema,
-            final String fileName, final JsonNode node)
+        public RetCode validateInstance(JsonSchema schema, String fileName, JsonNode node)
             throws IOException, ProcessingException
         {
             return schema.validInstance(node) ? ALL_OK : VALIDATION_FAILURE;

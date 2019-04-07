@@ -37,8 +37,7 @@ import java.util.Deque;
  * {@link #pop() pop}ped when validation is complete.</p>
  */
 @ParametersAreNonnullByDefault
-final class ValidationStack
-{
+final class ValidationStack {
     /*
      * Sentinel which is always the first element of the stack; we use it in
      * order to simplify the pop code.
@@ -61,7 +60,7 @@ final class ValidationStack
     private JsonPointer pointer = null ;
     private Deque<SchemaURI> schemaURIs = null;
 
-    ValidationStack(final String errmsg)
+    ValidationStack(String errmsg)
     {
         this.errmsg = errmsg;
     }
@@ -87,11 +86,11 @@ final class ValidationStack
      *
      * @see #pop()
      */
-    void push(final FullData data)
+    void push(FullData data)
         throws ProcessingException
     {
-        final JsonPointer ptr = data.getInstance().getPointer();
-        final SchemaURI schemaURI = new SchemaURI(data.getSchema());
+        JsonPointer ptr = data.getInstance().getPointer();
+        SchemaURI schemaURI = new SchemaURI(data.getSchema());
 
         if (ptr.equals(pointer)) {
             if (schemaURIs.contains(schemaURI))
@@ -130,30 +129,27 @@ final class ValidationStack
         if (!schemaURIs.isEmpty())
             return;
 
-        final Element element = validationQueue.removeLast();
+        Element element = validationQueue.removeLast();
         pointer = element.pointer;
         schemaURIs = element.schemaURIs;
     }
 
-    private static final class Element
-    {
+    private static final class Element {
         private final JsonPointer pointer;
         private final Deque<SchemaURI> schemaURIs;
 
-        private Element(@Nullable final JsonPointer pointer,
-            @Nullable final Deque<SchemaURI> schemaURIs)
+        private Element(@Nullable JsonPointer pointer, @Nullable Deque<SchemaURI> schemaURIs)
         {
             this.pointer = pointer;
             this.schemaURIs = schemaURIs;
         }
     }
 
-    private static final class SchemaURI
-    {
+    private static final class SchemaURI {
         private final JsonRef locator;
         private final JsonPointer pointer;
 
-        private SchemaURI(final SchemaTree tree)
+        private SchemaURI(SchemaTree tree)
         {
             locator = tree.getContext();
             pointer = tree.getPointer();
@@ -166,7 +162,7 @@ final class ValidationStack
         }
 
         @Override
-        public boolean equals(@Nullable final Object obj)
+        public boolean equals(@Nullable Object obj)
         {
             if (obj == null)
                 return false;
@@ -174,7 +170,7 @@ final class ValidationStack
                 return true;
             if (getClass() != obj.getClass())
                 return false;
-            final SchemaURI other = (SchemaURI) obj;
+            SchemaURI other = (SchemaURI) obj;
             return locator.equals(other.locator)
                 && pointer.equals(other.pointer);
         }
@@ -182,19 +178,18 @@ final class ValidationStack
         @Override
         public String toString()
         {
-            final URI tmp;
             try {
-                tmp = new URI(null, null, pointer.toString());
+                URI tmp = new URI(null, null, pointer.toString());
+                return locator.toURI().resolve(tmp).toString();
             } catch (URISyntaxException e) {
                 throw new RuntimeException("How did I get there??", e);
             }
-            return locator.toURI().resolve(tmp).toString();
         }
     }
 
-    private ProcessingMessage validationLoopMessage(final FullData input)
+    private ProcessingMessage validationLoopMessage(FullData input)
     {
-        final ArrayNode node = JacksonUtils.nodeFactory().arrayNode();
+        ArrayNode node = JacksonUtils.nodeFactory().arrayNode();
         for (final SchemaURI uri: schemaURIs)
             node.add(uri.toString());
         return input.newMessage()

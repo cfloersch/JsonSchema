@@ -16,11 +16,9 @@ import com.google.common.base.Equivalence;
  * </ul>
  *
  */
-public final class SchemaContextEquivalence
-    extends Equivalence<SchemaContext>
-{
-    private static final Equivalence<SchemaContext> INSTANCE
-        = new SchemaContextEquivalence();
+public final class SchemaContextEquivalence extends Equivalence<SchemaContext> {
+
+    private static final Equivalence<SchemaContext> INSTANCE = new SchemaContextEquivalence();
 
     public static Equivalence<SchemaContext> getInstance()
     {
@@ -28,14 +26,14 @@ public final class SchemaContextEquivalence
     }
 
     @Override
-    protected boolean doEquivalent(final SchemaContext a, final SchemaContext b)
+    protected boolean doEquivalent(SchemaContext a, SchemaContext b)
     {
         return a.getSchema().equals(b.getSchema())
             && a.getInstanceType() == b.getInstanceType();
     }
 
     @Override
-    protected int doHash(final SchemaContext t)
+    protected int doHash(SchemaContext t)
     {
         return t.getSchema().hashCode() ^ t.getInstanceType().hashCode();
     }

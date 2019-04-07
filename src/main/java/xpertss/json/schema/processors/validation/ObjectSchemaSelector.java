@@ -2,7 +2,7 @@ package xpertss.json.schema.processors.validation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
-import xpertss.json.schema.core.util.RhinoHelper;
+import xpertss.json.schema.core.util.RegexECMA262Helper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -16,20 +16,17 @@ import java.util.List;
  * here there can be more than one subschema which the member value must be
  * valid against.</p>
  */
-public final class ObjectSchemaSelector
-{
-    private static final JsonPointer PROPERTIES
-        = JsonPointer.of("properties");
-    private static final JsonPointer PATTERNPROPERTIES
-        = JsonPointer.of("patternProperties");
-    private static final JsonPointer ADDITIONALPROPERTIES
-        = JsonPointer.of("additionalProperties");
+public final class ObjectSchemaSelector {
+
+    private static final JsonPointer PROPERTIES = JsonPointer.of("properties");
+    private static final JsonPointer PATTERNPROPERTIES = JsonPointer.of("patternProperties");
+    private static final JsonPointer ADDITIONALPROPERTIES = JsonPointer.of("additionalProperties");
 
     private final List<String> properties;
     private final List<String> patternProperties;
     private final boolean hasAdditional;
 
-    public ObjectSchemaSelector(final JsonNode digest)
+    public ObjectSchemaSelector(JsonNode digest)
     {
         hasAdditional = digest.get("hasAdditional").booleanValue();
 
@@ -46,15 +43,15 @@ public final class ObjectSchemaSelector
         patternProperties = ImmutableList.copyOf(list);
     }
 
-    public Iterable<JsonPointer> selectSchemas(final String memberName)
+    public Iterable<JsonPointer> selectSchemas(String memberName)
     {
-        final List<JsonPointer> list = Lists.newArrayList();
+        List<JsonPointer> list = Lists.newArrayList();
 
         if (properties.contains(memberName))
             list.add(PROPERTIES.append(memberName));
 
         for (final String regex: patternProperties)
-            if (RhinoHelper.regMatch(regex, memberName))
+            if(RegexECMA262Helper.regMatch(regex, memberName))
                 list.add(PATTERNPROPERTIES.append(regex));
 
         if (!list.isEmpty())

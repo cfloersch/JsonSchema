@@ -23,30 +23,22 @@ import javax.annotation.concurrent.Immutable;
  * about both the schema and instance.</p>
  */
 @Immutable
-public final class FullData
-    implements MessageProvider
-{
+public final class FullData implements MessageProvider {
+
     private final SchemaTree schema;
     private final JsonTree instance;
     private final boolean deepCheck;
 
-    public FullData(final SchemaTree schema, final JsonTree instance,
-        final boolean deepCheck)
+    public FullData(SchemaTree schema, JsonTree instance, boolean deepCheck)
     {
         this.schema = schema;
         this.instance = instance;
         this.deepCheck = deepCheck;
     }
 
-    public FullData(final SchemaTree schema, final JsonTree instance)
+    public FullData(SchemaTree schema, JsonTree instance)
     {
         this(schema, instance, false);
-    }
-
-    @Deprecated
-    public FullData(final SchemaTree schema)
-    {
-        this(schema, null);
     }
 
     public SchemaTree getSchema()

@@ -15,14 +15,12 @@ import java.util.Map;
  * <p>It bundles a {@link SchemaContext} and a map of digested nodes for keyword
  * construction.</p>
  */
-public final class SchemaDigest
-    implements MessageProvider
-{
+public final class SchemaDigest implements MessageProvider {
+
     private final SchemaContext context;
     private final Map<String, JsonNode> digested;
 
-    public SchemaDigest(final SchemaContext context,
-        final Map<String, JsonNode> map)
+    public SchemaDigest(SchemaContext context, Map<String, JsonNode> map)
     {
         this.context = context;
         digested = ImmutableMap.copyOf(map);

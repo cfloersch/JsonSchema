@@ -25,19 +25,17 @@ import java.util.Map;
  * <p>This processor is called by a {@link ValidationChain} after it has made
  * sure that the schema is syntactically valid.</p>
  */
-public final class SchemaDigester
-    implements Processor<SchemaContext, SchemaDigest>
-{
-    private final ListMultimap<NodeType, String> typeMap
-        = ArrayListMultimap.create();
+public final class SchemaDigester implements Processor<SchemaContext, SchemaDigest> {
+
+    private final ListMultimap<NodeType, String> typeMap = ArrayListMultimap.create();
     private final Map<String, Digester> digesterMap = Maps.newHashMap();
 
-    public SchemaDigester(final Library library)
+    public SchemaDigester(Library library)
     {
         this(library.getDigesters());
     }
 
-    public SchemaDigester(final Dictionary<Digester> dict)
+    public SchemaDigester(Dictionary<Digester> dict)
     {
         String keyword;
         Digester digester;
@@ -54,22 +52,20 @@ public final class SchemaDigester
     }
 
     @Override
-    public SchemaDigest process(final ProcessingReport report,
-        final SchemaContext input)
+    public SchemaDigest process(ProcessingReport report, SchemaContext input)
         throws ProcessingException
     {
-        final JsonNode schema = input.getSchema().getNode();
-        final NodeType type = input.getInstanceType();
-        final Map<String, JsonNode> map = Maps.newHashMap(buildDigests(schema));
+        JsonNode schema = input.getSchema().getNode();
+        NodeType type = input.getInstanceType();
+        Map<String, JsonNode> map = Maps.newHashMap(buildDigests(schema));
         map.keySet().retainAll(typeMap.get(type));
         return new SchemaDigest(input, map);
     }
 
     private Map<String, JsonNode> buildDigests(final JsonNode schema)
     {
-        final ImmutableMap.Builder<String, JsonNode> builder
-            = ImmutableMap.builder();
-        final Map<String, Digester> map = Maps.newHashMap(digesterMap);
+        ImmutableMap.Builder<String, JsonNode> builder = ImmutableMap.builder();
+        Map<String, Digester> map = Maps.newHashMap(digesterMap);
 
         map.keySet().retainAll(Sets.newHashSet(schema.fieldNames()));
 

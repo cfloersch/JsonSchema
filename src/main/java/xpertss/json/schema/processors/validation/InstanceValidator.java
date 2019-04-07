@@ -38,9 +38,8 @@ import java.util.List;
  */
 @NotThreadSafe
 @ParametersAreNonnullByDefault
-final class InstanceValidator
-    implements Processor<FullData, FullData>
-{
+final class InstanceValidator implements Processor<FullData, FullData> {
+
     private final MessageBundle syntaxMessages;
     private final MessageBundle validationMessages;
     private final Processor<SchemaContext, ValidatorList> keywordBuilder;
@@ -54,22 +53,19 @@ final class InstanceValidator
      * @param validationMessages the validation message bundle
      * @param keywordBuilder the keyword builder
      */
-    InstanceValidator(final MessageBundle syntaxMessages,
-        final MessageBundle validationMessages,
-        final Processor<SchemaContext, ValidatorList> keywordBuilder)
+    InstanceValidator(MessageBundle syntaxMessages,
+                        MessageBundle validationMessages,
+                        Processor<SchemaContext, ValidatorList> keywordBuilder)
     {
         this.syntaxMessages = syntaxMessages;
         this.validationMessages = validationMessages;
         this.keywordBuilder = keywordBuilder;
 
-        final String errmsg
-            = validationMessages.getMessage("err.common.validationLoop");
-        stack = new ValidationStack(errmsg);
+        stack = new ValidationStack(validationMessages.getMessage("err.common.validationLoop"));
     }
 
     @Override
-    public FullData process(final ProcessingReport report,
-        final FullData input)
+    public FullData process(ProcessingReport report, FullData input)
         throws ProcessingException
     {
         /*
@@ -81,26 +77,23 @@ final class InstanceValidator
         /*
          * Build a validation context, attach a report to it
          */
-        final SchemaContext context = new SchemaContext(input);
+        SchemaContext context = new SchemaContext(input);
 
         /*
          * Get the full context from the cache. Inject the messages into the
          * main report.
          */
-        final ValidatorList fullContext = keywordBuilder.process(report,
-            context);
+        ValidatorList fullContext = keywordBuilder.process(report, context);
 
         if (fullContext == null) {
-            final ProcessingMessage message = collectSyntaxErrors(report);
-            throw new InvalidSchemaException(message);
+            throw new InvalidSchemaException(collectSyntaxErrors(report));
         }
 
         /*
          * Get the calculated context. Build the data.
          */
-        final SchemaContext newContext = fullContext.getContext();
-        final FullData data = new FullData(newContext.getSchema(),
-            input.getInstance(), input.isDeepCheck());
+        SchemaContext newContext = fullContext.getContext();
+        FullData data = new FullData(newContext.getSchema(), input.getInstance(), input.isDeepCheck());
 
         /*
          * Validate against all keywords.
@@ -122,7 +115,7 @@ final class InstanceValidator
          * Now check whether this is a container node with a size greater than
          * 0. If not, no need to go see the children.
          */
-        final JsonNode node = data.getInstance().getNode();
+        JsonNode node = data.getInstance().getNode();
 
         if (node.isContainerNode()) {
             if (node.isArray())
@@ -141,21 +134,19 @@ final class InstanceValidator
         return "instance validator";
     }
 
-    private void processArray(final ProcessingReport report,
-        final FullData input)
+    private void processArray(ProcessingReport report, FullData input)
         throws ProcessingException
     {
-        final SchemaTree tree = input.getSchema();
-        final JsonTree instance = input.getInstance();
+        SchemaTree tree = input.getSchema();
+        JsonTree instance = input.getInstance();
 
-        final JsonNode schema = tree.getNode();
-        final JsonNode node = instance.getNode();
+        JsonNode schema = tree.getNode();
+        JsonNode node = instance.getNode();
 
-        final JsonNode digest = ArraySchemaDigester.getInstance()
-            .digest(schema);
-        final ArraySchemaSelector selector = new ArraySchemaSelector(digest);
+        JsonNode digest = ArraySchemaDigester.getInstance().digest(schema);
+        ArraySchemaSelector selector = new ArraySchemaSelector(digest);
 
-        final int size = node.size();
+        int size = node.size();
 
         FullData data;
         JsonTree newInstance;
@@ -170,21 +161,19 @@ final class InstanceValidator
         }
     }
 
-    private void processObject(final ProcessingReport report,
-        final FullData input)
+    private void processObject(ProcessingReport report, FullData input)
         throws ProcessingException
     {
-        final SchemaTree tree = input.getSchema();
-        final JsonTree instance = input.getInstance();
+        SchemaTree tree = input.getSchema();
+        JsonTree instance = input.getInstance();
 
-        final JsonNode schema = tree.getNode();
-        final JsonNode node = instance.getNode();
+        JsonNode schema = tree.getNode();
+        JsonNode node = instance.getNode();
 
-        final JsonNode digest = ObjectSchemaDigester.getInstance()
-            .digest(schema);
-        final ObjectSchemaSelector selector = new ObjectSchemaSelector(digest);
+        JsonNode digest = ObjectSchemaDigester.getInstance().digest(schema);
+        ObjectSchemaSelector selector = new ObjectSchemaSelector(digest);
 
-        final List<String> fields = Lists.newArrayList(node.fieldNames());
+        List<String> fields = Lists.newArrayList(node.fieldNames());
         Collections.sort(fields);
 
         FullData data;
@@ -200,22 +189,22 @@ final class InstanceValidator
         }
     }
 
-    private ProcessingMessage collectSyntaxErrors(final ProcessingReport report)
+    private ProcessingMessage collectSyntaxErrors(ProcessingReport report)
     {
         /*
          * OK, that's for issue #99 but that's ugly nevertheless.
          *
          * We want syntax error messages to appear in the exception text.
          */
-        final String msg = syntaxMessages.getMessage("core.invalidSchema");
-        final ArrayNode arrayNode = JacksonUtils.nodeFactory().arrayNode();
+        String msg = syntaxMessages.getMessage("core.invalidSchema");
+        ArrayNode arrayNode = JacksonUtils.nodeFactory().arrayNode();
         JsonNode node;
         for (final ProcessingMessage message: report) {
             node = message.asJson();
             if ("syntax".equals(node.path("domain").asText()))
                 arrayNode.add(node);
         }
-        final StringBuilder sb = new StringBuilder(msg);
+        StringBuilder sb = new StringBuilder(msg);
         sb.append("\nSyntax errors:\n");
         sb.append(JacksonUtils.prettyPrint(arrayNode));
         return new ProcessingMessage().setMessage(sb.toString());

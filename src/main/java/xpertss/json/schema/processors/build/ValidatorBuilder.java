@@ -25,19 +25,16 @@ import com.google.common.collect.Maps;
  *
  * @see ValidationProcessor
  */
-public final class ValidatorBuilder
-    implements Processor<SchemaDigest, ValidatorList>
-{
-    private final Map<String, KeywordValidatorFactory>
-        factories;
+public final class ValidatorBuilder implements Processor<SchemaDigest, ValidatorList> {
 
-    public ValidatorBuilder(final Library library)
+    private final Map<String, KeywordValidatorFactory> factories;
+
+    public ValidatorBuilder(Library library)
     {
         factories = library.getValidators().entries();
     }
 
-    public ValidatorBuilder(
-        final Dictionary<KeywordValidatorFactory> dict)
+    public ValidatorBuilder(Dictionary<KeywordValidatorFactory> dict)
     {
         factories = dict.entries();
     }
@@ -51,8 +48,7 @@ public final class ValidatorBuilder
      * @throws ProcessingException processing failed
      */
     @Override
-    public ValidatorList process(final ProcessingReport report,
-        final SchemaDigest input)
+    public ValidatorList process(ProcessingReport report, SchemaDigest input)
         throws ProcessingException
     {
         final SortedMap<String, KeywordValidator> map = Maps.newTreeMap();

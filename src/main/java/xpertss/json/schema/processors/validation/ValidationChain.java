@@ -35,63 +35,49 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * <p>A validation chain handles one schema version. Switching schema versions
  * is done by {@link ValidationProcessor}.</p>
  */
-public final class ValidationChain
-    implements Processor<SchemaContext, ValidatorList>
-{
-    private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
-        resolver;
+public final class ValidationChain implements Processor<SchemaContext, ValidatorList> {
+
+    private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> resolver;
     private final Processor<SchemaContext, ValidatorList> builder;
 
-    public ValidationChain(final RefResolver refResolver,
-        final Library library, final ValidationConfiguration cfg)
+    public ValidationChain(RefResolver refResolver, Library library, ValidationConfiguration cfg)
     {
-        final SyntaxProcessor syntaxProcessor = new SyntaxProcessor(
-            cfg.getSyntaxMessages(), library.getSyntaxCheckers());
-        final ProcessorChain<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
-            chain1
-            = ProcessorChain.startWith(refResolver).chainWith(syntaxProcessor);
+        SyntaxProcessor syntaxProcessor = new SyntaxProcessor(cfg.getSyntaxMessages(), library.getSyntaxCheckers());
+        ProcessorChain<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> chain1 = ProcessorChain.startWith(refResolver).chainWith(syntaxProcessor);
 
-        resolver = new CachingProcessor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>(
-            chain1.getProcessor(), SchemaHolderEquivalence.INSTANCE, cfg.getCacheSize()
-        );
+        resolver = new CachingProcessor<>(chain1.getProcessor(), SchemaHolderEquivalence.INSTANCE, cfg.getCacheSize());
 
-        final SchemaDigester digester = new SchemaDigester(library);
-        final ValidatorBuilder keywordBuilder = new ValidatorBuilder(library);
+        SchemaDigester digester = new SchemaDigester(library);
+        ValidatorBuilder keywordBuilder = new ValidatorBuilder(library);
 
-        ProcessorChain<SchemaContext, ValidatorList> chain2
-            = ProcessorChain.startWith(digester).chainWith(keywordBuilder);
+        ProcessorChain<SchemaContext, ValidatorList> chain2 = ProcessorChain.startWith(digester).chainWith(keywordBuilder);
 
         if (cfg.getUseFormat()) {
             final FormatProcessor format = new FormatProcessor(library, cfg);
             chain2 = chain2.chainWith(format);
         }
 
-        builder = new CachingProcessor<SchemaContext, ValidatorList>(
-            chain2.getProcessor(), SchemaContextEquivalence.getInstance(), cfg.getCacheSize()
-        );
+        builder = new CachingProcessor<>(chain2.getProcessor(), SchemaContextEquivalence.getInstance(), cfg.getCacheSize());
     }
 
     @Override
-    public ValidatorList process(final ProcessingReport report,
-        final SchemaContext input)
+    public ValidatorList process(ProcessingReport report, SchemaContext input)
         throws ProcessingException
     {
-        final ValueHolder<SchemaTree> in
-            = ValueHolder.hold("schema", input.getSchema());
+        ValueHolder<SchemaTree> in = ValueHolder.hold("schema", input.getSchema());
 
         /*
          * We have to go through an intermediate report. If we re-enter this
          * function with a report already telling there is an error, we don't
          * want to wrongly report that the schema is invalid.
          */
-        final ProcessingReport r = new ListProcessingReport(report);
-        final ValueHolder<SchemaTree> out = resolver.process(r, in);
+        ProcessingReport r = new ListProcessingReport(report);
+        ValueHolder<SchemaTree> out = resolver.process(r, in);
         report.mergeWith(r);
         if (!r.isSuccess())
             return null;
 
-        final SchemaContext output = new SchemaContext(out.getValue(),
-            input.getInstanceType());
+        SchemaContext output = new SchemaContext(out.getValue(), input.getInstanceType());
         return builder.process(report, output);
     }
 
@@ -102,21 +88,18 @@ public final class ValidationChain
     }
 
     @ParametersAreNonnullByDefault
-    private static final class SchemaHolderEquivalence
-        extends Equivalence<ValueHolder<SchemaTree>>
-    {
-        private static final Equivalence<ValueHolder<SchemaTree>> INSTANCE
-            = new SchemaHolderEquivalence();
+    private static final class SchemaHolderEquivalence extends Equivalence<ValueHolder<SchemaTree>> {
+
+        private static final Equivalence<ValueHolder<SchemaTree>> INSTANCE = new SchemaHolderEquivalence();
 
         @Override
-        protected boolean doEquivalent(final ValueHolder<SchemaTree> a,
-            final ValueHolder<SchemaTree> b)
+        protected boolean doEquivalent(ValueHolder<SchemaTree> a, ValueHolder<SchemaTree> b)
         {
             return a.getValue().equals(b.getValue());
         }
 
         @Override
-        protected int doHash(final ValueHolder<SchemaTree> t)
+        protected int doHash(ValueHolder<SchemaTree> t)
         {
             return t.getValue().hashCode();
         }

@@ -12,7 +12,6 @@ import xpertss.json.schema.keyword.validator.KeywordValidator;
 import xpertss.json.schema.library.Library;
 import xpertss.json.schema.messages.JsonSchemaValidationBundle;
 import xpertss.json.schema.processors.build.ValidatorBuilder;
-import xpertss.json.schema.processors.data.FullData;
 import xpertss.json.schema.processors.data.SchemaContext;
 import xpertss.json.schema.processors.data.ValidatorList;
 import com.github.fge.msgsimple.bundle.MessageBundle;
@@ -41,39 +40,36 @@ import java.util.Map;
  *
  * <p>Note that it will warn if the format attribute is not recognized.</p>
  */
-public final class FormatProcessor
-    implements Processor<ValidatorList, ValidatorList>
-{
+public final class FormatProcessor implements Processor<ValidatorList, ValidatorList> {
+
     private final Map<String, FormatAttribute> attributes;
     private final MessageBundle bundle;
 
-    public FormatProcessor(final Library library,
-        final ValidationConfiguration cfg)
+    public FormatProcessor(Library library, ValidationConfiguration cfg)
     {
         attributes = library.getFormatAttributes().entries();
         bundle = cfg.getValidationMessages();
     }
 
     @VisibleForTesting
-    FormatProcessor(final Dictionary<FormatAttribute> dict)
+    FormatProcessor(Dictionary<FormatAttribute> dict)
     {
         attributes = dict.entries();
         bundle = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
     }
 
     @Override
-    public ValidatorList process(final ProcessingReport report,
-        final ValidatorList input)
+    public ValidatorList process(ProcessingReport report, ValidatorList input)
         throws ProcessingException
     {
-        final SchemaContext context = input.getContext();
-        final JsonNode node = context.getSchema().getNode().get("format");
+        SchemaContext context = input.getContext();
+        JsonNode node = context.getSchema().getNode().get("format");
 
         if (node == null)
             return input;
 
-        final String fmt = node.textValue();
-        final FormatAttribute attr = attributes.get(fmt);
+        String fmt = node.textValue();
+        FormatAttribute attr = attributes.get(fmt);
 
         if (attr == null) {
             report.warn(input.newMessage().put("domain", "validation")
@@ -83,31 +79,20 @@ public final class FormatProcessor
             return input;
         }
 
-        final NodeType type = context.getInstanceType();
+        NodeType type = context.getInstanceType();
 
         if (!attr.supportedTypes().contains(type))
             return input;
 
-        final List<KeywordValidator> validators = Lists.newArrayList(input);
+        List<KeywordValidator> validators = Lists.newArrayList(input);
         validators.add(formatValidator(attr));
 
         return new ValidatorList(context, validators);
     }
 
-    private static KeywordValidator formatValidator(final FormatAttribute attr)
+    private static KeywordValidator formatValidator(FormatAttribute attr)
     {
-        return new KeywordValidator()
-        {
-            @Override
-            public void validate(
-                final Processor<FullData, FullData> processor,
-                final ProcessingReport report, final MessageBundle bundle,
-                final FullData data)
-                throws ProcessingException
-            {
-                attr.validate(report, bundle, data);
-            }
-        };
+        return (processor, report, bundle, data) -> attr.validate(report, bundle, data);
     }
 
     @Override

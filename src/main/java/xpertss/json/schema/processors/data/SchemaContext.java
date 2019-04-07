@@ -17,13 +17,12 @@ import xpertss.json.schema.processors.validation.ValidationChain;
  *
  * @see NodeType#getNodeType(JsonNode)
  */
-public final class SchemaContext
-    implements MessageProvider
-{
+public final class SchemaContext implements MessageProvider {
+
     private final SchemaTree schema;
     private final NodeType instanceType;
 
-    public SchemaContext(final FullData data)
+    public SchemaContext(FullData data)
     {
         schema = data.getSchema();
         final JsonTree tree = data.getInstance();
@@ -32,7 +31,7 @@ public final class SchemaContext
             : null;
     }
 
-    public SchemaContext(final SchemaTree schema, final NodeType instanceType)
+    public SchemaContext(SchemaTree schema, NodeType instanceType)
     {
         this.schema = schema;
         this.instanceType = instanceType;

@@ -9,9 +9,8 @@ import xpertss.json.schema.keyword.digest.Digester;
 /**
  * JSON Schema digester for an {@link ArraySchemaSelector}
  */
-public final class ArraySchemaDigester
-    extends AbstractDigester
-{
+public final class ArraySchemaDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new ArraySchemaDigester();
 
     public static Digester getInstance()
@@ -25,17 +24,17 @@ public final class ArraySchemaDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
         ret.put("itemsSize", 0);
         ret.put("itemsIsArray", false);
 
-        final JsonNode itemsNode = schema.path("items");
-        final JsonNode additionalNode = schema.path("additionalItems");
+        JsonNode itemsNode = schema.path("items");
+        JsonNode additionalNode = schema.path("additionalItems");
 
-        final boolean hasItems = !itemsNode.isMissingNode();
-        final boolean hasAdditional = additionalNode.isObject();
+        boolean hasItems = !itemsNode.isMissingNode();
+        boolean hasAdditional = additionalNode.isObject();
 
         ret.put("hasItems", hasItems);
         ret.put("hasAdditional", hasAdditional);

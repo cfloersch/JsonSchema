@@ -14,9 +14,8 @@ import java.util.Set;
 /**
  * JSON Schema digester for an {@link ObjectSchemaSelector}
  */
-public final class ObjectSchemaDigester
-    extends AbstractDigester
-{
+public final class ObjectSchemaDigester extends AbstractDigester {
+
     private static final Digester INSTANCE = new ObjectSchemaDigester();
 
     public static Digester getInstance()
@@ -30,9 +29,9 @@ public final class ObjectSchemaDigester
     }
 
     @Override
-    public JsonNode digest(final JsonNode schema)
+    public JsonNode digest(JsonNode schema)
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
         ret.put("hasAdditional", schema.path("additionalProperties").isObject());
 
         Set<String> set;

@@ -15,14 +15,12 @@ import java.util.List;
  * Output of {@link ValidatorBuilder}, and input/output of {@link
  * FormatProcessor}
  */
-public final class ValidatorList
-    implements Iterable<KeywordValidator>, MessageProvider
-{
+public final class ValidatorList implements Iterable<KeywordValidator>, MessageProvider {
+
     private final List<KeywordValidator> validators;
     private final SchemaContext context;
 
-    public ValidatorList(final SchemaContext context,
-        final Collection<KeywordValidator> validators)
+    public ValidatorList(SchemaContext context, Collection<KeywordValidator> validators)
     {
         this.context = context;
         this.validators = ImmutableList.copyOf(validators);

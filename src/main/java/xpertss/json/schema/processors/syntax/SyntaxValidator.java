@@ -34,41 +34,29 @@ import java.util.Map;
  * <p>Note that the reports used are always {@link ListProcessingReport}s.</p>
  */
 // TODO REMOVE
-public final class SyntaxValidator
-{
-    private static final Function<ValueHolder<SchemaTree>, JsonRef> FUNCTION
-        = new Function<ValueHolder<SchemaTree>, JsonRef>()
-    {
-        @Override
-        public JsonRef apply(final ValueHolder<SchemaTree> input)
-        {
-            return input.getValue().getDollarSchema();
-        }
-    };
+public final class SyntaxValidator {
 
-    private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
-        processor;
+    private static final Function<ValueHolder<SchemaTree>, JsonRef> FUNCTION = input -> input.getValue().getDollarSchema();
+
+    private final Processor<ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> processor;
 
     /**
      * Constructor
      *
      * @param cfg the validation configuration to use
      */
-    public SyntaxValidator(final ValidationConfiguration cfg)
+    public SyntaxValidator(ValidationConfiguration cfg)
     {
-        final MessageBundle syntaxMessages = cfg.getSyntaxMessages();
-        final ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>
-            map = new ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>(FUNCTION);
+        MessageBundle syntaxMessages = cfg.getSyntaxMessages();
+        ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>> map = new ProcessorMap<JsonRef, ValueHolder<SchemaTree>, ValueHolder<SchemaTree>>(FUNCTION);
 
-        Dictionary<SyntaxChecker> dict;
-        dict = cfg.getDefaultLibrary().getSyntaxCheckers();
+        Dictionary<SyntaxChecker> dict = cfg.getDefaultLibrary().getSyntaxCheckers();
 
-        final SyntaxProcessor byDefault = new SyntaxProcessor(
-            cfg.getSyntaxMessages(), dict);
+        SyntaxProcessor byDefault = new SyntaxProcessor(cfg.getSyntaxMessages(), dict);
 
         map.setDefaultProcessor(byDefault);
 
-        final Map<JsonRef,Library> libraries = cfg.getLibraries();
+        Map<JsonRef,Library> libraries = cfg.getLibraries();
 
         JsonRef ref;
         SyntaxProcessor syntaxProcessor;
@@ -89,9 +77,9 @@ public final class SyntaxValidator
      * @param schema the schema
      * @return true if the schema is valid
      */
-    public boolean schemaIsValid(final JsonNode schema)
+    public boolean schemaIsValid(JsonNode schema)
     {
-        final ProcessingReport report = new DevNullProcessingReport();
+        ProcessingReport report = new DevNullProcessingReport();
         return getResult(schema, report).isSuccess();
     }
 
@@ -101,9 +89,9 @@ public final class SyntaxValidator
      * @param schema the schema
      * @return a report
      */
-    public ProcessingReport validateSchema(final JsonNode schema)
+    public ProcessingReport validateSchema(JsonNode schema)
     {
-        final ProcessingReport report = new ListProcessingReport();
+        ProcessingReport report = new ListProcessingReport();
         return getResult(schema, report).getReport();
     }
 
@@ -119,16 +107,14 @@ public final class SyntaxValidator
         return processor;
     }
 
-    private ProcessingResult<ValueHolder<SchemaTree>> getResult(final JsonNode schema,
-        final ProcessingReport report)
+    private ProcessingResult<ValueHolder<SchemaTree>> getResult(JsonNode schema, ProcessingReport report)
     {
-        final ValueHolder<SchemaTree> holder = holder(schema);
+        ValueHolder<SchemaTree> holder = holder(schema);
         return ProcessingResult.uncheckedResult(processor, report, holder);
     }
 
-    private static ValueHolder<SchemaTree> holder(final JsonNode node)
+    private static ValueHolder<SchemaTree> holder(JsonNode node)
     {
-        return ValueHolder.<SchemaTree>hold("schema",
-            new CanonicalSchemaTree(SchemaKey.anonymousKey(), node));
+        return ValueHolder.<SchemaTree>hold("schema", new CanonicalSchemaTree(SchemaKey.anonymousKey(), node));
     }
 }

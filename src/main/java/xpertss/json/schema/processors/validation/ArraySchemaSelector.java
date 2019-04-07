@@ -15,18 +15,17 @@ import java.util.Collections;
  * <p>It may happen that no schemas apply at all (in which case the document at
  * the given array index will always validate successfully).</p>
  */
-public final class ArraySchemaSelector
-{
+public final class ArraySchemaSelector {
+
     private static final JsonPointer ITEMS = JsonPointer.of("items");
-    private static final JsonPointer ADDITIONAL_ITEMS
-        = JsonPointer.of("additionalItems");
+    private static final JsonPointer ADDITIONAL_ITEMS = JsonPointer.of("additionalItems");
 
     private final boolean hasItems;
     private final boolean itemsIsArray;
     private final int itemsSize;
     private final boolean hasAdditional;
 
-    public ArraySchemaSelector(final JsonNode digest)
+    public ArraySchemaSelector(JsonNode digest)
     {
         hasItems = digest.get("hasItems").booleanValue();
         itemsIsArray = digest.get("itemsIsArray").booleanValue();
@@ -34,7 +33,7 @@ public final class ArraySchemaSelector
         hasAdditional = digest.get("hasAdditional").booleanValue();
     }
 
-    public Iterable<JsonPointer> selectSchemas(final int index)
+    public Iterable<JsonPointer> selectSchemas(int index)
     {
         if (!hasItems)
             return hasAdditional

@@ -12,15 +12,13 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Main validation processor
  */
-public final class ValidationProcessor
-    implements Processor<FullData, FullData>
-{
+public final class ValidationProcessor implements Processor<FullData, FullData> {
+
     private final MessageBundle syntaxMessages;
     private final MessageBundle validationMessages;
     private final Processor<SchemaContext, ValidatorList> processor;
 
-    public ValidationProcessor(final ValidationConfiguration cfg,
-        final Processor<SchemaContext, ValidatorList> processor)
+    public ValidationProcessor(ValidationConfiguration cfg, Processor<SchemaContext, ValidatorList> processor)
     {
         syntaxMessages = cfg.getSyntaxMessages();
         validationMessages = cfg.getValidationMessages();
@@ -28,12 +26,10 @@ public final class ValidationProcessor
     }
 
     @Override
-    public FullData process(final ProcessingReport report,
-        final FullData input)
+    public FullData process(ProcessingReport report, FullData input)
         throws ProcessingException
     {
-        final InstanceValidator validator = new InstanceValidator(
-            syntaxMessages, validationMessages, processor);
+        InstanceValidator validator = new InstanceValidator(syntaxMessages, validationMessages, processor);
         return validator.process(report, input);
     }
 

@@ -9,8 +9,8 @@ import xpertss.json.schema.format.draftv7.TimeAttribute;
 /**
  * Draft v4 specific format attributes
  */
-public final class DraftV6FormatAttributesDictionary
-{
+public final class DraftV6FormatAttributesDictionary {
+
     private static final Dictionary<FormatAttribute> DICTIONARY;
 
     private DraftV6FormatAttributesDictionary()
@@ -18,8 +18,7 @@ public final class DraftV6FormatAttributesDictionary
     }
 
     static {
-        final DictionaryBuilder<FormatAttribute> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<FormatAttribute> builder = Dictionary.newBuilder();
 
         builder.addAll(DraftV4FormatAttributesDictionary.get());
 

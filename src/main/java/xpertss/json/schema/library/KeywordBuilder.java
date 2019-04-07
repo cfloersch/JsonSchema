@@ -20,11 +20,9 @@ import com.github.fge.msgsimple.load.MessageBundles;
  * if you supply a validator class, the digester <b>must</b> also be present.
  * </p>
  */
-public final class KeywordBuilder
-    implements Thawed<Keyword>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+public final class KeywordBuilder implements Thawed<Keyword> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
     final String name;
     SyntaxChecker syntaxChecker;
     Digester digester;
@@ -37,7 +35,7 @@ public final class KeywordBuilder
      * @throws NullPointerException name is null
      * @see Keyword#newBuilder(String)
      */
-    KeywordBuilder(final String name)
+    KeywordBuilder(String name)
     {
         BUNDLE.checkNotNull(name, "nullName");
         this.name = name;
@@ -49,7 +47,7 @@ public final class KeywordBuilder
      * @param keyword the keyword
      * @see Keyword#thaw()
      */
-    KeywordBuilder(final Keyword keyword)
+    KeywordBuilder(Keyword keyword)
     {
         name = keyword.name;
         syntaxChecker = keyword.syntaxChecker;
@@ -64,7 +62,7 @@ public final class KeywordBuilder
      * @return this
      * @throws NullPointerException syntax checker is null
      */
-    public KeywordBuilder withSyntaxChecker(final SyntaxChecker syntaxChecker)
+    public KeywordBuilder withSyntaxChecker(SyntaxChecker syntaxChecker)
     {
         BUNDLE.checkNotNullPrintf(syntaxChecker, "nullSyntaxChecker", name);
         this.syntaxChecker = syntaxChecker;
@@ -78,7 +76,7 @@ public final class KeywordBuilder
      * @return this
      * @throws NullPointerException digester is null
      */
-    public KeywordBuilder withDigester(final Digester digester)
+    public KeywordBuilder withDigester(Digester digester)
     {
         BUNDLE.checkNotNullPrintf(digester, "nullDigester", name);
         this.digester = digester;
@@ -93,11 +91,9 @@ public final class KeywordBuilder
      * @return this
      * @throws NullPointerException one or more type(s) are null
      */
-    public KeywordBuilder withIdentityDigester(final NodeType first,
-        final NodeType... other)
+    public KeywordBuilder withIdentityDigester(NodeType first, NodeType... other)
     {
-        digester = new IdentityDigester(name, checkType(first),
-            checkTypes(other));
+        digester = new IdentityDigester(name, checkType(first), checkTypes(other));
         return this;
     }
 
@@ -109,11 +105,9 @@ public final class KeywordBuilder
      * @return this
      * @throws NullPointerException one or more type(s) are null
      */
-    public KeywordBuilder withSimpleDigester(final NodeType first,
-        final NodeType... other)
+    public KeywordBuilder withSimpleDigester(NodeType first, NodeType... other)
     {
-        digester = new SimpleDigester(name, checkType(first),
-            checkTypes(other));
+        digester = new SimpleDigester(name, checkType(first), checkTypes(other));
         return this;
     }
 
@@ -126,8 +120,7 @@ public final class KeywordBuilder
      * @throws IllegalArgumentException failed to find an appropriate
      * constructor
      */
-    public KeywordBuilder withValidatorClass(
-        final Class<? extends KeywordValidator> c)
+    public KeywordBuilder withValidatorClass(Class<? extends KeywordValidator> c)
     {
         validatorFactory = new ReflectionKeywordValidatorFactory(name, c);
         return this;
@@ -139,8 +132,7 @@ public final class KeywordBuilder
      * @param factory the factory
      * @return this
      */
-    public KeywordBuilder withValidatorFactory(
-        KeywordValidatorFactory factory)
+    public KeywordBuilder withValidatorFactory(KeywordValidatorFactory factory)
     {
         validatorFactory = factory;
         return this;
@@ -162,17 +154,16 @@ public final class KeywordBuilder
          * We can have a keyword without a validator; however, if there is one,
          * there must be a digester.
          */
-        BUNDLE.checkArgumentPrintf(validatorFactory == null || digester != null,
-            "malformedKeyword", name);
+        BUNDLE.checkArgumentPrintf(validatorFactory == null || digester != null, "malformedKeyword", name);
         return new Keyword(this);
     }
 
-    private static NodeType checkType(final NodeType type)
+    private static NodeType checkType(NodeType type)
     {
         return BUNDLE.checkNotNull(type, "nullType");
     }
 
-    private static NodeType[] checkTypes(final NodeType... types)
+    private static NodeType[] checkTypes(NodeType... types)
     {
         for (final NodeType type: types)
             BUNDLE.checkNotNull(type, "nullType");

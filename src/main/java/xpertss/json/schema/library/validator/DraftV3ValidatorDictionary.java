@@ -15,10 +15,9 @@ import xpertss.json.schema.keyword.validator.draftv3.PropertiesValidator;
 /**
  * Draft v3 specific keyword validator constructors
  */
-public final class DraftV3ValidatorDictionary
-{
-    private static final Dictionary<KeywordValidatorFactory>
-        DICTIONARY;
+public final class DraftV3ValidatorDictionary {
+
+    private static final Dictionary<KeywordValidatorFactory> DICTIONARY;
 
     private DraftV3ValidatorDictionary()
     {
@@ -30,8 +29,7 @@ public final class DraftV3ValidatorDictionary
     }
 
     static {
-        final DictionaryBuilder<KeywordValidatorFactory>
-            builder = Dictionary.newBuilder();
+        DictionaryBuilder<KeywordValidatorFactory> builder = Dictionary.newBuilder();
 
         String keyword;
         Class<? extends KeywordValidator> c;
@@ -71,8 +69,7 @@ public final class DraftV3ValidatorDictionary
         DICTIONARY = builder.freeze();
     }
 
-    private static KeywordValidatorFactory factory(String name,
-        final Class<? extends KeywordValidator> c)
+    private static KeywordValidatorFactory factory(String name, Class<? extends KeywordValidator> c)
     {
         return new ReflectionKeywordValidatorFactory(name, c);
     }

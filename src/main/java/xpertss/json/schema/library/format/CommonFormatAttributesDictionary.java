@@ -12,8 +12,8 @@ import xpertss.json.schema.format.common.URIAttribute;
 /**
  * Format attributes common to draft v4 and v3
  */
-public final class CommonFormatAttributesDictionary
-{
+public final class CommonFormatAttributesDictionary {
+
     private static final Dictionary<FormatAttribute> DICTIONARY;
 
     private CommonFormatAttributesDictionary()
@@ -21,33 +21,13 @@ public final class CommonFormatAttributesDictionary
     }
 
     static {
-        final DictionaryBuilder<FormatAttribute> builder
-            = Dictionary.newBuilder();
-
+        DictionaryBuilder<FormatAttribute> builder = Dictionary.newBuilder();
         builder.addAll(ExtraFormatsDictionary.get());
-
-        String name;
-        FormatAttribute attribute;
-
-        name = "date-time";
-        attribute = DateTimeAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "email";
-        attribute = EmailAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "ipv6";
-        attribute = IPv6Attribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "regex";
-        attribute = RegexAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "uri";
-        attribute = URIAttribute.getInstance();
-        builder.addEntry(name, attribute);
+        builder.addEntry("date-time", DateTimeAttribute.getInstance());
+        builder.addEntry("email", EmailAttribute.getInstance());
+        builder.addEntry("ipv6", IPv6Attribute.getInstance());
+        builder.addEntry("regex", RegexAttribute.getInstance());
+        builder.addEntry("uri", URIAttribute.getInstance());
 
         DICTIONARY = builder.freeze();
     }

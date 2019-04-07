@@ -19,9 +19,8 @@ import xpertss.json.schema.keyword.validator.KeywordValidatorFactory;
  * @see ValidationConfigurationBuilder#setDefaultLibrary(String, Library)
  * @see ValidationConfigurationBuilder#setDefaultVersion(SchemaVersion)
  */
-public final class Library
-    implements Frozen<LibraryBuilder>
-{
+public final class Library implements Frozen<LibraryBuilder> {
+
     /**
      * Dictionary of syntax checkers
      */
@@ -58,7 +57,7 @@ public final class Library
      * @param builder the builder
      * @see LibraryBuilder#freeze()
      */
-    Library(final LibraryBuilder builder)
+    Library(LibraryBuilder builder)
     {
         syntaxCheckers = builder.syntaxCheckers.freeze();
         digesters = builder.digesters.freeze();
@@ -74,10 +73,10 @@ public final class Library
      * @param validators map of keyword validator constructors
      * @param formatAttributes map of format attributes
      */
-    Library(final Dictionary<SyntaxChecker> syntaxCheckers,
-        final Dictionary<Digester> digesters,
-        final Dictionary<KeywordValidatorFactory> validators,
-        final Dictionary<FormatAttribute> formatAttributes)
+    Library(Dictionary<SyntaxChecker> syntaxCheckers,
+            Dictionary<Digester> digesters,
+            Dictionary<KeywordValidatorFactory> validators,
+            Dictionary<FormatAttribute> formatAttributes)
     {
         this.syntaxCheckers = syntaxCheckers;
         this.digesters = digesters;

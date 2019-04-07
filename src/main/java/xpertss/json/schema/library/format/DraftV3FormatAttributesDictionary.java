@@ -13,8 +13,8 @@ import xpertss.json.schema.format.helpers.SharedHostNameAttribute;
 /**
  * Draft v3 specific format attributes
  */
-public final class DraftV3FormatAttributesDictionary
-{
+public final class DraftV3FormatAttributesDictionary {
+
     private static final Dictionary<FormatAttribute> DICTIONARY;
 
     private DraftV3FormatAttributesDictionary()
@@ -22,37 +22,15 @@ public final class DraftV3FormatAttributesDictionary
     }
 
     static {
-        final DictionaryBuilder<FormatAttribute> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<FormatAttribute> builder = Dictionary.newBuilder();
 
         builder.addAll(CommonFormatAttributesDictionary.get());
-
-        String name;
-        FormatAttribute attribute;
-
-        name = "date";
-        attribute = DateAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "host-name";
-        attribute = new SharedHostNameAttribute("host-name");
-        builder.addEntry(name, attribute);
-
-        name = "ip-address";
-        attribute = new IPv4FormatAttribute(name);
-        builder.addEntry(name, attribute);
-
-        name = "phone";
-        attribute = PhoneAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "time";
-        attribute = TimeAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "utc-millisec";
-        attribute = UTCMillisecAttribute.getInstance();
-        builder.addEntry(name, attribute);
+        builder.addEntry("date", DateAttribute.getInstance());
+        builder.addEntry("time", TimeAttribute.getInstance());
+        builder.addEntry("host-name", new SharedHostNameAttribute("host-name"));
+        builder.addEntry("ip-address", new IPv4FormatAttribute("ip-address"));
+        builder.addEntry("phone", PhoneAttribute.getInstance());
+        builder.addEntry("utc-millisec", UTCMillisecAttribute.getInstance());
 
         DICTIONARY = builder.freeze();
     }

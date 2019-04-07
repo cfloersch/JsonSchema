@@ -21,11 +21,9 @@ import com.github.fge.msgsimple.load.MessageBundles;
  * builder, all traces of its previous definition, if any, will be
  * <b>removed</b>.</p>
  */
-public final class LibraryBuilder
-    implements Thawed<Library>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+public final class LibraryBuilder implements Thawed<Library> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
     /**
      * Dictionary builder of syntax checkers
      */
@@ -63,7 +61,7 @@ public final class LibraryBuilder
      * @param library the library
      * @see Library#thaw()
      */
-    LibraryBuilder(final Library library)
+    LibraryBuilder(Library library)
     {
         syntaxCheckers = library.syntaxCheckers.thaw();
         digesters = library.digesters.thaw();
@@ -78,7 +76,7 @@ public final class LibraryBuilder
      * @return this
      * @throws NullPointerException keyword is null
      */
-    public LibraryBuilder addKeyword(final Keyword keyword)
+    public LibraryBuilder addKeyword(Keyword keyword)
     {
         BUNDLE.checkNotNull(keyword, "nullKeyword");
         final String name = keyword.name;
@@ -100,7 +98,7 @@ public final class LibraryBuilder
      * @return this
      * @throws NullPointerException name is null
      */
-    public LibraryBuilder removeKeyword(final String name)
+    public LibraryBuilder removeKeyword(String name)
     {
         BUNDLE.checkNotNull(name, "nullName");
         syntaxCheckers.removeEntry(name);
@@ -117,8 +115,7 @@ public final class LibraryBuilder
      * @return this
      * @throws NullPointerException the name or attribute is null
      */
-    public LibraryBuilder addFormatAttribute(final String name,
-        final FormatAttribute attribute)
+    public LibraryBuilder addFormatAttribute(String name, FormatAttribute attribute)
     {
         removeFormatAttribute(name);
         BUNDLE.checkNotNullPrintf(attribute, "nullAttribute", name);
@@ -133,7 +130,7 @@ public final class LibraryBuilder
      * @return this
      * @throws NullPointerException name is null
      */
-    public LibraryBuilder removeFormatAttribute(final String name)
+    public LibraryBuilder removeFormatAttribute(String name)
     {
         BUNDLE.checkNotNull(name, "nullFormat");
         formatAttributes.removeEntry(name);

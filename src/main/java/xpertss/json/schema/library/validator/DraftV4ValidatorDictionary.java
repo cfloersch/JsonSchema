@@ -19,10 +19,9 @@ import xpertss.json.schema.keyword.validator.draftv4.RequiredKeywordValidator;
 /**
  * Draft v4 specific keyword validator constructors
  */
-public final class DraftV4ValidatorDictionary
-{
-    private static final Dictionary<KeywordValidatorFactory>
-        DICTIONARY;
+public final class DraftV4ValidatorDictionary {
+
+    private static final Dictionary<KeywordValidatorFactory> DICTIONARY;
 
     private DraftV4ValidatorDictionary()
     {
@@ -34,8 +33,7 @@ public final class DraftV4ValidatorDictionary
     }
 
     static {
-        final DictionaryBuilder<KeywordValidatorFactory>
-            builder = Dictionary.newBuilder();
+        DictionaryBuilder<KeywordValidatorFactory> builder = Dictionary.newBuilder();
 
         String keyword;
         Class<? extends KeywordValidator> c;
@@ -94,8 +92,7 @@ public final class DraftV4ValidatorDictionary
         DICTIONARY = builder.freeze();
     }
 
-    private static KeywordValidatorFactory factory(String name,
-        final Class<? extends KeywordValidator> c)
+    private static KeywordValidatorFactory factory(String name, Class<? extends KeywordValidator> c)
     {
         return new ReflectionKeywordValidatorFactory(name, c);
     }

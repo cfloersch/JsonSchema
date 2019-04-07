@@ -20,10 +20,9 @@ import xpertss.json.schema.keyword.validator.common.UniqueItemsValidator;
 /**
  * Keyword validator constructors common to draft v4 and v3
  */
-public final class CommonValidatorDictionary
-{
-    private static final Dictionary<KeywordValidatorFactory>
-        DICTIONARY;
+public final class CommonValidatorDictionary {
+
+    private static final Dictionary<KeywordValidatorFactory> DICTIONARY;
 
     private CommonValidatorDictionary()
     {
@@ -35,8 +34,7 @@ public final class CommonValidatorDictionary
     }
 
     static {
-        final DictionaryBuilder<KeywordValidatorFactory>
-            builder = Dictionary.newBuilder();
+        DictionaryBuilder<KeywordValidatorFactory> builder = Dictionary.newBuilder();
 
         String keyword;
         Class<? extends KeywordValidator> c;
@@ -100,8 +98,7 @@ public final class CommonValidatorDictionary
         DICTIONARY = builder.freeze();
     }
 
-    private static KeywordValidatorFactory factory(String name,
-        final Class<? extends KeywordValidator> c)
+    private static KeywordValidatorFactory factory(String name, Class<? extends KeywordValidator> c)
     {
         return new ReflectionKeywordValidatorFactory(name, c);
     }

@@ -15,8 +15,8 @@ import static com.github.fge.jackson.NodeType.*;
 /**
  * Draft v4 specific digesters
  */
-public final class DraftV4DigesterDictionary
-{
+public final class DraftV4DigesterDictionary {
+
     private static final Dictionary<Digester> DICTIONARY;
 
     private DraftV4DigesterDictionary()
@@ -24,8 +24,7 @@ public final class DraftV4DigesterDictionary
     }
 
     static {
-        final DictionaryBuilder<Digester> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<Digester> builder = Dictionary.newBuilder();
 
         String keyword;
         Digester digester;
@@ -35,51 +34,24 @@ public final class DraftV4DigesterDictionary
         /*
          * Number/integer
          */
-        keyword = "multipleOf";
-        digester = MultipleOfDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("multipleOf", MultipleOfDigester.getInstance());
 
         /*
          * Object
          */
-        keyword = "minProperties";
-        digester = new SimpleDigester(keyword, OBJECT);
-        builder.addEntry(keyword, digester);
-
-        keyword = "maxProperties";
-        digester = new SimpleDigester(keyword, OBJECT);
-        builder.addEntry(keyword, digester);
-
-        keyword = "required";
-        digester = RequiredDigester.getInstance();
-        builder.addEntry(keyword, digester);
-
-        keyword = "dependencies";
-        digester = DraftV4DependenciesDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("minProperties", new SimpleDigester("minProperties", OBJECT));
+        builder.addEntry("maxProperties", new SimpleDigester("maxProperties", OBJECT));
+        builder.addEntry("required", RequiredDigester.getInstance());
+        builder.addEntry("dependencies", DraftV4DependenciesDigester.getInstance());
 
         /*
          * All/none
          */
-        keyword = "anyOf";
-        digester = new NullDigester(keyword, ARRAY, values());
-        builder.addEntry(keyword, digester);
-
-        keyword = "allOf";
-        digester = new NullDigester(keyword, ARRAY, values());
-        builder.addEntry(keyword, digester);
-
-        keyword = "oneOf";
-        digester = new NullDigester(keyword, ARRAY, values());
-        builder.addEntry(keyword, digester);
-
-        keyword = "not";
-        digester = new NullDigester(keyword, ARRAY, values());
-        builder.addEntry(keyword, digester);
-
-        keyword = "type";
-        digester = DraftV4TypeDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("anyOf", new NullDigester("anyOf", ARRAY, values()));
+        builder.addEntry("allOf", new NullDigester("allOf", ARRAY, values()));
+        builder.addEntry("oneOf", new NullDigester("oneOf", ARRAY, values()));
+        builder.addEntry("not", new NullDigester("not", ARRAY, values()));
+        builder.addEntry("type", DraftV4TypeDigester.getInstance());
 
         DICTIONARY = builder.freeze();
     }

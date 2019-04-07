@@ -8,8 +8,8 @@ import xpertss.json.schema.library.validator.DraftV3ValidatorDictionary;
 /**
  * Library of all draft v3 core schema keywords and format attributes
  */
-public final class DraftV3Library
-{
+public final class DraftV3Library {
+
     private static final Library LIBRARY = new Library(
         DraftV3SyntaxCheckerDictionary.get(),
         DraftV3DigesterDictionary.get(),

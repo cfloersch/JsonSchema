@@ -15,8 +15,8 @@ import static com.github.fge.jackson.NodeType.*;
 /**
  * Digesters common to draft v4 and v3
  */
-public final class CommonDigesterDictionary
-{
+public final class CommonDigesterDictionary {
+
     private static final Dictionary<Digester> DICTIONARY;
 
     private CommonDigesterDictionary()
@@ -24,63 +24,33 @@ public final class CommonDigesterDictionary
     }
 
     static {
-        final DictionaryBuilder<Digester> builder
-            = Dictionary.newBuilder();
-
-        String keyword;
-        Digester digester;
+        DictionaryBuilder<Digester> builder = Dictionary.newBuilder();
 
         /*
          * Array
          */
-        keyword = "additionalItems";
-        digester = AdditionalItemsDigester.getInstance();
-        builder.addEntry(keyword, digester);
-
-        keyword = "minItems";
-        digester = new SimpleDigester(keyword, ARRAY);
-        builder.addEntry(keyword, digester);
-
-        keyword = "maxItems";
-        digester = new SimpleDigester(keyword, ARRAY);
-        builder.addEntry(keyword, digester);
-
-        keyword = "uniqueItems";
-        digester = new SimpleDigester(keyword, ARRAY);
-        builder.addEntry(keyword, digester);
+        builder.addEntry("additionalItems", AdditionalItemsDigester.getInstance());
+        builder.addEntry("minItems", new SimpleDigester("minItems", ARRAY));
+        builder.addEntry("maxItems", new SimpleDigester("maxItems", ARRAY));
+        builder.addEntry("uniqueItems", new SimpleDigester("uniqueItems", ARRAY));
 
         /*
          * Number / Integer
          */
-        keyword = "minimum";
-        digester = MinimumDigester.getInstance();
-        builder.addEntry(keyword, digester);
-
-        keyword = "maximum";
-        digester = MaximumDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("minimum", MinimumDigester.getInstance());
+        builder.addEntry("maximum", MaximumDigester.getInstance());
 
         /*
          * Object
          */
-        keyword = "additionalProperties";
-        digester = AdditionalPropertiesDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("additionalProperties", AdditionalPropertiesDigester.getInstance());
 
         /*
          * String
          */
-        keyword = "minLength";
-        digester = new SimpleDigester(keyword, STRING);
-        builder.addEntry(keyword, digester);
-
-        keyword = "maxLength";
-        digester = new SimpleDigester(keyword, STRING);
-        builder.addEntry(keyword, digester);
-
-        keyword = "pattern";
-        digester = new NullDigester(keyword, STRING);
-        builder.addEntry(keyword, digester);
+        builder.addEntry("minLength", new SimpleDigester("minLength", STRING));
+        builder.addEntry("maxLength", new SimpleDigester("maxLength", STRING));
+        builder.addEntry("pattern", new NullDigester("pattern", STRING));
 
         /*
          * Any
@@ -106,9 +76,7 @@ public final class CommonDigesterDictionary
          * Bah. There will be duplicates, but at least ultimately the validator
          * will do what it takes.
          */
-        keyword = "enum";
-        digester = new SimpleDigester(keyword, ARRAY, values());
-        builder.addEntry(keyword, digester);
+        builder.addEntry("enum", new SimpleDigester("enum", ARRAY, values()));
 
         DICTIONARY = builder.freeze();
     }

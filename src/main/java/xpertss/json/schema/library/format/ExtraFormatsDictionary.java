@@ -13,8 +13,8 @@ import xpertss.json.schema.format.extra.SHA256FormatAttribute;
 import xpertss.json.schema.format.extra.SHA512FormatAttribute;
 import xpertss.json.schema.format.extra.UUIDFormatAttribute;
 
-public final class ExtraFormatsDictionary
-{
+public final class ExtraFormatsDictionary {
+
     private static final Dictionary<FormatAttribute> DICTIONARY;
 
     private ExtraFormatsDictionary()
@@ -22,48 +22,17 @@ public final class ExtraFormatsDictionary
     }
 
     static {
-        final DictionaryBuilder<FormatAttribute> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<FormatAttribute> builder = Dictionary.newBuilder();
 
-        String name;
-        FormatAttribute attribute;
-
-        name = "base64";
-        attribute = Base64FormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "json-pointer";
-        attribute = JsonPointerFormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "mac";
-        attribute = MacAddressFormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "md5";
-        attribute = MD5FormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "sha1";
-        attribute = SHA1FormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "sha256";
-        attribute = SHA256FormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "sha512";
-        attribute = SHA512FormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "uuid";
-        attribute = UUIDFormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
-        name = "currency";
-        attribute = CurrencyFormatAttribute.getInstance();
-        builder.addEntry(name, attribute);
-
+        builder.addEntry("base64", Base64FormatAttribute.getInstance());
+        builder.addEntry("json-pointer", JsonPointerFormatAttribute.getInstance());
+        builder.addEntry("mac", MacAddressFormatAttribute.getInstance());
+        builder.addEntry("md5", MD5FormatAttribute.getInstance());
+        builder.addEntry("sha1", SHA1FormatAttribute.getInstance());
+        builder.addEntry("sha256", SHA256FormatAttribute.getInstance());
+        builder.addEntry("sha512", SHA512FormatAttribute.getInstance());
+        builder.addEntry("uuid", UUIDFormatAttribute.getInstance());
+        builder.addEntry("currency", CurrencyFormatAttribute.getInstance());
 
         DICTIONARY = builder.freeze();
     }

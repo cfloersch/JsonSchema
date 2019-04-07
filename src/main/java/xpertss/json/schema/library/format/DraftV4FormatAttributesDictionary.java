@@ -9,8 +9,8 @@ import xpertss.json.schema.format.helpers.SharedHostNameAttribute;
 /**
  * Draft v4 specific format attributes
  */
-public final class DraftV4FormatAttributesDictionary
-{
+public final class DraftV4FormatAttributesDictionary {
+
     private static final Dictionary<FormatAttribute> DICTIONARY;
 
     private DraftV4FormatAttributesDictionary()
@@ -18,15 +18,11 @@ public final class DraftV4FormatAttributesDictionary
     }
 
     static {
-        final DictionaryBuilder<FormatAttribute> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<FormatAttribute> builder = Dictionary.newBuilder();
 
         builder.addAll(CommonFormatAttributesDictionary.get());
-
         builder.addEntry("hostname", new SharedHostNameAttribute("hostname"));
-
         builder.addEntry("ipv4", new IPv4FormatAttribute("ipv4"));
-
         DICTIONARY = builder.freeze();
     }
 

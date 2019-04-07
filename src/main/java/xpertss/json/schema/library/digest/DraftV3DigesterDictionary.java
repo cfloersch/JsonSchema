@@ -13,8 +13,8 @@ import xpertss.json.schema.keyword.digest.helpers.NullDigester;
 /**
  * Draft v3 specific digesters
  */
-public final class DraftV3DigesterDictionary
-{
+public final class DraftV3DigesterDictionary {
+
     private static final Dictionary<Digester> DICTIONARY;
 
     private DraftV3DigesterDictionary()
@@ -22,46 +22,26 @@ public final class DraftV3DigesterDictionary
     }
 
     static {
-        final DictionaryBuilder<Digester> builder
-            = Dictionary.newBuilder();
-
-        String keyword;
-        Digester digester;
-
+        DictionaryBuilder<Digester> builder = Dictionary.newBuilder();
         builder.addAll(CommonDigesterDictionary.get());
 
         /*
          * Number / integer
          */
-        keyword = "divisibleBy";
-        digester = DivisibleByDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("divisibleBy", DivisibleByDigester.getInstance());
 
         /*
          * Object
          */
-        keyword = "properties";
-        digester = DraftV3PropertiesDigester.getInstance();
-        builder.addEntry(keyword, digester);
-
-        keyword = "dependencies";
-        digester = DraftV3DependenciesDigester.getInstance();
-        builder.addEntry(keyword, digester);
+        builder.addEntry("properties", DraftV3PropertiesDigester.getInstance());
+        builder.addEntry("dependencies", DraftV3DependenciesDigester.getInstance());
 
         /*
          * All
          */
-        keyword = "type";
-        digester = new DraftV3TypeKeywordDigester(keyword);
-        builder.addEntry(keyword, digester);
-
-        keyword = "disallow";
-        digester = new DraftV3TypeKeywordDigester(keyword);
-        builder.addEntry(keyword, digester);
-
-        keyword = "extends";
-        digester = new NullDigester(keyword, NodeType.ARRAY, NodeType.values());
-        builder.addEntry(keyword, digester);
+        builder.addEntry("type", new DraftV3TypeKeywordDigester("type"));
+        builder.addEntry("disallow", new DraftV3TypeKeywordDigester("disallow"));
+        builder.addEntry("extends", new NullDigester("extends", NodeType.ARRAY, NodeType.values()));
 
         DICTIONARY = builder.freeze();
     }

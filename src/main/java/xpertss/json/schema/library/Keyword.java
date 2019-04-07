@@ -11,9 +11,8 @@ import xpertss.json.schema.keyword.validator.KeywordValidatorFactory;
  *
  * @see KeywordBuilder
  */
-public final class Keyword
-    implements Frozen<KeywordBuilder>
-{
+public final class Keyword implements Frozen<KeywordBuilder> {
+
     /**
      * Name of this keyword
      */
@@ -42,7 +41,7 @@ public final class Keyword
      * @throws NullPointerException provided name is null
      * @see KeywordBuilder#KeywordBuilder(String)
      */
-    public static KeywordBuilder newBuilder(final String name)
+    public static KeywordBuilder newBuilder(String name)
     {
         return new KeywordBuilder(name);
     }
@@ -53,7 +52,7 @@ public final class Keyword
      * @param builder the keyword builder to build from
      * @see KeywordBuilder#freeze()
      */
-    Keyword(final KeywordBuilder builder)
+    Keyword(KeywordBuilder builder)
     {
         name = builder.name;
         syntaxChecker = builder.syntaxChecker;

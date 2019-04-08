@@ -16,18 +16,16 @@ import java.util.Collection;
  * Helper class to validate the syntax of keywords having either a schema or
  * schema array as a value
  */
-public abstract class SchemaOrSchemaArraySyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    protected SchemaOrSchemaArraySyntaxChecker(final String keyword)
+public abstract class SchemaOrSchemaArraySyntaxChecker extends AbstractSyntaxChecker {
+
+    protected SchemaOrSchemaArraySyntaxChecker(String keyword)
     {
         super(keyword, NodeType.ARRAY, NodeType.OBJECT);
     }
 
     @Override
-    protected final void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected final void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                        ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
         collectPointers(pointers, tree);
@@ -42,14 +40,12 @@ public abstract class SchemaOrSchemaArraySyntaxChecker
      * @param tree the schema
      * @throws InvalidSchemaException schema is invalid
      */
-    protected abstract void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected abstract void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException;
 
-    private void collectPointers(final Collection<JsonPointer> pointers,
-        final SchemaTree tree)
+    private void collectPointers(Collection<JsonPointer> pointers, SchemaTree tree)
     {
-        final JsonNode node = getNode(tree);
+        JsonNode node = getNode(tree);
         if (node.isObject()) {
             pointers.add(JsonPointer.of(keyword));
             return;

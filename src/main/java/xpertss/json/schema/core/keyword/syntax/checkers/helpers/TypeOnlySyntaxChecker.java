@@ -14,19 +14,16 @@ import java.util.Collection;
  * Helper class to validate the syntax of keywords only requiring that their
  * value be of certain types
  */
-public final class TypeOnlySyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public TypeOnlySyntaxChecker(final String keyword, final NodeType first,
-        final NodeType... other)
+public final class TypeOnlySyntaxChecker extends AbstractSyntaxChecker {
+
+    public TypeOnlySyntaxChecker(String keyword, NodeType first, NodeType... other)
     {
         super(keyword, first, other);
     }
 
     @Override
-    public void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    public void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                            ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
     }

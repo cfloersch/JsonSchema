@@ -13,8 +13,8 @@ import xpertss.json.schema.core.keyword.syntax.checkers.helpers.DivisorSyntaxChe
 /**
  * Draft v3 specific syntax checkers
  */
-public final class DraftV3SyntaxCheckerDictionary
-{
+public final class DraftV3SyntaxCheckerDictionary {
+
     private static final Dictionary<SyntaxChecker> DICTIONARY;
 
     public static Dictionary<SyntaxChecker> get()
@@ -27,8 +27,7 @@ public final class DraftV3SyntaxCheckerDictionary
     }
 
     static {
-        final DictionaryBuilder<SyntaxChecker> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<SyntaxChecker> builder = Dictionary.newBuilder();
 
         /*
          * Put all common checkers

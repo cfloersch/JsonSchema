@@ -21,31 +21,29 @@ import javax.annotation.concurrent.Immutable;
  * @param <T> the type of the value
  */
 @Immutable
-public abstract class ValueHolder<T>
-    implements MessageProvider
-{
+public abstract class ValueHolder<T> implements MessageProvider {
+
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     private final String name;
     protected final T value;
 
-    public static <V> ValueHolder<V> hold(final V value)
+    public static <V> ValueHolder<V> hold(V value)
     {
         return new SimpleValueHolder<V>("value", value);
     }
 
-    public static <V> ValueHolder<V> hold(final String name, final V value)
+    public static <V> ValueHolder<V> hold(String name, V value)
     {
         return new SimpleValueHolder<V>(name, value);
     }
 
-    public static <V extends AsJson> ValueHolder<V> hold(final V value)
+    public static <V extends AsJson> ValueHolder<V> hold(V value)
     {
         return new AsJsonValueHolder<V>("value", value);
     }
 
-    public static <V extends AsJson> ValueHolder<V> hold(final String name,
-        final V value)
+    public static <V extends AsJson> ValueHolder<V> hold(String name, V value)
     {
         return new AsJsonValueHolder<V>(name, value);
     }
@@ -56,7 +54,7 @@ public abstract class ValueHolder<T>
      * @param name the name to prefix the value with
      * @param value the value
      */
-    protected ValueHolder(final String name, final T value)
+    protected ValueHolder(String name, T value)
     {
         this.name = name;
         this.value = value;

@@ -17,24 +17,22 @@ import java.util.Collection;
  *
  * <p>Note that this checker checks that URIs are normalized.</p>
  */
-public final class URISyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public URISyntaxChecker(final String keyword)
+public final class URISyntaxChecker extends AbstractSyntaxChecker {
+
+    public URISyntaxChecker(String keyword)
     {
         super(keyword, NodeType.STRING);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final String s = getNode(tree).textValue();
+        String s = getNode(tree).textValue();
 
         try {
-            final URI uri = new URI(s);
+            URI uri = new URI(s);
             if (!uri.equals(uri.normalize()))
                 report.error(newMsg(tree, bundle, "common.uri.notNormalized")
                     .putArgument("value", s));

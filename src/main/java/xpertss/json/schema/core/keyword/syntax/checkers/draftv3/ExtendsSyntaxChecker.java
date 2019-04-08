@@ -11,11 +11,9 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Syntax checker for draft v3's {@code extends} keyword
  */
-public final class ExtendsSyntaxChecker
-    extends SchemaOrSchemaArraySyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new ExtendsSyntaxChecker();
+public final class ExtendsSyntaxChecker extends SchemaOrSchemaArraySyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new ExtendsSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -28,11 +26,10 @@ public final class ExtendsSyntaxChecker
     }
 
     @Override
-    protected void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = tree.getNode().get(keyword);
+        JsonNode node = tree.getNode().get(keyword);
         if (node.isArray() && node.size() == 0)
             report.warn(newMsg(tree, bundle, "draftv3.extends.emptyArray"));
     }

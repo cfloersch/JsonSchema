@@ -8,11 +8,9 @@ import com.github.fge.msgsimple.load.MessageBundles;
 
 import java.net.URI;
 
-final class SchemaRedirectRegistry
-    extends Registry<URI, URI>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+final class SchemaRedirectRegistry extends Registry<URI, URI> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     SchemaRedirectRegistry()
     {
@@ -21,9 +19,8 @@ final class SchemaRedirectRegistry
     }
 
     @Override
-    protected void checkEntry(final URI key, final URI value)
+    protected void checkEntry(URI key, URI value)
     {
-        BUNDLE.checkArgumentFormat(!key.equals(value),
-            "schemaRedirect.selfRedirect", key);
+        BUNDLE.checkArgumentFormat(!key.equals(value), "schemaRedirect.selfRedirect", key);
     }
 }

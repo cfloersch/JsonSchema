@@ -1,3 +1,6 @@
-"format": "uri-reference"        new version of uri
 "format": "uri-template"
 "format": "json-pointer"
+
+TODO This might be the same as URI
+"format": "uri-reference"        new version of uri
+

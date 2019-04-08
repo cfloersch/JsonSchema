@@ -15,9 +15,8 @@ import java.util.UUID;
  *
  * @see UUID#fromString(String)
  */
-public final class UUIDFormatAttribute
-    extends AbstractFormatAttribute
-{
+public final class UUIDFormatAttribute extends AbstractFormatAttribute {
+
     private static final FormatAttribute instance = new UUIDFormatAttribute();
 
     private UUIDFormatAttribute()
@@ -31,8 +30,7 @@ public final class UUIDFormatAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
         final String input = data.getInstance().getNode().textValue();

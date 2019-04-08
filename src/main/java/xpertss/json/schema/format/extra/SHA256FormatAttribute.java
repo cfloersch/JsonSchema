@@ -8,9 +8,8 @@ import xpertss.json.schema.format.helpers.HexStringFormatAttribute;
  *
  * @see HexStringFormatAttribute
  */
-public final class SHA256FormatAttribute
-    extends HexStringFormatAttribute
-{
+public final class SHA256FormatAttribute extends HexStringFormatAttribute {
+    
     private static final FormatAttribute instance = new SHA256FormatAttribute();
 
     private SHA256FormatAttribute()

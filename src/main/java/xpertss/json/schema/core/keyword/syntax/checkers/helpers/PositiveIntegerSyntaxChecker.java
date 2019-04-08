@@ -15,21 +15,19 @@ import java.util.Collection;
  * Helper class to check the syntax of all keywords having a positive integer
  * as a valid value
  */
-public final class PositiveIntegerSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public PositiveIntegerSyntaxChecker(final String keyword)
+public final class PositiveIntegerSyntaxChecker extends AbstractSyntaxChecker {
+
+    public PositiveIntegerSyntaxChecker(String keyword)
     {
         super(keyword, NodeType.INTEGER);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
+        JsonNode node = getNode(tree);
 
         if (!node.canConvertToInt()) {
             report.error(newMsg(tree, bundle, "common.integerTooLarge")

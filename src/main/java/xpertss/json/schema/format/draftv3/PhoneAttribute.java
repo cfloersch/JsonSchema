@@ -22,9 +22,8 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
  * want to write your own {@link FormatAttribute}.</p>
  */
 //TODO: more tests?
-public final class PhoneAttribute
-    extends AbstractFormatAttribute
-{
+public final class PhoneAttribute extends AbstractFormatAttribute {
+
     private static final PhoneNumberUtil PARSER = PhoneNumberUtil.getInstance();
 
     private static final FormatAttribute INSTANCE = new PhoneAttribute();
@@ -40,11 +39,10 @@ public final class PhoneAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String input = data.getInstance().getNode().textValue();
+        String input = data.getInstance().getNode().textValue();
         /*
          * The libphonenumber API doc says that no matter what region you put
          * when validating national phone numbers, the number is not actually
@@ -57,10 +55,8 @@ public final class PhoneAttribute
          * country code.
          */
         try {
-            if (input.startsWith("+"))
-                PARSER.parse(input, "ZZ");
-            else
-                PARSER.parse(input, "FR");
+            String region = (input.startsWith("+")) ? "ZZ" : "FR";
+            PARSER.parse(input, region);
         } catch (NumberParseException ignored) {
             report.error(newMsg(data, bundle, "err.format.invalidPhoneNumber")
                 .putArgument("value", input));

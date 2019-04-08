@@ -50,7 +50,9 @@ public final class DateTimeAttribute extends AbstractDateFormatAttribute {
            .appendFraction(NANO_OF_SECOND, 0, 9, true)
            .optionalEnd()
            .appendOffset("+HH:mm", "Z")
-           .toFormatter(Locale.getDefault(Locale.Category.FORMAT)).withResolverStyle(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+           .toFormatter(Locale.getDefault(Locale.Category.FORMAT))
+                .withResolverStyle(ResolverStyle.STRICT)
+                .withChronology(IsoChronology.INSTANCE);
 
         //return DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     }

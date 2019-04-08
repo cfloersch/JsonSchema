@@ -16,21 +16,19 @@ import java.util.Collection;
  *
  * <p>These keywords are, among others, {@code allOf}, {@code anyOf}, etc.</p>
  */
-public final class SchemaArraySyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public SchemaArraySyntaxChecker(final String keyword)
+public final class SchemaArraySyntaxChecker extends AbstractSyntaxChecker {
+
+    public SchemaArraySyntaxChecker(String keyword)
     {
         super(keyword, NodeType.ARRAY);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final int size = getNode(tree).size();
+        int size = getNode(tree).size();
 
         if (size == 0) {
             report.error(newMsg(tree, bundle, "common.array.empty"));

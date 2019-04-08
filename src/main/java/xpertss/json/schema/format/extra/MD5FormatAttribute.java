@@ -8,9 +8,8 @@ import xpertss.json.schema.format.helpers.HexStringFormatAttribute;
  *
  * @see HexStringFormatAttribute
  */
-public final class MD5FormatAttribute
-    extends HexStringFormatAttribute
-{
+public final class MD5FormatAttribute extends HexStringFormatAttribute {
+
     private static final FormatAttribute instance = new MD5FormatAttribute();
 
     private MD5FormatAttribute()

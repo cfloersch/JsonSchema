@@ -17,11 +17,9 @@ import java.util.SortedMap;
 /**
  * Syntax checker for draft v3's {@code properties} keyword
  */
-public final class DraftV3PropertiesSyntaxChecker
-    extends SchemaMapSyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new DraftV3PropertiesSyntaxChecker();
+public final class DraftV3PropertiesSyntaxChecker extends SchemaMapSyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new DraftV3PropertiesSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -34,11 +32,10 @@ public final class DraftV3PropertiesSyntaxChecker
     }
 
     @Override
-    protected void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException
     {
-        final SortedMap<String, JsonNode> map = Maps.newTreeMap();
+        SortedMap<String, JsonNode> map = Maps.newTreeMap();
         map.putAll(JacksonUtils.asMap(tree.getNode().get(keyword)));
 
         String member;

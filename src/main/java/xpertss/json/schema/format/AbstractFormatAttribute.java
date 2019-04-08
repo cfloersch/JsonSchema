@@ -14,9 +14,8 @@ import java.util.EnumSet;
  * FormatAttribute} directly. Its main, but important, helping role is to
  * build the list of supported types for you.</p>
  */
-public abstract class AbstractFormatAttribute
-    implements FormatAttribute
-{
+public abstract class AbstractFormatAttribute implements FormatAttribute {
+
     /**
      * The set of supported types
      */
@@ -36,8 +35,7 @@ public abstract class AbstractFormatAttribute
      *
      * @see #supportedTypes()
      */
-    protected AbstractFormatAttribute(final String fmt, final NodeType first,
-        final NodeType... other)
+    protected AbstractFormatAttribute(String fmt, NodeType first, NodeType... other)
     {
         this.fmt = fmt;
         supported = EnumSet.of(first, other);
@@ -56,8 +54,7 @@ public abstract class AbstractFormatAttribute
      * @param key key in the format bundle message
      * @return a new message
      */
-    protected final ProcessingMessage newMsg(final FullData data,
-        final MessageBundle bundle, final String key)
+    protected final ProcessingMessage newMsg(FullData data, MessageBundle bundle, String key)
     {
         return data.newMessage().put("domain", "validation")
             .put("keyword", "format").put("attribute", fmt)

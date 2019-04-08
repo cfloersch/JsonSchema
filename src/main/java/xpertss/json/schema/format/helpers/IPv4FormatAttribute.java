@@ -14,25 +14,23 @@ import com.google.common.net.InetAddresses;
  *
  * <p>This uses Guava's {@link InetAddresses} to do the job.</p>
  */
-public final class IPv4FormatAttribute
-    extends AbstractFormatAttribute
-{
+public final class IPv4FormatAttribute extends AbstractFormatAttribute {
+
     private static final int IPV4_LENGTH = 4;
 
-    public IPv4FormatAttribute(final String fmt)
+    public IPv4FormatAttribute(String fmt)
     {
         super(fmt, NodeType.STRING);
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String ipaddr = data.getInstance().getNode().textValue();
+        String ipaddr = data.getInstance().getNode().textValue();
 
-        if (InetAddresses.isInetAddress(ipaddr) && InetAddresses
-            .forString(ipaddr).getAddress().length == IPV4_LENGTH)
+        if (InetAddresses.isInetAddress(ipaddr) &&
+                InetAddresses.forString(ipaddr).getAddress().length == IPV4_LENGTH)
             return;
 
         report.error(newMsg(data, bundle, "err.format.invalidIPv4Address")

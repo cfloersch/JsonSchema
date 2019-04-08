@@ -22,25 +22,22 @@ import static com.github.fge.jackson.NodeType.*;
  * Helper class to validate the syntax of draft v3's {@code type} and {@code
  * disallow}
  */
-public final class DraftV3TypeKeywordSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final String ANY = "any";
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+public final class DraftV3TypeKeywordSyntaxChecker extends AbstractSyntaxChecker {
 
-    public DraftV3TypeKeywordSyntaxChecker(final String keyword)
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
+    private static final String ANY = "any";
+
+    public DraftV3TypeKeywordSyntaxChecker(String keyword)
     {
         super(keyword, STRING, ARRAY);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = tree.getNode().get(keyword);
+        JsonNode node = tree.getNode().get(keyword);
 
         if (node.isTextual()) {
             final String found = node.textValue();
@@ -52,8 +49,8 @@ public final class DraftV3TypeKeywordSyntaxChecker
             return;
         }
 
-        final int size = node.size();
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        int size = node.size();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
 
         JsonNode element;
         NodeType type;
@@ -87,7 +84,7 @@ public final class DraftV3TypeKeywordSyntaxChecker
             report.error(newMsg(tree, bundle, "common.array.duplicateElements"));
     }
 
-    private static boolean typeIsValid(final String s)
+    private static boolean typeIsValid(String s)
     {
         return ANY.equals(s) || NodeType.fromName(s) != null;
 

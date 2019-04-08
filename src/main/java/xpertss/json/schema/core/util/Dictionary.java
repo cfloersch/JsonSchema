@@ -35,9 +35,7 @@ import java.util.Map;
  * @see DictionaryBuilder
  */
 @Immutable
-public final class Dictionary<T>
-    implements Frozen<DictionaryBuilder<T>>
-{
+public final class Dictionary<T> implements Frozen<DictionaryBuilder<T>> {
     /**
      * Entries of this dictionary
      *
@@ -64,7 +62,7 @@ public final class Dictionary<T>
      * @param builder the builder
      * @see DictionaryBuilder#freeze()
      */
-    Dictionary(final DictionaryBuilder<T> builder)
+    Dictionary(DictionaryBuilder<T> builder)
     {
         entries = ImmutableMap.copyOf(builder.entries);
     }

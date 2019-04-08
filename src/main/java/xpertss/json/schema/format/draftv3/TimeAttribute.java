@@ -12,9 +12,8 @@ import static java.time.temporal.ChronoField.HOUR_OF_DAY;
 import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 
-public final class TimeAttribute
-    extends AbstractDateFormatAttribute
-{
+public final class TimeAttribute extends AbstractDateFormatAttribute {
+    
     private static final FormatAttribute INSTANCE = new TimeAttribute();
 
     private TimeAttribute()

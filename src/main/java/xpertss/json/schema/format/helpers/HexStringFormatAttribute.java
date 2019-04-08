@@ -19,28 +19,25 @@ import com.google.common.base.CharMatcher;
  * checksums, which are very commonly represented in form of hexadecimal strings
  * of fixed length.</p>
  */
-public abstract class HexStringFormatAttribute
-    extends AbstractFormatAttribute
-{
+public abstract class HexStringFormatAttribute extends AbstractFormatAttribute {
+
     // FIXME: maybe there is a better way to do that? CharMatcher does not seem
     // to have the following predefined...
-    private static final CharMatcher HEX_CHARS
-        = CharMatcher.anyOf("0123456789abcdefABCDEF").precomputed();
+    private static final CharMatcher HEX_CHARS = CharMatcher.anyOf("0123456789abcdefABCDEF").precomputed();
 
     protected final int length;
 
-    protected HexStringFormatAttribute(final String fmt, final int length)
+    protected HexStringFormatAttribute(String fmt, int length)
     {
         super(fmt, NodeType.STRING);
         this.length = length;
     }
 
     @Override
-    public final void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public final void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String input = data.getInstance().getNode().textValue();
+        String input = data.getInstance().getNode().textValue();
 
         if (length != input.length()) {
             report.error(newMsg(data, bundle, "err.format.hexString.badLength")
@@ -52,7 +49,7 @@ public abstract class HexStringFormatAttribute
         if (HEX_CHARS.matchesAllOf(input))
             return;
 
-        final int index = HEX_CHARS.negate().indexIn(input);
+        int index = HEX_CHARS.negate().indexIn(input);
 
         report.error(newMsg(data, bundle, "err.format.hexString.illegalChar")
             .putArgument("character", Character.toString(input.charAt(index)))

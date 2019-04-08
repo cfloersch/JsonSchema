@@ -14,11 +14,9 @@ import java.util.Collection;
 /**
  * Syntax checker for the {@code exclusiveMaximum} keyword
  */
-public final class ExclusiveMaximumSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new ExclusiveMaximumSyntaxChecker();
+public final class ExclusiveMaximumSyntaxChecker extends AbstractSyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new ExclusiveMaximumSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -31,9 +29,8 @@ public final class ExclusiveMaximumSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
         if (!tree.getNode().has("maximum"))

@@ -10,10 +10,9 @@ import javax.annotation.concurrent.Immutable;
  * @param <T> the type of the value
  */
 @Immutable
-final class AsJsonValueHolder<T extends AsJson>
-    extends ValueHolder<T>
-{
-    AsJsonValueHolder(final String name, final T value)
+final class AsJsonValueHolder<T extends AsJson> extends ValueHolder<T> {
+
+    AsJsonValueHolder(String name, T value)
     {
         super(name, value);
     }

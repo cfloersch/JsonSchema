@@ -29,9 +29,8 @@ import java.util.Map;
  * @see Keyword
  * @see Library
  */
-public final class ValidationConfiguration
-    implements Frozen<ValidationConfigurationBuilder>
-{
+public final class ValidationConfiguration implements Frozen<ValidationConfigurationBuilder> {
+
     /**
      * Map of keyword libraries and their associated URIs
      *
@@ -94,7 +93,7 @@ public final class ValidationConfiguration
      * @param builder the source configuration
      * @see ValidationConfigurationBuilder#freeze()
      */
-    ValidationConfiguration(final ValidationConfigurationBuilder builder)
+    ValidationConfiguration(ValidationConfigurationBuilder builder)
     {
         libraries = ImmutableMap.copyOf(builder.libraries);
         defaultLibrary = builder.defaultLibrary;

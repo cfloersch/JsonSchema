@@ -17,9 +17,8 @@ import java.util.Collection;
  *
  * @see RegexECMA262Helper
  */
-public final class PatternSyntaxChecker
-    extends AbstractSyntaxChecker
-{
+public final class PatternSyntaxChecker extends AbstractSyntaxChecker {
+
     private static final SyntaxChecker INSTANCE = new PatternSyntaxChecker();
 
     public static SyntaxChecker getInstance()
@@ -33,12 +32,11 @@ public final class PatternSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final String value = getNode(tree).textValue();
+        String value = getNode(tree).textValue();
 
         if (!RegexECMA262Helper.regexIsValid(value))
             report.error(newMsg(tree, bundle, "common.invalidRegex")

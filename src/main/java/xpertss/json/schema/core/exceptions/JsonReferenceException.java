@@ -10,16 +10,14 @@ import xpertss.json.schema.core.report.ProcessingMessage;
  *
  * @see JsonRef
  */
-public final class JsonReferenceException
-    extends ProcessingException
-{
-    public JsonReferenceException(final ProcessingMessage message)
+public final class JsonReferenceException extends ProcessingException {
+
+    public JsonReferenceException(ProcessingMessage message)
     {
         super(message);
     }
 
-    public JsonReferenceException(final ProcessingMessage message,
-        final Throwable e)
+    public JsonReferenceException(ProcessingMessage message, Throwable e)
     {
         super(message, e);
     }

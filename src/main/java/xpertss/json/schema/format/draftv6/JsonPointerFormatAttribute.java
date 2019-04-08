@@ -1,4 +1,4 @@
-package xpertss.json.schema.format.extra;
+package xpertss.json.schema.format.draftv6;
 
 import com.github.fge.jackson.NodeType;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
@@ -10,11 +10,9 @@ import xpertss.json.schema.format.FormatAttribute;
 import xpertss.json.schema.processors.data.FullData;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 
-public final class JsonPointerFormatAttribute
-    extends AbstractFormatAttribute
-{
-    private static final FormatAttribute INSTANCE
-        = new JsonPointerFormatAttribute();
+public final class JsonPointerFormatAttribute extends AbstractFormatAttribute {
+
+    private static final FormatAttribute INSTANCE = new JsonPointerFormatAttribute();
 
     private JsonPointerFormatAttribute()
     {
@@ -27,11 +25,10 @@ public final class JsonPointerFormatAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
+        String value = data.getInstance().getNode().textValue();
 
         try {
             new JsonPointer(value);

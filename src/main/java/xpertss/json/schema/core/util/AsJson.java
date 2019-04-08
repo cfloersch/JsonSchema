@@ -10,8 +10,8 @@ import xpertss.json.schema.core.tree.SchemaTree;
  * SchemaTree} implements it to provide an object with the summary of its main
  * characteristics (loading URI, current pointer).</p>
  */
-public interface AsJson
-{
+public interface AsJson {
+    
     /**
      * Return a JSON representation of this object
      *

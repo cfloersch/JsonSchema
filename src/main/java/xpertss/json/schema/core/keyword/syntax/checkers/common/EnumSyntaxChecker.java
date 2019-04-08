@@ -21,11 +21,9 @@ import java.util.Set;
  *
  * @see JsonNumEquals
  */
-public final class EnumSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+public final class EnumSyntaxChecker extends AbstractSyntaxChecker {
+
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     private static final SyntaxChecker INSTANCE = new EnumSyntaxChecker();
 
@@ -38,13 +36,13 @@ public final class EnumSyntaxChecker
     {
         super("enum", NodeType.ARRAY);
     }
+
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
 
         for (final JsonNode element: getNode(tree))
             if (!set.add(EQUIVALENCE.wrap(element))) {

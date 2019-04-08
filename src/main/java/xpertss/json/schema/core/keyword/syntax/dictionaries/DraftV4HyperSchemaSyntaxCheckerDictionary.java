@@ -12,8 +12,8 @@ import xpertss.json.schema.core.keyword.syntax.checkers.hyperschema.MediaSyntaxC
 /**
  * Draft v4 hyperschema specific syntax checkers
  */
-public final class DraftV4HyperSchemaSyntaxCheckerDictionary
-{
+public final class DraftV4HyperSchemaSyntaxCheckerDictionary {
+
     private static final Dictionary<SyntaxChecker> DICTIONARY;
 
     public static Dictionary<SyntaxChecker> get()
@@ -26,8 +26,7 @@ public final class DraftV4HyperSchemaSyntaxCheckerDictionary
     }
 
     static {
-        final DictionaryBuilder<SyntaxChecker> builder
-            = Dictionary.newBuilder();
+        DictionaryBuilder<SyntaxChecker> builder = Dictionary.newBuilder();
 
         /*
          * Put all common checkers

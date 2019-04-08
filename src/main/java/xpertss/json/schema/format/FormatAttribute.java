@@ -11,8 +11,8 @@ import java.util.EnumSet;
 /**
  * Interface for a format attribute validator
  */
-public interface FormatAttribute
-{
+public interface FormatAttribute {
+
     /**
      * Return the set of JSON Schema types this format attribute applies to
      *
@@ -33,7 +33,6 @@ public interface FormatAttribute
      * @throws ProcessingException an exception occurs (normally, never for a
      * format attribute)
      */
-    void validate(final ProcessingReport report, final MessageBundle bundle,
-        final FullData data)
+    void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException;
 }

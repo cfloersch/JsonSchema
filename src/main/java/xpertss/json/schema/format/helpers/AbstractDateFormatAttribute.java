@@ -8,19 +8,17 @@ import xpertss.json.schema.format.AbstractFormatAttribute;
 import xpertss.json.schema.processors.data.FullData;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 
-import java.time.DateTimeException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
  * Abstract class for date/time related format attributes
  */
-public abstract class AbstractDateFormatAttribute
-    extends AbstractFormatAttribute
-{
+public abstract class AbstractDateFormatAttribute extends AbstractFormatAttribute {
+
     private final String[] formats;
 
-    protected AbstractDateFormatAttribute(final String fmt, final String ... formats)
+    protected AbstractDateFormatAttribute(String fmt, String ... formats)
     {
         super(fmt, NodeType.STRING);
         this.formats = formats;
@@ -29,16 +27,16 @@ public abstract class AbstractDateFormatAttribute
     protected abstract DateTimeFormatter getFormatter();
 
     @Override
-    public final void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public final void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final DateTimeFormatter formatter = getFormatter();
-        final String value = data.getInstance().getNode().textValue();
+        DateTimeFormatter formatter = getFormatter();
+        String value = data.getInstance().getNode().textValue();
 
         try {
             formatter.parse(value);
         } catch (DateTimeParseException ignored) {
+            // TODO Catch exception and determine if the issue is format or actual non-existent dates
             report.error(newMsg(data, bundle, "err.format.invalidDate")
                .putArgument("value", value).putArgument("expected", Sets.newHashSet(formats)));
         }

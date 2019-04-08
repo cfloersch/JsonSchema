@@ -20,17 +20,13 @@ import java.util.Set;
 /**
  * Syntax checker for draft v4's {@code type} keyword
  */
-public final class DraftV4TypeSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final EnumSet<NodeType> ALL_TYPES
-        = EnumSet.allOf(NodeType.class);
+public final class DraftV4TypeSyntaxChecker extends AbstractSyntaxChecker {
 
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+    private static final EnumSet<NodeType> ALL_TYPES = EnumSet.allOf(NodeType.class);
 
-    private static final SyntaxChecker INSTANCE
-        = new DraftV4TypeSyntaxChecker();
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
+
+    private static final SyntaxChecker INSTANCE = new DraftV4TypeSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -43,16 +39,15 @@ public final class DraftV4TypeSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
+        JsonNode node = getNode(tree);
 
 
         if (node.isTextual()) {
-            final String s = node.textValue();
+            String s = node.textValue();
             if (NodeType.fromName(s) == null)
                 report.error(newMsg(tree, bundle,
                     "common.typeDisallow.primitiveType.unknown")
@@ -60,14 +55,14 @@ public final class DraftV4TypeSyntaxChecker
             return;
         }
 
-        final int size = node.size();
+        int size = node.size();
 
         if (size == 0) {
             report.error(newMsg(tree, bundle, "common.array.empty"));
             return;
         }
 
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
 
         JsonNode element;
         NodeType type;
@@ -85,7 +80,7 @@ public final class DraftV4TypeSyntaxChecker
                     .putArgument("found", type));
                 continue;
             }
-            final String found = element.textValue();
+            String found = element.textValue();
             if (NodeType.fromName(found) == null)
                 report.error(newMsg(tree, bundle,
                     "common.typeDisallow.primitiveType.unknown")

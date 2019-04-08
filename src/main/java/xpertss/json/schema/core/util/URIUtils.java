@@ -1,16 +1,16 @@
 package xpertss.json.schema.core.util;
 
-import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
-import xpertss.json.schema.core.ref.JsonRef;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
+import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
+import xpertss.json.schema.core.ref.JsonRef;
 
 import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Utility class for URI normalization
@@ -31,10 +31,9 @@ import java.net.URISyntaxException;
  * @see Function
  * @see Registry
  */
-public final class URIUtils
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class URIUtils {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /*
      * ASCII letters, and whatever is legal in a URI scheme
@@ -52,31 +51,28 @@ public final class URIUtils
     /*
      * NORMALIZERS
      */
-    private static final Function<String, String> LOWERCASE
-        = new Function<String, String>()
-    {
+    private static final java.util.function.Function<String, String> LOWERCASE = new java.util.function.Function<String, String>() {
         @Nullable
         @Override
-        public String apply(@Nullable final String input)
+        public String apply(@Nullable String input)
         {
             return input == null ? null : input.toLowerCase();
         }
     };
 
-    private static final Function<URI, URI> URI_NORMALIZER
-        = new Function<URI, URI>()
+    private static final Function<URI, URI> URI_NORMALIZER = new Function<URI, URI>()
         {
             @Nullable
             @Override
-            public URI apply(@Nullable final URI input)
+            public URI apply(@Nullable URI input)
             {
                 if (input == null)
                     return null;
 
-                final URI uri = input.normalize();
+                URI uri = input.normalize();
 
-                final String scheme = uri.getScheme();
-                final String host = uri.getHost();
+                String scheme = uri.getScheme();
+                String host = uri.getHost();
 
                 if (scheme == null && host == null)
                     return uri;
@@ -91,38 +87,33 @@ public final class URIUtils
                         return new URI(LOWERCASE.apply(scheme),
                             uri.getSchemeSpecificPart(), uri.getFragment());
                     } catch (URISyntaxException e) {
-                        throw new IllegalStateException("How did I get there??",
-                            e);
+                        throw new IllegalStateException("How did I get there??", e);
                     }
 
-                final String userinfo = uri.getUserInfo();
-                final int port = uri.getPort();
-                final String path = uri.getPath();
-                final String query = uri.getQuery();
-                final String fragment = uri.getFragment();
+                String userinfo = uri.getUserInfo();
+                int port = uri.getPort();
+                String path = uri.getPath();
+                String query = uri.getQuery();
+                String fragment = uri.getFragment();
 
                 try {
-                    return new URI(LOWERCASE.apply(scheme), userinfo,
-                        LOWERCASE.apply(host), port, path, query, fragment);
+                    return new URI(LOWERCASE.apply(scheme), userinfo, LOWERCASE.apply(host), port, path, query, fragment);
                 } catch (URISyntaxException e) {
                     throw new IllegalStateException("How did I get there??", e);
                 }
             }
         };
 
-    private static final Function<URI, URI> SCHEMAURI_NORMALIZER
-        = new Function<URI, URI>()
+    private static final Function<URI, URI> SCHEMAURI_NORMALIZER = new Function<URI, URI>()
     {
         @Nullable
         @Override
-        public URI apply(@Nullable final URI input)
+        public URI apply(@Nullable URI input)
         {
-            final URI uri = URI_NORMALIZER.apply(input);
-            if (uri == null)
-                return null;
+            URI uri = URI_NORMALIZER.apply(input);
+            if (uri == null) return null;
             try {
-                return new URI(uri.getScheme(), uri.getSchemeSpecificPart(),
-                    Optional.fromNullable(uri.getFragment()).or(""));
+                return new URI(uri.getScheme(), uri.getSchemeSpecificPart(), Optional.ofNullable(uri.getFragment()).orElse(""));
             } catch (URISyntaxException e) {
                 throw new RuntimeException("How did I get there??", e);
             }
@@ -205,7 +196,7 @@ public final class URIUtils
      * @param scheme the scheme
      * @return the normalized scheme
      */
-    public static String normalizeScheme(@Nullable final String scheme)
+    public static String normalizeScheme(@Nullable String scheme)
     {
         return LOWERCASE.apply(scheme);
     }
@@ -228,7 +219,7 @@ public final class URIUtils
      *
      * @see #uriNormalizer()
      */
-    public static URI normalizeURI(@Nullable final URI uri)
+    public static URI normalizeURI(@Nullable URI uri)
     {
         return URI_NORMALIZER.apply(uri);
     }
@@ -255,7 +246,7 @@ public final class URIUtils
      *
      * @see #schemaURINormalizer()
      */
-    public static URI normalizeSchemaURI(@Nullable final URI uri)
+    public static URI normalizeSchemaURI(@Nullable URI uri)
     {
         return SCHEMAURI_NORMALIZER.apply(uri);
     }
@@ -277,7 +268,7 @@ public final class URIUtils
      *
      * @see #schemeChecker()
      */
-    public static void checkScheme(final String scheme)
+    public static void checkScheme(String scheme)
     {
         SCHEME_CHECKER.check(scheme);
     }
@@ -309,7 +300,7 @@ public final class URIUtils
      *
      * @see #pathURIChecker()
      */
-    public static void checkPathURI(final URI uri)
+    public static void checkPathURI(URI uri)
     {
         PATHURI_CHECKER.check(uri);
     }
@@ -339,7 +330,7 @@ public final class URIUtils
      *
      * @see #schemaURIChecker()
      */
-    public static void checkSchemaURI(final URI uri)
+    public static void checkSchemaURI(URI uri)
     {
         SCHEMAURI_CHECKER.check(uri);
     }

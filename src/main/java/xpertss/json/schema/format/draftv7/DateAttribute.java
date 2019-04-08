@@ -5,9 +5,7 @@ import xpertss.json.schema.format.helpers.AbstractDateFormatAttribute;
 
 import java.time.format.DateTimeFormatter;
 
-public final class DateAttribute
-    extends AbstractDateFormatAttribute
-{
+public final class DateAttribute extends AbstractDateFormatAttribute {
     private static final FormatAttribute INSTANCE = new DateAttribute();
 
     private DateAttribute()

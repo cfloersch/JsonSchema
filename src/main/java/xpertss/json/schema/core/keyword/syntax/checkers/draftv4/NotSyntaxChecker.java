@@ -14,9 +14,8 @@ import java.util.Collection;
 /**
  * Syntax checker for draft v4's {@code not} keyword
  */
-public final class NotSyntaxChecker
-    extends AbstractSyntaxChecker
-{
+public final class NotSyntaxChecker extends AbstractSyntaxChecker {
+
     private static final SyntaxChecker INSTANCE = new NotSyntaxChecker();
 
     public static SyntaxChecker getInstance()
@@ -30,9 +29,8 @@ public final class NotSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
         pointers.add(JsonPointer.of(keyword));

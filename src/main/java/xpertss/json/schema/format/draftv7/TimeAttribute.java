@@ -15,9 +15,8 @@ import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.ChronoField.NANO_OF_SECOND;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 
-public final class TimeAttribute
-    extends AbstractDateFormatAttribute
-{
+public final class TimeAttribute extends AbstractDateFormatAttribute {
+
     private static final FormatAttribute INSTANCE = new TimeAttribute();
 
     private TimeAttribute()
@@ -43,6 +42,8 @@ public final class TimeAttribute
            .appendFraction(NANO_OF_SECOND, 0, 12, true)
            .optionalEnd()
            .appendOffset("+HH:MM", "Z")
-           .toFormatter(Locale.getDefault(Locale.Category.FORMAT)).withResolverStyle(ResolverStyle.STRICT).withChronology(IsoChronology.INSTANCE);
+           .toFormatter(Locale.getDefault(Locale.Category.FORMAT))
+                .withResolverStyle(ResolverStyle.STRICT)
+                .withChronology(IsoChronology.INSTANCE);
     }
 }

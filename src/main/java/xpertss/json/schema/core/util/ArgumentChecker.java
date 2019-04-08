@@ -22,10 +22,9 @@ import javax.annotation.Nullable;
  * @since 1.1.9
  */
 @Beta
-public abstract class ArgumentChecker<T>
-{
-    protected static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public abstract class ArgumentChecker<T> {
+
+    protected static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * As its name says
@@ -38,7 +37,7 @@ public abstract class ArgumentChecker<T>
         return new ArgumentChecker<X>()
         {
             @Override
-            public void check(final X argument)
+            public void check(X argument)
             {
             }
         };
@@ -72,7 +71,7 @@ public abstract class ArgumentChecker<T>
      * @return an argument checker
      * @throws NullPointerException message is null
      */
-    public static <X> ArgumentChecker<X> notNull(final String message)
+    public static <X> ArgumentChecker<X> notNull(String message)
     {
         BUNDLE.checkNotNull(message, "argChecker.nullMessage");
         return new ArgumentChecker<X>()
@@ -92,5 +91,5 @@ public abstract class ArgumentChecker<T>
      * @param argument the argument
      * @throws RuntimeException see description
      */
-    public abstract void check(@Nullable final T argument);
+    public abstract void check(@Nullable T argument);
 }

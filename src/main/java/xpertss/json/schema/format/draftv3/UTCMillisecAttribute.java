@@ -23,9 +23,8 @@ import java.math.BigInteger;
  *     <li>the number, divided by 1000, is greater than 2^31 - 1.</li>
  * </ul>
  */
-public final class UTCMillisecAttribute
-    extends AbstractFormatAttribute
-{
+public final class UTCMillisecAttribute extends AbstractFormatAttribute {
+
     /**
      * The maximum bit length of a Unix timestamp value
      */
@@ -49,11 +48,10 @@ public final class UTCMillisecAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
+        JsonNode instance = data.getInstance().getNode();
 
         BigInteger epoch = instance.bigIntegerValue();
 

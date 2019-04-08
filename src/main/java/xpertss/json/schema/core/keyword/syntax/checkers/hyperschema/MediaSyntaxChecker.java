@@ -18,9 +18,8 @@ import java.util.Set;
 /**
  * Syntax checker for draft v4 hyperschema's {@code media} keyword
  */
-public final class MediaSyntaxChecker
-    extends AbstractSyntaxChecker
-{
+public final class MediaSyntaxChecker extends AbstractSyntaxChecker {
+
     private static final String BINARY_ENCODING_FIELDNAME = "binaryEncoding";
     private static final String TYPE_FIELDNAME = "type";
 
@@ -42,12 +41,11 @@ public final class MediaSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
+        JsonNode node = getNode(tree);
         JsonNode subNode;
         NodeType type;
         String value;

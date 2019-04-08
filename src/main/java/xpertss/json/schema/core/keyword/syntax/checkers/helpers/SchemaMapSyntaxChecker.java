@@ -19,18 +19,16 @@ import java.util.Set;
  * Helper class for keywords having an object as a value whose values are
  * schemas
  */
-public abstract class SchemaMapSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    protected SchemaMapSyntaxChecker(final String keyword)
+public abstract class SchemaMapSyntaxChecker extends AbstractSyntaxChecker {
+
+    protected SchemaMapSyntaxChecker(String keyword)
     {
         super(keyword, NodeType.OBJECT);
     }
 
     @Override
-    protected final void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected final void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                        ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
         collectPointers(pointers, getNode(tree));
@@ -45,12 +43,10 @@ public abstract class SchemaMapSyntaxChecker
      * @param tree the schema
      * @throws InvalidSchemaException schema is invalid
      */
-    protected abstract void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected abstract void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException;
 
-    private void collectPointers(final Collection<JsonPointer> pointers,
-        final JsonNode node)
+    private void collectPointers(Collection<JsonPointer> pointers, JsonNode node)
     {
         // We know this is an object, so...
         final Set<String> set = Sets.newHashSet(node.fieldNames());

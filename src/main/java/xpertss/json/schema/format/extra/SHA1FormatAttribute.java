@@ -10,9 +10,8 @@ import xpertss.json.schema.format.helpers.HexStringFormatAttribute;
  *
  * @see HexStringFormatAttribute
  */
-public final class SHA1FormatAttribute
-    extends HexStringFormatAttribute
-{
+public final class SHA1FormatAttribute extends HexStringFormatAttribute {
+
     private static final FormatAttribute instance = new SHA1FormatAttribute();
 
     private SHA1FormatAttribute()

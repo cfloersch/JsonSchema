@@ -22,18 +22,9 @@ import java.util.EnumSet;
  * a customized exception provider (throwing a {@link InvalidSchemaException}
  * instead of the base {@link ProcessingException}.</p>
  */
-public abstract class AbstractSyntaxChecker
-    implements SyntaxChecker
-{
-    private static final ExceptionProvider EXCEPTION_PROVIDER
-        = new ExceptionProvider()
-    {
-        @Override
-        public ProcessingException doException(final ProcessingMessage message)
-        {
-            return new InvalidSchemaException(message);
-        }
-    };
+public abstract class AbstractSyntaxChecker implements SyntaxChecker {
+
+    private static final ExceptionProvider EXCEPTION_PROVIDER = InvalidSchemaException::new;
 
     /**
      * The keyword name
@@ -52,8 +43,7 @@ public abstract class AbstractSyntaxChecker
      * @param first the first valid type for this keyword's value
      * @param other other valid types for this keyword's value (if any)
      */
-    protected AbstractSyntaxChecker(final String keyword, final NodeType first,
-        final NodeType... other)
+    protected AbstractSyntaxChecker(String keyword, NodeType first, NodeType... other)
     {
         this.keyword = keyword;
         types = EnumSet.of(first, other);
@@ -80,13 +70,12 @@ public abstract class AbstractSyntaxChecker
      * @throws InvalidSchemaException keyword is invalid
      */
     @Override
-    public final void checkSyntax(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    public final void checkSyntax(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                    ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
-        final NodeType type = NodeType.getNodeType(node);
+        JsonNode node = getNode(tree);
+        NodeType type = NodeType.getNodeType(node);
 
         if (!types.contains(type)) {
             report.error(newMsg(tree, bundle, "common.incorrectType")
@@ -109,9 +98,8 @@ public abstract class AbstractSyntaxChecker
      * @param tree the schema
      * @throws InvalidSchemaException keyword is invalid
      */
-    protected abstract void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected abstract void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                        ProcessingReport report, SchemaTree tree)
         throws ProcessingException;
 
     /**
@@ -123,8 +111,7 @@ public abstract class AbstractSyntaxChecker
      * @return a new {@link ProcessingMessage}
      * @see ProcessingMessage#setMessage(String)
      */
-    protected final ProcessingMessage newMsg(final SchemaTree tree,
-        final MessageBundle bundle, final String key)
+    protected final ProcessingMessage newMsg(SchemaTree tree, MessageBundle bundle, String key)
     {
         return new ProcessingMessage().setMessage(bundle.getMessage(key))
             .put("domain", "syntax").put("schema", tree).put("keyword", keyword)
@@ -137,8 +124,9 @@ public abstract class AbstractSyntaxChecker
      * @param tree the tree to extract the keyword's value from
      * @return the keyword's value
      */
-    protected final JsonNode getNode(final SchemaTree tree)
+    protected final JsonNode getNode(SchemaTree tree)
     {
         return tree.getNode().get(keyword);
     }
+    
 }

@@ -24,14 +24,11 @@ import java.util.Map;
  * <p>The validation check also fills the JSON Pointer list with the
  * appropriate paths when schema dependencies are encountered.</p>
  */
-public abstract class DependenciesSyntaxChecker
-    extends AbstractSyntaxChecker
-{
+public abstract class DependenciesSyntaxChecker extends AbstractSyntaxChecker {
     /**
      * JSON Schema equivalence
      */
-    protected static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+    protected static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     /**
      * Valid types for one dependency value
@@ -43,20 +40,19 @@ public abstract class DependenciesSyntaxChecker
      *
      * @param depTypes valid types for one dependency value
      */
-    protected DependenciesSyntaxChecker(final NodeType... depTypes)
+    protected DependenciesSyntaxChecker(NodeType... depTypes)
     {
         super("dependencies", NodeType.OBJECT);
         dependencyTypes = EnumSet.of(NodeType.OBJECT, depTypes);
     }
 
     @Override
-    protected final void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected final void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                        ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
-        final Map<String, JsonNode> map = Maps.newTreeMap();
+        JsonNode node = getNode(tree);
+        Map<String, JsonNode> map = Maps.newTreeMap();
         map.putAll(JacksonUtils.asMap(node));
 
         String key;
@@ -82,7 +78,7 @@ public abstract class DependenciesSyntaxChecker
      * @param tree the schema
      * @throws InvalidSchemaException keyword is invalid
      */
-    protected abstract void checkDependency(final ProcessingReport report,
-        final MessageBundle bundle, final String name, final SchemaTree tree)
+    protected abstract void checkDependency(ProcessingReport report, MessageBundle bundle,
+                                                String name, SchemaTree tree)
         throws ProcessingException;
 }

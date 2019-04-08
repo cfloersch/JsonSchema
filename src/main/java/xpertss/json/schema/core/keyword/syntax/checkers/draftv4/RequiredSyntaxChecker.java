@@ -20,11 +20,9 @@ import java.util.Set;
 /**
  * Syntax checker for draft v4's {@code required} keyword
  */
-public final class RequiredSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final Equivalence<JsonNode> EQUIVALENCE
-        = JsonNumEquals.getInstance();
+public final class RequiredSyntaxChecker extends AbstractSyntaxChecker {
+
+    private static final Equivalence<JsonNode> EQUIVALENCE = JsonNumEquals.getInstance();
 
     private static final SyntaxChecker INSTANCE = new RequiredSyntaxChecker();
 
@@ -39,20 +37,19 @@ public final class RequiredSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
-        final int size = node.size();
+        JsonNode node = getNode(tree);
+        int size = node.size();
 
         if (size == 0) {
             report.error(newMsg(tree, bundle, "common.array.empty"));
             return;
         }
 
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
 
         boolean uniqueElements = true;
         JsonNode element;

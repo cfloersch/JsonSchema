@@ -15,9 +15,8 @@ import java.util.Currency;
  *
  * @see Currency#getInstance(String)
  */
-public final class CurrencyFormatAttribute
-    extends AbstractFormatAttribute
-{
+public final class CurrencyFormatAttribute extends AbstractFormatAttribute {
+
     private static final FormatAttribute instance = new CurrencyFormatAttribute();
 
     private CurrencyFormatAttribute()
@@ -31,11 +30,10 @@ public final class CurrencyFormatAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-                         final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String input = data.getInstance().getNode().textValue();
+        String input = data.getInstance().getNode().textValue();
 
         try {
             Currency.getInstance(input);

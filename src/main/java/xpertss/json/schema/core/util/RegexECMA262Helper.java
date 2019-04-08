@@ -36,8 +36,7 @@ import java.util.regex.Pattern;
  * <p>Rhino is only the fallback as it is tremendously slower.</p>
  */
 @ThreadSafe
-public final class RegexECMA262Helper
-{
+public final class RegexECMA262Helper {
     private static final String REGEX_IS_VALID_FUNCTION_NAME = "regexIsValid";
 
     private static final String REG_MATCH_FUNCTION_NAME = "regMatch";
@@ -104,8 +103,7 @@ public final class RegexECMA262Helper
     }
 
     private static Invocable tryResolvePrimaryEngine() {
-        final ScriptEngine engine = new ScriptEngineManager()
-                .getEngineByName("nashorn");
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
         if(engine != null) {
             try {
                 engine.eval(jsAsString);
@@ -123,10 +121,9 @@ public final class RegexECMA262Helper
      * @param regex the regex to validate
      * @return true if the regex is valid
      */
-    public static boolean regexIsValid(final String regex)
+    public static boolean regexIsValid(String regex)
     {
-        if(PRIMARY_SCRIPT_ENGINE != null)
-        {
+        if(PRIMARY_SCRIPT_ENGINE != null) {
             return invokeScriptEngine(REGEX_IS_VALID_FUNCTION_NAME, regex);
         }
         return invokeFallbackEngine(REGEX_IS_VALID, regex);
@@ -146,17 +143,15 @@ public final class RegexECMA262Helper
      * @param input the input to match against (and again, see description)
      * @return true if the regex matches the input
      */
-    public static boolean regMatch(final String regex, final String input)
+    public static boolean regMatch(String regex, String input)
     {
-        if(PRIMARY_SCRIPT_ENGINE != null)
-        {
+        if(PRIMARY_SCRIPT_ENGINE != null) {
             return invokeScriptEngine(REG_MATCH_FUNCTION_NAME, regex, input);
         }
         return invokeFallbackEngine(REG_MATCH, regex, input);
     }
 
-    private static boolean invokeScriptEngine(final String function,
-                                              final Object... values)
+    private static boolean invokeScriptEngine(String function, Object... values)
     {
         try {
             return (Boolean) PRIMARY_SCRIPT_ENGINE.invokeFunction(function,
@@ -170,8 +165,7 @@ public final class RegexECMA262Helper
         }
     }
 
-    private static boolean invokeFallbackEngine(final Function function,
-                                                final Object... values)
+    private static boolean invokeFallbackEngine(Function function, Object... values)
     {
         final Context context = Context.enter();
         try {

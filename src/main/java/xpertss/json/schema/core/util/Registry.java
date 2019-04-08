@@ -4,11 +4,11 @@ import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.annotations.Beta;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A registry builder with key/value/pair normalization and checking
@@ -21,10 +21,9 @@ import java.util.Map;
  * @since 1.1.9
  */
 @Beta
-public abstract class Registry<K, V>
-{
-    protected static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public abstract class Registry<K, V> {
+
+    protected static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final Map<K, V> map = Maps.newHashMap();
     private final Function<K, K> keyNormalizer;
@@ -41,10 +40,10 @@ public abstract class Registry<K, V>
      * @param valueChecker the value checker
      * @throws NullPointerException one normalizer or checker is null
      */
-    protected Registry(final Function<K, K> keyNormalizer,
-        final ArgumentChecker<K> keyChecker,
-        final Function<V, V> valueNormalizer,
-        final ArgumentChecker<V> valueChecker)
+    protected Registry(Function<K, K> keyNormalizer,
+        ArgumentChecker<K> keyChecker,
+        Function<V, V> valueNormalizer,
+        ArgumentChecker<V> valueChecker)
     {
         this.keyNormalizer = BUNDLE.checkNotNull(keyNormalizer,
             "mapBuilder.nullNormalizer");
@@ -68,15 +67,15 @@ public abstract class Registry<K, V>
      * @throws NullPointerException the key or value is null
      * @throws IllegalArgumentException see {@link ArgumentChecker}
      */
-    public final Registry<K, V> put(final K key, final V value)
+    public final Registry<K, V> put(K key, V value)
     {
         BUNDLE.checkNotNull(key, "mapBuilder.nullKey");
         BUNDLE.checkNotNull(value, "mapBuilder.nullValue");
 
-        final K normalizedKey = keyNormalizer.apply(key);
+        K normalizedKey = keyNormalizer.apply(key);
         keyChecker.check(key);
 
-        final V normalizedValue = valueNormalizer.apply(value);
+        V normalizedValue = valueNormalizer.apply(value);
         valueChecker.check(value);
 
         checkEntry(normalizedKey, normalizedValue);
@@ -95,7 +94,7 @@ public abstract class Registry<K, V>
      * @return this
      * @throws NullPointerException map is null
      */
-    public final Registry<K, V> putAll(final Map<K, V> otherMap)
+    public final Registry<K, V> putAll(Map<K, V> otherMap)
     {
         BUNDLE.checkNotNull(otherMap, "mapBuilder.nullMap");
 
@@ -111,7 +110,7 @@ public abstract class Registry<K, V>
      * @param key the key to remove
      * @return this
      */
-    public final Registry<K, V> remove(final K key)
+    public final Registry<K, V> remove(K key)
     {
         map.remove(key);
         return this;
@@ -150,5 +149,5 @@ public abstract class Registry<K, V>
      * @param key the normalized key
      * @param value the normalized value
      */
-    protected abstract void checkEntry(final K key, final V value);
+    protected abstract void checkEntry(K key, V value);
 }

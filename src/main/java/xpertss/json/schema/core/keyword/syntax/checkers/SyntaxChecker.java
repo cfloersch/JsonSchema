@@ -25,8 +25,8 @@ import java.util.EnumSet;
  *
  * @see SyntaxProcessor
  */
-public interface SyntaxChecker
-{
+public interface SyntaxChecker {
+
     // FIXME: I should get rid of that -- it is used in only one place.
     @VisibleForTesting
     EnumSet<NodeType> getValidTypes();
@@ -41,8 +41,7 @@ public interface SyntaxChecker
      * @throws ProcessingException an error is detected, and the report is
      * configured to throw an exception on error.
      */
-    void checkSyntax(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    void checkSyntax(Collection<JsonPointer> pointers, MessageBundle bundle,
+                        ProcessingReport report, SchemaTree tree)
         throws ProcessingException;
 }

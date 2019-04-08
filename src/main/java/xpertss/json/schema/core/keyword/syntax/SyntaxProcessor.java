@@ -23,9 +23,8 @@ import java.util.Set;
 /**
  * Syntax processor
  */
-public final class SyntaxProcessor
-    extends RawProcessor<SchemaTree, SchemaTree>
-{
+public final class SyntaxProcessor extends RawProcessor<SchemaTree, SchemaTree> {
+
     private final MessageBundle bundle;
     private final Map<String, SyntaxChecker> checkers;
 
@@ -35,8 +34,7 @@ public final class SyntaxProcessor
      * @param bundle message bundle used by this syntax checker
      * @param dict dictionary of syntax checkers
      */
-    public SyntaxProcessor(final MessageBundle bundle,
-        final Dictionary<SyntaxChecker> dict)
+    public SyntaxProcessor(MessageBundle bundle, Dictionary<SyntaxChecker> dict)
     {
         super("schema", "schema");
         this.bundle = bundle;
@@ -44,19 +42,18 @@ public final class SyntaxProcessor
     }
 
     @Override
-    public SchemaTree rawProcess(final ProcessingReport report,
-        final SchemaTree input)
+    public SchemaTree rawProcess(ProcessingReport report, SchemaTree input)
         throws ProcessingException
     {
         validate(report, input);
         return input;
     }
 
-    private void validate(final ProcessingReport report, final SchemaTree tree)
+    private void validate(ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = tree.getNode();
-        final NodeType type = NodeType.getNodeType(node);
+        JsonNode node = tree.getNode();
+        NodeType type = NodeType.getNodeType(node);
 
         /*
          * Barf if not an object, and don't even try to go any further
@@ -73,10 +70,10 @@ public final class SyntaxProcessor
          * the checkers' key set: if non empty, some keywords are missing,
          * report them.
          */
-        final Map<String, SyntaxChecker> map = Maps.newTreeMap();
+        Map<String, SyntaxChecker> map = Maps.newTreeMap();
         map.putAll(checkers);
 
-        final Set<String> fields = Sets.newHashSet(node.fieldNames());
+        Set<String> fields = Sets.newHashSet(node.fieldNames());
         map.keySet().retainAll(fields);
         fields.removeAll(map.keySet());
 
@@ -88,7 +85,7 @@ public final class SyntaxProcessor
          * Now, check syntax of each keyword, and collect pointers for further
          * analysis.
          */
-        final List<JsonPointer> pointers = Lists.newArrayList();
+        List<JsonPointer> pointers = Lists.newArrayList();
         for (final SyntaxChecker checker: map.values())
             checker.checkSyntax(pointers, bundle, report, tree);
 
@@ -99,7 +96,7 @@ public final class SyntaxProcessor
             validate(report, tree.append(pointer));
     }
 
-    private ProcessingMessage newMsg(final SchemaTree tree, final String key)
+    private ProcessingMessage newMsg(SchemaTree tree, String key)
     {
         return new ProcessingMessage().put("schema", tree)
             .put("domain", "syntax").setMessage(bundle.getMessage(key));

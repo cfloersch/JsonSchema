@@ -18,8 +18,8 @@ import static com.github.fge.jackson.NodeType.*;
 /**
  * Syntax checkers common to draft v4 and v3
  */
-public final class CommonSyntaxCheckerDictionary
-{
+public final class CommonSyntaxCheckerDictionary {
+
     private static final Dictionary<SyntaxChecker> DICTIONARY;
 
     public static Dictionary<SyntaxChecker> get()
@@ -32,7 +32,7 @@ public final class CommonSyntaxCheckerDictionary
     }
 
     static {
-        final DictionaryBuilder<SyntaxChecker> dict = Dictionary.newBuilder();
+        DictionaryBuilder<SyntaxChecker> dict = Dictionary.newBuilder();
 
         String keyword;
         SyntaxChecker checker;

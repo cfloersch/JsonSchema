@@ -17,9 +17,8 @@ import java.net.URISyntaxException;
  * <p>Note that each and any URI is allowed. In particular, it is not required
  * that the URI be absolute or normalized.</p>
  */
-public final class URIAttribute
-    extends AbstractFormatAttribute
-{
+public final class URIAttribute extends AbstractFormatAttribute {
+
     private static final FormatAttribute INSTANCE = new URIAttribute();
 
     public static FormatAttribute getInstance()
@@ -33,11 +32,10 @@ public final class URIAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
+        String value = data.getInstance().getNode().textValue();
 
         try {
             new URI(value);

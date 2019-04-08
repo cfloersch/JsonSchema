@@ -17,11 +17,9 @@ import java.util.Set;
 /**
  * Syntax checker for draft v3's {@code dependencies} keyword
  */
-public final class DraftV3DependenciesSyntaxChecker
-    extends DependenciesSyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new DraftV3DependenciesSyntaxChecker();
+public final class DraftV3DependenciesSyntaxChecker extends DependenciesSyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new DraftV3DependenciesSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -34,11 +32,11 @@ public final class DraftV3DependenciesSyntaxChecker
     }
 
     @Override
-    protected void checkDependency(final ProcessingReport report,
-        final MessageBundle bundle, final String name, final SchemaTree tree)
+    protected void checkDependency(ProcessingReport report, MessageBundle bundle,
+                                    String name, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree).get(name);
+        JsonNode node = getNode(tree).get(name);
         NodeType type;
 
         type = NodeType.getNodeType(node);
@@ -55,7 +53,7 @@ public final class DraftV3DependenciesSyntaxChecker
             return;
         }
 
-        final int size = node.size();
+        int size = node.size();
 
         /*
          * Yep, in draft v3, nothing prevents a dependency array from being
@@ -67,7 +65,7 @@ public final class DraftV3DependenciesSyntaxChecker
             return;
         }
 
-        final Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
+        Set<Equivalence.Wrapper<JsonNode>> set = Sets.newHashSet();
 
         JsonNode element;
         boolean uniqueElements = true;

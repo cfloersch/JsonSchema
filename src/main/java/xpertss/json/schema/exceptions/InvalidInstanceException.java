@@ -6,9 +6,8 @@ import xpertss.json.schema.core.report.ProcessingMessage;
 /**
  * Exception thrown by the validation process when an instance is invalid
  */
-public final class InvalidInstanceException
-    extends ProcessingException
-{
+public final class InvalidInstanceException extends ProcessingException {
+    
     public InvalidInstanceException(final ProcessingMessage message)
     {
         super(message);

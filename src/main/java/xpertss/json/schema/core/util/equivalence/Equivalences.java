@@ -8,8 +8,8 @@ import com.google.common.base.Equivalence;
  * <p>Guava's {@link Equivalence#equals()} and {@link Equivalence#identity()}
  * are not parameterized: this just makes them so.</p>
  */
-public final class Equivalences
-{
+public final class Equivalences {
+
     private Equivalences()
     {
     }

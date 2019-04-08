@@ -3,6 +3,8 @@ package xpertss.json.schema.core.util;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
+ * TODO Get rid of this
+ *
  * @see RegexECMA262Helper
  * @deprecated use {@link RegexECMA262Helper} as 1:1 replacement
  */

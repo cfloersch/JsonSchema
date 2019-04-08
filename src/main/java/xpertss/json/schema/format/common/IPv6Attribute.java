@@ -15,9 +15,8 @@ import com.google.common.net.InetAddresses;
  *
  * <p>This uses Guava's {@link InetAddresses} to do the job.</p>
  */
-public final class IPv6Attribute
-    extends AbstractFormatAttribute
-{
+public final class IPv6Attribute extends AbstractFormatAttribute {
+
     private static final int IPV6_LENGTH = 16;
 
     private static final FormatAttribute INSTANCE = new IPv6Attribute();
@@ -33,12 +32,11 @@ public final class IPv6Attribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final JsonNode instance = data.getInstance().getNode();
-        final String ipaddr = instance.textValue();
+        JsonNode instance = data.getInstance().getNode();
+        String ipaddr = instance.textValue();
 
         if (InetAddresses.isInetAddress(ipaddr) && InetAddresses
             .forString(ipaddr).getAddress().length == IPV6_LENGTH)

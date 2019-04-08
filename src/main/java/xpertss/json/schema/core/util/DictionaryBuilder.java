@@ -27,11 +27,9 @@ import java.util.Map;
  * @param <T> the type of elements for this dictionary builder
  */
 @NotThreadSafe
-public final class DictionaryBuilder<T>
-    implements Thawed<Dictionary<T>>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class DictionaryBuilder<T> implements Thawed<Dictionary<T>> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * Entries for this builder (mutable!)
@@ -53,7 +51,7 @@ public final class DictionaryBuilder<T>
      * @param dict the source dictionary
      * @see Dictionary#thaw()
      */
-    DictionaryBuilder(final Dictionary<T> dict)
+    DictionaryBuilder(Dictionary<T> dict)
     {
         entries.putAll(dict.entries);
     }
@@ -66,7 +64,7 @@ public final class DictionaryBuilder<T>
      * @return this
      * @throws NullPointerException either the key or the value is null
      */
-    public DictionaryBuilder<T> addEntry(final String key, final T value)
+    public DictionaryBuilder<T> addEntry(String key, T value)
     {
         BUNDLE.checkNotNull(key, "dictionary.nullKey");
         BUNDLE.checkNotNull(value, "dictionary.nullValue");
@@ -81,7 +79,7 @@ public final class DictionaryBuilder<T>
      * @return this
      * @throws NullPointerException the dictionary is null
      */
-    public DictionaryBuilder<T> addAll(final Dictionary<T> other)
+    public DictionaryBuilder<T> addAll(Dictionary<T> other)
     {
         BUNDLE.checkNotNull(other, "dictionary.nullDict");
         entries.putAll(other.entries);
@@ -94,7 +92,7 @@ public final class DictionaryBuilder<T>
      * @param key the key to remove
      * @return this
      */
-    public DictionaryBuilder<T> removeEntry(final String key)
+    public DictionaryBuilder<T> removeEntry(String key)
     {
         entries.remove(key);
         return this;

@@ -14,18 +14,16 @@ import java.util.Collection;
  * Syntax checker for draft v4's (and v3's) {@code additionalItems} and {@code
  * additionalProperties}
  */
-public final class AdditionalSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public AdditionalSyntaxChecker(final String keyword)
+public final class AdditionalSyntaxChecker extends AbstractSyntaxChecker {
+
+    public AdditionalSyntaxChecker(String keyword)
     {
         super(keyword, NodeType.BOOLEAN, NodeType.OBJECT);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
         if (getNode(tree).isObject())

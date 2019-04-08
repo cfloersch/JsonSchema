@@ -17,13 +17,13 @@ import xpertss.json.schema.core.report.SimpleExceptionProvider;
  * @see ProcessingMessage
  * @see ProcessingReport
  */
-public interface ExceptionProvider
-{
+public interface ExceptionProvider {
+    
     /**
      * Return an exception associated with a message
      *
      * @param message the message
      * @return the appropriate exception
      */
-    ProcessingException doException(final ProcessingMessage message);
+    ProcessingException doException(ProcessingMessage message);
 }

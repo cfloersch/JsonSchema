@@ -18,20 +18,18 @@ import com.google.common.net.InternetDomainName;
  *
  * <p>Guava's {@link InternetDomainName} is used for validation.</p>
  */
-public final class SharedHostNameAttribute
-    extends AbstractFormatAttribute
-{
-    public SharedHostNameAttribute(final String fmt)
+public final class SharedHostNameAttribute extends AbstractFormatAttribute {
+
+    public SharedHostNameAttribute(String fmt)
     {
         super(fmt, NodeType.STRING);
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
+        String value = data.getInstance().getNode().textValue();
 
         try {
             InternetDomainName.from(value);

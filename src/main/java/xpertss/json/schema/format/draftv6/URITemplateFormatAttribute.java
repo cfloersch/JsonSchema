@@ -1,4 +1,4 @@
-package xpertss.json.schema.format.extra;
+package xpertss.json.schema.format.draftv6;
 
 import com.github.fge.jackson.NodeType;
 import xpertss.json.schema.core.exceptions.ProcessingException;
@@ -10,11 +10,9 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.uritemplate.URITemplate;
 import com.github.fge.uritemplate.URITemplateParseException;
 
-public final class URITemplateFormatAttribute
-    extends AbstractFormatAttribute
-{
-    private static final FormatAttribute INSTANCE
-        = new URITemplateFormatAttribute();
+public final class URITemplateFormatAttribute extends AbstractFormatAttribute {
+
+    private static final FormatAttribute INSTANCE = new URITemplateFormatAttribute();
 
     private URITemplateFormatAttribute()
     {
@@ -27,11 +25,10 @@ public final class URITemplateFormatAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
+        String value = data.getInstance().getNode().textValue();
         try {
             new URITemplate(value);
         } catch (URITemplateParseException ignored) {

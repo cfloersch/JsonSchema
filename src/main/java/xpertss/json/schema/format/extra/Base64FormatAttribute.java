@@ -19,9 +19,8 @@ import java.util.regex.Pattern;
  * is chosen here to require that there be at most two, as per Base64 encoding
  * rules.</p>
  */
-public final class Base64FormatAttribute
-    extends AbstractFormatAttribute
-{
+public final class Base64FormatAttribute extends AbstractFormatAttribute {
+
     /*
      * The algorithm is as follows:
      *
@@ -50,8 +49,7 @@ public final class Base64FormatAttribute
             .or(CharMatcher.inRange('0', '9')).or(CharMatcher.anyOf("+/"))
             .negate();
 
-    private static final FormatAttribute instance
-        = new Base64FormatAttribute();
+    private static final FormatAttribute instance = new Base64FormatAttribute();
 
     public static FormatAttribute getInstance()
     {
@@ -64,11 +62,10 @@ public final class Base64FormatAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String input = data.getInstance().getNode().textValue();
+        String input = data.getInstance().getNode().textValue();
 
         /*
          * The string length must be a multiple of 4. FIXME though: can it be 0?
@@ -81,7 +78,7 @@ public final class Base64FormatAttribute
             return;
         }
 
-        final int index
+        int index
             = NOT_BASE64.indexIn(PATTERN.matcher(input).replaceFirst(""));
 
         if (index == -1)

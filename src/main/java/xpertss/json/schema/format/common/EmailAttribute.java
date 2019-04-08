@@ -20,9 +20,8 @@ import javax.mail.internet.InternetAddress;
  * a single domain name component. As such, {@code foo@bar} is considered valid.
  * </p>
  */
-public final class EmailAttribute
-    extends AbstractFormatAttribute
-{
+public final class EmailAttribute extends AbstractFormatAttribute {
+
     private static final FormatAttribute INSTANCE = new EmailAttribute();
 
     public static FormatAttribute getInstance()
@@ -36,11 +35,10 @@ public final class EmailAttribute
     }
 
     @Override
-    public void validate(final ProcessingReport report,
-        final MessageBundle bundle, final FullData data)
+    public void validate(ProcessingReport report, MessageBundle bundle, FullData data)
         throws ProcessingException
     {
-        final String value = data.getInstance().getNode().textValue();
+        String value = data.getInstance().getNode().textValue();
 
         try {
             new InternetAddress(value, true);

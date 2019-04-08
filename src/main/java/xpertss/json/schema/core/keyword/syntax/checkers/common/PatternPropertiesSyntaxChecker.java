@@ -17,11 +17,9 @@ import java.util.Set;
  *
  * @see RegexECMA262Helper
  */
-public final class PatternPropertiesSyntaxChecker
-    extends SchemaMapSyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new PatternPropertiesSyntaxChecker();
+public final class PatternPropertiesSyntaxChecker extends SchemaMapSyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new PatternPropertiesSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -34,14 +32,13 @@ public final class PatternPropertiesSyntaxChecker
     }
 
     @Override
-    protected void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException
     {
         /*
          * Check that the member names are regexes
          */
-        final Set<String> set = Sets.newHashSet(getNode(tree).fieldNames());
+        Set<String> set = Sets.newHashSet(getNode(tree).fieldNames());
 
         for (final String s: Ordering.natural().sortedCopy(set))
             if (!RegexECMA262Helper.regexIsValid(s))

@@ -10,11 +10,9 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 /**
  * Syntax checker for draft v3's {@code items} keyword
  */
-public final class DraftV3ItemsSyntaxChecker
-    extends SchemaOrSchemaArraySyntaxChecker
-{
-    private static final SyntaxChecker INSTANCE
-        = new DraftV3ItemsSyntaxChecker();
+public final class DraftV3ItemsSyntaxChecker extends SchemaOrSchemaArraySyntaxChecker {
+
+    private static final SyntaxChecker INSTANCE = new DraftV3ItemsSyntaxChecker();
 
     public static SyntaxChecker getInstance()
     {
@@ -27,8 +25,7 @@ public final class DraftV3ItemsSyntaxChecker
     }
 
     @Override
-    protected void extraChecks(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree)
+    protected void extraChecks(ProcessingReport report, MessageBundle bundle, SchemaTree tree)
         throws ProcessingException
     {
     }

@@ -24,11 +24,9 @@ import java.util.Set;
 /**
  * Syntax checker for draft v4 hyperschema's {@code links} keyword
  */
-public final class LinksSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    private static final List<String> REQUIRED_LDO_PROPERTIES
-        = ImmutableList.of("href", "rel");
+public final class LinksSyntaxChecker extends AbstractSyntaxChecker {
+
+    private static final List<String> REQUIRED_LDO_PROPERTIES = ImmutableList.of("href", "rel");
 
     private static final SyntaxChecker INSTANCE = new LinksSyntaxChecker();
 
@@ -43,13 +41,12 @@ public final class LinksSyntaxChecker
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
-        final int size = node.size();
+        JsonNode node = getNode(tree);
+        int size = node.size();
 
         JsonNode ldo;
         NodeType type;
@@ -83,11 +80,11 @@ public final class LinksSyntaxChecker
         }
     }
 
-    private void checkLDO(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree, final int index)
+    private void checkLDO(ProcessingReport report, MessageBundle bundle,
+                            SchemaTree tree, int index)
         throws ProcessingException
     {
-        final JsonNode ldo = getNode(tree).get(index);
+        JsonNode ldo = getNode(tree).get(index);
 
         String value;
 
@@ -137,23 +134,21 @@ public final class LinksSyntaxChecker
         }
     }
 
-    private ProcessingMessage LDOMsg(final SchemaTree tree,
-        final MessageBundle bundle, final String key, final int index)
+    private ProcessingMessage LDOMsg(SchemaTree tree, MessageBundle bundle, String key, int index)
     {
         return newMsg(tree, bundle, key).put("index", index);
     }
 
-    private boolean checkLDOProperty(final ProcessingReport report,
-        final MessageBundle bundle, final SchemaTree tree, final int index,
-        final String name, final NodeType expected, final String key)
+    private boolean checkLDOProperty(ProcessingReport report, MessageBundle bundle, SchemaTree tree,
+                                        int index, String name, NodeType expected, String key)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree).get(index).get(name);
+        JsonNode node = getNode(tree).get(index).get(name);
 
         if (node == null)
             return false;
 
-        final NodeType type = NodeType.getNodeType(node);
+        NodeType type = NodeType.getNodeType(node);
 
         if (type == expected)
             return true;

@@ -16,22 +16,20 @@ import java.util.Collection;
  * Helper class to check the syntax of {@code multipleOf} (draft v4) and {@code
  * divisibleBy} (draft v3)
  */
-public final class DivisorSyntaxChecker
-    extends AbstractSyntaxChecker
-{
-    public DivisorSyntaxChecker(final String keyword)
+public final class DivisorSyntaxChecker extends AbstractSyntaxChecker {
+
+    public DivisorSyntaxChecker(String keyword)
     {
         super(keyword, NodeType.INTEGER, NodeType.NUMBER);
     }
 
     @Override
-    protected void checkValue(final Collection<JsonPointer> pointers,
-        final MessageBundle bundle, final ProcessingReport report,
-        final SchemaTree tree)
+    protected void checkValue(Collection<JsonPointer> pointers, MessageBundle bundle,
+                                ProcessingReport report, SchemaTree tree)
         throws ProcessingException
     {
-        final JsonNode node = getNode(tree);
-        final BigDecimal divisor = node.decimalValue();
+        JsonNode node = getNode(tree);
+        BigDecimal divisor = node.decimalValue();
 
         if (divisor.compareTo(BigDecimal.ZERO) <= 0)
             report.error(newMsg(tree, bundle, "common.divisor.notPositive")

@@ -22,11 +22,9 @@ import java.util.Map;
  *
  * @see ValidationConfiguration
  */
-public final class ValidationConfigurationBuilder
-    implements Thawed<ValidationConfiguration>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
+public final class ValidationConfigurationBuilder implements Thawed<ValidationConfiguration> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaConfigurationBundle.class);
 
     /**
      * Default libraries to use
@@ -43,8 +41,14 @@ public final class ValidationConfigurationBuilder
         DEFAULT_LIBRARIES = Maps.newEnumMap(SchemaVersion.class);
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV3, DraftV3Library.get());
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV4, DraftV4Library.get());
-        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV4_HYPERSCHEMA,
-            DraftV4HyperSchemaLibrary.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV4_HYPERSCHEMA, DraftV4HyperSchemaLibrary.get());
+
+        /* TODO
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV6, DraftV6Library.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV6_HYPERSCHEMA, DraftV7HyperSchemaLibrary.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV7, DraftV6Library.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV7_HYPERSCHEMA, DraftV7HyperSchemaLibrary.get());
+         */
     }
 
     /**
@@ -88,10 +92,8 @@ public final class ValidationConfigurationBuilder
             library = entry.getValue();
             libraries.put(ref, library);
         }
-        syntaxMessages = MessageBundles
-            .getBundle(JsonSchemaSyntaxMessageBundle.class);
-        validationMessages = MessageBundles
-            .getBundle(JsonSchemaValidationBundle.class);
+        syntaxMessages = MessageBundles.getBundle(JsonSchemaSyntaxMessageBundle.class);
+        validationMessages = MessageBundles.getBundle(JsonSchemaValidationBundle.class);
     }
 
     /**
@@ -100,7 +102,7 @@ public final class ValidationConfigurationBuilder
      * @param cfg the frozen configuration
      * @see ValidationConfiguration#thaw()
      */
-    ValidationConfigurationBuilder(final ValidationConfiguration cfg)
+    ValidationConfigurationBuilder(ValidationConfiguration cfg)
     {
         libraries = Maps.newHashMap(cfg.libraries);
         defaultLibrary = cfg.defaultLibrary;
@@ -120,8 +122,7 @@ public final class ValidationConfigurationBuilder
      * @throws IllegalArgumentException string is not a URI, or not an absolute
      * JSON Reference; or a library already exists at this URI.
      */
-    public ValidationConfigurationBuilder addLibrary(final String uri,
-        final Library library)
+    public ValidationConfigurationBuilder addLibrary(String uri, Library library)
     {
         final JsonRef ref;
 
@@ -131,11 +132,9 @@ public final class ValidationConfigurationBuilder
             throw new IllegalArgumentException(e.getMessage());
         }
 
-        BUNDLE.checkArgumentPrintf(ref.isAbsolute(),
-            "refProcessing.uriNotAbsolute", ref);
+        BUNDLE.checkArgumentPrintf(ref.isAbsolute(), "refProcessing.uriNotAbsolute", ref);
         BUNDLE.checkNotNull(library, "nullLibrary");
-        BUNDLE.checkArgumentPrintf(libraries.put(ref, library) == null,
-            "dupLibrary", ref);
+        BUNDLE.checkArgumentPrintf(libraries.put(ref, library) == null, "dupLibrary", ref);
         return this;
     }
 
@@ -149,8 +148,7 @@ public final class ValidationConfigurationBuilder
      * @return this
      * @throws NullPointerException version is null
      */
-    public ValidationConfigurationBuilder setDefaultVersion(
-        final SchemaVersion version)
+    public ValidationConfigurationBuilder setDefaultVersion(SchemaVersion version)
     {
         BUNDLE.checkNotNull(version, "nullVersion");
         /*
@@ -168,8 +166,7 @@ public final class ValidationConfigurationBuilder
      * @return this
      * @see #addLibrary(String, Library)
      */
-    public ValidationConfigurationBuilder setDefaultLibrary(final String uri,
-        final Library library)
+    public ValidationConfigurationBuilder setDefaultLibrary(String uri, Library library)
     {
         addLibrary(uri, library);
         defaultLibrary = library;
@@ -182,30 +179,27 @@ public final class ValidationConfigurationBuilder
      * @param useFormat {@code true} if it must be used
      * @return this
      */
-    public ValidationConfigurationBuilder setUseFormat(final boolean useFormat)
+    public ValidationConfigurationBuilder setUseFormat(boolean useFormat)
     {
         this.useFormat = useFormat;
         return this;
     }
 
-    public ValidationConfigurationBuilder setSyntaxMessages(
-        final MessageBundle syntaxMessages)
+    public ValidationConfigurationBuilder setSyntaxMessages(MessageBundle syntaxMessages)
     {
         BUNDLE.checkNotNull(syntaxMessages, "nullMessageBundle");
         this.syntaxMessages = syntaxMessages;
         return this;
     }
 
-    public ValidationConfigurationBuilder setValidationMessages(
-        final MessageBundle validationMessages)
+    public ValidationConfigurationBuilder setValidationMessages(MessageBundle validationMessages)
     {
         BUNDLE.checkNotNull(validationMessages, "nullMessageBundle");
         this.validationMessages = validationMessages;
         return this;
     }
 
-    public ValidationConfigurationBuilder setCacheSize(
-            final int cacheSize)
+    public ValidationConfigurationBuilder setCacheSize(int cacheSize)
     {
         BUNDLE.checkArgument(cacheSize >= -1, "invalidCacheSize");
         this.cacheSize = cacheSize;

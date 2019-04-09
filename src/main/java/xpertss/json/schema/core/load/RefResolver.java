@@ -29,23 +29,20 @@ import java.util.Set;
  * <p>It relies on a {@link SchemaLoader} to load JSON References which are not
  * resolvable within the current schema itself.</p>
  */
-public final class RefResolver
-    extends RawProcessor<SchemaTree, SchemaTree>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class RefResolver extends RawProcessor<SchemaTree, SchemaTree> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final SchemaLoader loader;
 
-    public RefResolver(final SchemaLoader loader)
+    public RefResolver(SchemaLoader loader)
     {
         super("schema", "schema");
         this.loader = loader;
     }
 
     @Override
-    public SchemaTree rawProcess(final ProcessingReport report,
-        final SchemaTree input)
+    public SchemaTree rawProcess(ProcessingReport report, SchemaTree input)
         throws ProcessingException
     {
         /*
@@ -53,7 +50,7 @@ public final class RefResolver
          * loops. We make it linked since we want the ref path reported in the
          * order where refs have been encountered.
          */
-        final Set<JsonRef> refs = Sets.newLinkedHashSet();
+        Set<JsonRef> refs = Sets.newLinkedHashSet();
 
         SchemaTree tree = input;
 
@@ -108,9 +105,9 @@ public final class RefResolver
         return tree;
     }
 
-    private static JsonRef nodeAsRef(final JsonNode node)
+    private static JsonRef nodeAsRef(JsonNode node)
     {
-        final JsonNode refNode = node.path("$ref");
+        JsonNode refNode = node.path("$ref");
         if (!refNode.isTextual())
             return null;
         try {

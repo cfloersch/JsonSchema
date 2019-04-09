@@ -7,8 +7,8 @@ import java.net.URI;
 /**
  * URI downloader for a given scheme
  */
-public interface URIDownloader
-{
+public interface URIDownloader {
+
     /**
      * Fetch the content at a given URI
      *
@@ -16,6 +16,5 @@ public interface URIDownloader
      * @return an {@link InputStream}
      * @throws IOException unable to find an input stream
      */
-    InputStream fetch(final URI source)
-        throws IOException;
+    InputStream fetch(URI source) throws IOException;
 }

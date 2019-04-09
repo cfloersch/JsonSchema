@@ -14,11 +14,9 @@ import java.net.URL;
  *
  * @see URL#openStream()
  */
-public final class DefaultURIDownloader
-    implements URIDownloader
-{
-    private static final URIDownloader INSTANCE
-        = new DefaultURIDownloader();
+public final class DefaultURIDownloader implements URIDownloader {
+
+    private static final URIDownloader INSTANCE = new DefaultURIDownloader();
 
     private DefaultURIDownloader()
     {
@@ -30,7 +28,7 @@ public final class DefaultURIDownloader
     }
 
     @Override
-    public InputStream fetch(final URI source)
+    public InputStream fetch(URI source)
         throws IOException
     {
         return source.toURL().openStream();

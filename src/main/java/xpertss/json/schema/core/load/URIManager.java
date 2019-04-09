@@ -12,7 +12,6 @@ import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.ProcessingMessage;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
-import com.google.common.io.Closer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +29,9 @@ import java.util.Map;
  *
  * @see SchemaLoader
  */
-public final class URIManager
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class URIManager {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final Map<String, URIDownloader> downloaders;
 
@@ -44,7 +42,7 @@ public final class URIManager
         this(LoadingConfiguration.byDefault());
     }
 
-    public URIManager(final LoadingConfiguration cfg)
+    public URIManager(LoadingConfiguration cfg)
     {
         downloaders = cfg.getDownloaderMap();
         reader = cfg.getReader();
@@ -59,7 +57,7 @@ public final class URIManager
      * @throws ProcessingException scheme is not registered, failed to get
      * content, or content is not JSON
      */
-    public JsonNode getContent(final URI uri)
+    public JsonNode getContent(URI uri)
         throws ProcessingException
     {
         BUNDLE.checkNotNull(uri, "jsonRef.nullURI");
@@ -69,20 +67,16 @@ public final class URIManager
                 .setMessage(BUNDLE.getMessage("refProcessing.uriNotAbsolute"))
                 .put("uri", uri));
 
-        final String scheme = uri.getScheme();
+        String scheme = uri.getScheme();
 
-        final URIDownloader downloader = downloaders.get(scheme);
+        URIDownloader downloader = downloaders.get(scheme);
 
         if (downloader == null)
             throw new ProcessingException(new ProcessingMessage()
                 .setMessage(BUNDLE.getMessage("refProcessing.unhandledScheme"))
                 .putArgument("scheme", scheme).putArgument("uri", uri));
 
-        final Closer closer = Closer.create();
-        final InputStream in;
-
-        try {
-            in = closer.register(downloader.fetch(uri));
+        try (InputStream in = downloader.fetch(uri)) {
             return reader.fromInputStream(in);
         } catch (JsonMappingException e) {
             throw new ProcessingException(new ProcessingMessage()
@@ -97,12 +91,6 @@ public final class URIManager
                 .setMessage(BUNDLE.getMessage("uriManager.uriIOError"))
                 .putArgument("uri", uri)
                 .put("exceptionMessage", e.getMessage()));
-        } finally {
-            try {
-                closer.close();
-            } catch (IOException ignored) {
-                throw new IllegalStateException();
-            }
         }
     }
 }

@@ -47,11 +47,9 @@ import java.net.URI;
  * @see LoadingConfigurationBuilder#setURITranslatorConfiguration(URITranslatorConfiguration)
  * @see SchemaLoader#SchemaLoader(LoadingConfiguration)
  */
-public final class URITranslatorConfigurationBuilder
-    implements Thawed<URITranslatorConfiguration>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class URITranslatorConfigurationBuilder implements Thawed<URITranslatorConfiguration> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private static final URI EMPTY = URI.create("");
 
@@ -65,7 +63,7 @@ public final class URITranslatorConfigurationBuilder
     {
     }
 
-    URITranslatorConfigurationBuilder(final URITranslatorConfiguration cfg)
+    URITranslatorConfigurationBuilder(URITranslatorConfiguration cfg)
     {
         namespace = cfg.namespace;
         pathRedirects.putAll(cfg.pathRedirects);
@@ -85,10 +83,10 @@ public final class URITranslatorConfigurationBuilder
      * @throws IllegalArgumentException URI is not absolute, or is not a path
      * URI (ie, does not end with {@code /})
      */
-    public URITranslatorConfigurationBuilder setNamespace(final URI uri)
+    public URITranslatorConfigurationBuilder setNamespace(URI uri)
     {
         BUNDLE.checkNotNull(uri, "uriChecks.nullInput");
-        final URI normalized = URIUtils.normalizeURI(uri);
+        URI normalized = URIUtils.normalizeURI(uri);
         URIUtils.checkPathURI(normalized);
         namespace = normalized;
         return this;
@@ -107,7 +105,7 @@ public final class URITranslatorConfigurationBuilder
      *
      * @see #setNamespace(URI)
      */
-    public URITranslatorConfigurationBuilder setNamespace(final String uri)
+    public URITranslatorConfigurationBuilder setNamespace(String uri)
     {
         BUNDLE.checkNotNull(uri, "uriChecks.nullInput");
         return setNamespace(URI.create(uri));
@@ -127,8 +125,7 @@ public final class URITranslatorConfigurationBuilder
      * JSON References; or a redirection already exists for URI {@code from}; or
      * {@code from} and {@code to} are the same URI after normalization.
      */
-    public URITranslatorConfigurationBuilder addSchemaRedirect(final URI from,
-        final URI to)
+    public URITranslatorConfigurationBuilder addSchemaRedirect(URI from, URI to)
     {
         schemaRedirects.put(from, to);
         return this;
@@ -147,8 +144,7 @@ public final class URITranslatorConfigurationBuilder
      * @throws IllegalArgumentException {@link URI#create(String)} failed for
      * one or both argument(s)
      */
-    public URITranslatorConfigurationBuilder addSchemaRedirect(
-        final String from, final String to)
+    public URITranslatorConfigurationBuilder addSchemaRedirect(String from, String to)
     {
         BUNDLE.checkNotNull(from, "uriChecks.nullInput");
         BUNDLE.checkNotNull(to, "uriChecks.nullInput");
@@ -170,8 +166,7 @@ public final class URITranslatorConfigurationBuilder
      * valid path URIs; or a path redirection already exists for {@code from};
      * or {@code from} and {@code to} are the same URI after normalization.
      */
-    public URITranslatorConfigurationBuilder addPathRedirect(final URI from,
-        final URI to)
+    public URITranslatorConfigurationBuilder addPathRedirect(URI from, URI to)
     {
         pathRedirects.put(from, to);
         return this;
@@ -191,8 +186,7 @@ public final class URITranslatorConfigurationBuilder
      *
      * @see #addPathRedirect(URI, URI)
      */
-    public URITranslatorConfigurationBuilder addPathRedirect(final String from,
-        final String to)
+    public URITranslatorConfigurationBuilder addPathRedirect(String from, String to)
     {
         BUNDLE.checkNotNull(from, "uriChecks.nullInput");
         BUNDLE.checkNotNull(to, "uriChecks.nullInput");

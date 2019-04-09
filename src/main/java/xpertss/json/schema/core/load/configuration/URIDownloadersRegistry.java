@@ -1,7 +1,6 @@
 package xpertss.json.schema.core.load.configuration;
 
 
-import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import xpertss.json.schema.core.load.download.DefaultURIDownloader;
 import xpertss.json.schema.core.load.download.ResourceURIDownloader;
@@ -21,32 +20,12 @@ final class URIDownloadersRegistry extends Registry<String, URIDownloader> {
     static {
         ImmutableMap.Builder<String, URIDownloader> builder = ImmutableMap.builder();
 
-        String scheme;
-        URIDownloader downloader;
-
-        scheme = "http";
-        downloader = DefaultURIDownloader.getInstance();
-        builder.put(scheme, downloader);
-
-        scheme = "https";
-        downloader = DefaultURIDownloader.getInstance();
-        builder.put(scheme, downloader);
-
-        scheme = "file";
-        downloader = DefaultURIDownloader.getInstance();
-        builder.put(scheme, downloader);
-
-        scheme = "ftp";
-        downloader = DefaultURIDownloader.getInstance();
-        builder.put(scheme, downloader);
-
-        scheme = "jar";
-        downloader = DefaultURIDownloader.getInstance();
-        builder.put(scheme, downloader);
-
-        scheme = "resource";
-        downloader = ResourceURIDownloader.getInstance();
-        builder.put(scheme, downloader);
+        builder.put("http", DefaultURIDownloader.getInstance());
+        builder.put("https", DefaultURIDownloader.getInstance());
+        builder.put("file", DefaultURIDownloader.getInstance());
+        builder.put("ftp", DefaultURIDownloader.getInstance());
+        builder.put("jar", DefaultURIDownloader.getInstance());
+        builder.put("resource", ResourceURIDownloader.getInstance());
 
         DEFAULT_DOWNLOADERS = builder.build();
     }

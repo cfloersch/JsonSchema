@@ -37,10 +37,9 @@ import java.util.concurrent.ExecutionException;
  * for more details.</p>
  */
 @ThreadSafe
-public final class SchemaLoader
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class SchemaLoader {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * The URI manager
@@ -74,7 +73,7 @@ public final class SchemaLoader
      * @see LoadingConfiguration
      * @see LoadingConfigurationBuilder
      */
-    public SchemaLoader(final LoadingConfiguration cfg)
+    public SchemaLoader(LoadingConfiguration cfg)
     {
         translator = new URITranslator(cfg.getTranslatorConfiguration());
         dereferencing = cfg.getDereferencing();
@@ -116,7 +115,7 @@ public final class SchemaLoader
      * @see Dereferencing#newTree(JsonNode)
      * @throws NullPointerException schema is null
      */
-    public SchemaTree load(final JsonNode schema)
+    public SchemaTree load(JsonNode schema)
     {
         BUNDLE.checkNotNull(schema, "loadingCfg.nullSchema");
         return dereferencing.newTree(schema);
@@ -134,17 +133,17 @@ public final class SchemaLoader
      * failed to dereference this URI
      * @throws NullPointerException URI is null
      */
-    public SchemaTree get(final URI uri)
+    public SchemaTree get(URI uri)
         throws ProcessingException
     {
-        final JsonRef ref = JsonRef.fromURI(translator.translate(uri));
+        JsonRef ref = JsonRef.fromURI(translator.translate(uri));
 
         if (!ref.isAbsolute())
             throw new ProcessingException(new ProcessingMessage()
                 .setMessage(BUNDLE.getMessage("refProcessing.uriNotAbsolute"))
                 .putArgument("uri", ref));
 
-        final URI realURI = ref.toURI();
+        URI realURI = ref.toURI();
 
         try {
             JsonNode node = preloadedSchemas.get(realURI);

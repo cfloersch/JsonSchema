@@ -27,11 +27,9 @@ import static com.fasterxml.jackson.core.JsonParser.*;
  *
  * @see LoadingConfiguration
  */
-public final class LoadingConfigurationBuilder
-    implements Thawed<LoadingConfiguration>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class LoadingConfigurationBuilder implements Thawed<LoadingConfiguration> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * Default JsonParser feature set. Unfortunately, Jackson does not use
@@ -108,7 +106,7 @@ public final class LoadingConfigurationBuilder
      * @param cfg the frozen configuration
      * @see LoadingConfiguration#thaw()
      */
-    LoadingConfigurationBuilder(final LoadingConfiguration cfg)
+    LoadingConfigurationBuilder(LoadingConfiguration cfg)
     {
         downloaders.putAll(cfg.downloaders);
         translatorCfg = cfg.translatorCfg;
@@ -130,7 +128,7 @@ public final class LoadingConfigurationBuilder
      * @return this
      */
     @Deprecated
-    public LoadingConfigurationBuilder setEnableCache(final boolean enableCache)
+    public LoadingConfigurationBuilder setEnableCache(boolean enableCache)
     {
     	this.cacheSize = enableCache ? DEFAULT_CACHE_SIZE : 0;
         return this;
@@ -145,7 +143,7 @@ public final class LoadingConfigurationBuilder
      * @param cacheSize if loaded schemas have to be cached
      * @return this
      */
-    public LoadingConfigurationBuilder setCacheSize(final int cacheSize)
+    public LoadingConfigurationBuilder setCacheSize(int cacheSize)
     {
         this.cacheSize = cacheSize;
         return this;
@@ -160,7 +158,7 @@ public final class LoadingConfigurationBuilder
      * @throws NullPointerException scheme or downloader is null
      * @throws IllegalArgumentException illegal scheme
      */
-    public LoadingConfigurationBuilder addScheme(final String scheme,
+    public LoadingConfigurationBuilder addScheme(String scheme,
         final URIDownloader downloader)
     {
         downloaders.put(scheme, downloader);
@@ -173,7 +171,7 @@ public final class LoadingConfigurationBuilder
      * @param scheme the scheme
      * @return this
      */
-    public LoadingConfigurationBuilder removeScheme(final String scheme)
+    public LoadingConfigurationBuilder removeScheme(String scheme)
     {
         /*
          * No checks for null or anything there: adding entries will have been
@@ -183,8 +181,7 @@ public final class LoadingConfigurationBuilder
         return this;
     }
 
-    public LoadingConfigurationBuilder setURITranslatorConfiguration(
-        final URITranslatorConfiguration translatorCfg)
+    public LoadingConfigurationBuilder setURITranslatorConfiguration(URITranslatorConfiguration translatorCfg)
     {
         this.translatorCfg = translatorCfg;
         return this;
@@ -199,8 +196,7 @@ public final class LoadingConfigurationBuilder
      * @return this
      * @throws NullPointerException dereferencing mode is null
      */
-    public LoadingConfigurationBuilder dereferencing(
-        final Dereferencing dereferencing)
+    public LoadingConfigurationBuilder dereferencing(Dereferencing dereferencing)
     {
         BUNDLE.checkNotNull(dereferencing, "loadingCfg.nullDereferencingMode");
         this.dereferencing = dereferencing;
@@ -222,8 +218,7 @@ public final class LoadingConfigurationBuilder
      * @throws IllegalArgumentException a schema already exists at this URI
      * @see JsonRef
      */
-    public LoadingConfigurationBuilder preloadSchema(final String uri,
-        final JsonNode schema)
+    public LoadingConfigurationBuilder preloadSchema(String uri, JsonNode schema)
     {
         BUNDLE.checkNotNull(schema, "loadingCfg.nullSchema");
         final URI key = getLocator(uri);
@@ -244,7 +239,7 @@ public final class LoadingConfigurationBuilder
      * id} is not an absolute JSON Reference
      * @see JsonRef
      */
-    public LoadingConfigurationBuilder preloadSchema(final JsonNode schema)
+    public LoadingConfigurationBuilder preloadSchema(JsonNode schema)
     {
         final JsonNode node = schema.path("id");
         BUNDLE.checkArgument(node.isTextual(), "loadingCfg.noIDInSchema");
@@ -262,8 +257,7 @@ public final class LoadingConfigurationBuilder
      * @return this
      * @see Feature
      */
-    public LoadingConfigurationBuilder addParserFeature(
-        final JsonParser.Feature feature)
+    public LoadingConfigurationBuilder addParserFeature(JsonParser.Feature feature)
     {
         BUNDLE.checkNotNull(feature, "loadingCfg.nullJsonParserFeature");
         parserFeatures.add(feature);
@@ -281,8 +275,7 @@ public final class LoadingConfigurationBuilder
      * @return this
      * @see #addParserFeature(JsonParser.Feature)
      */
-    public LoadingConfigurationBuilder removeParserFeature(
-        final JsonParser.Feature feature)
+    public LoadingConfigurationBuilder removeParserFeature(JsonParser.Feature feature)
     {
         BUNDLE.checkNotNull(feature, "loadingCfg.nullJsonParserFeature");
         if (feature != JsonParser.Feature.AUTO_CLOSE_SOURCE)
@@ -301,16 +294,14 @@ public final class LoadingConfigurationBuilder
         return new LoadingConfiguration(this);
     }
 
-    private static URI getLocator(final String input)
+    private static URI getLocator(String input)
     {
-        final JsonRef ref;
         try {
-            ref = JsonRef.fromString(input);
+            JsonRef ref = JsonRef.fromString(input);
+            BUNDLE.checkArgumentPrintf(ref.isAbsolute(), "jsonRef.notAbsolute", ref);
+            return ref.getLocator();
         } catch (JsonReferenceException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        BUNDLE.checkArgumentPrintf(ref.isAbsolute(), "jsonRef.notAbsolute",
-            ref);
-        return ref.getLocator();
     }
 }

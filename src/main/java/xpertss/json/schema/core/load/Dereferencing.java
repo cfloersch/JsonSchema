@@ -17,8 +17,8 @@ import xpertss.json.schema.core.tree.key.SchemaKey;
  * @see InlineSchemaTree
  * @see CanonicalSchemaTree
  */
-public enum Dereferencing
-{
+public enum Dereferencing {
+
     /**
      * Canonical dereferencing
      *
@@ -66,14 +66,14 @@ public enum Dereferencing
      * @param node the schema
      * @return a new tree
      */
-    public SchemaTree newTree(final JsonNode node)
+    public SchemaTree newTree(JsonNode node)
     {
         return newTree(SchemaKey.anonymousKey(), node);
     }
 
     protected abstract SchemaTree newTree(SchemaKey key, JsonNode node);
 
-    Dereferencing(final String name)
+    Dereferencing(String name)
     {
         this.name = name;
     }

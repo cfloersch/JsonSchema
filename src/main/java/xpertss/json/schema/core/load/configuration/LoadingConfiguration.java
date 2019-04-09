@@ -56,9 +56,8 @@ import java.util.Map;
  * @see URIManager
  * @see SchemaLoader
  */
-public final class LoadingConfiguration
-    implements Frozen<LoadingConfigurationBuilder>
-{
+public final class LoadingConfiguration implements Frozen<LoadingConfigurationBuilder> {
+
     /**
      * Map of URI downloaders
      *
@@ -138,7 +137,7 @@ public final class LoadingConfiguration
      * @param builder the thawed configuration
      * @see LoadingConfigurationBuilder#freeze()
      */
-    LoadingConfiguration(final LoadingConfigurationBuilder builder)
+    LoadingConfiguration(LoadingConfigurationBuilder builder)
     {
         downloaders = builder.downloaders.build();
         translatorCfg = builder.translatorCfg;

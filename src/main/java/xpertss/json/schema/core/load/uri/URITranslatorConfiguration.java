@@ -15,9 +15,8 @@ import java.util.Map;
  *
  * @see URITranslatorConfigurationBuilder
  */
-public final class URITranslatorConfiguration
-    implements Frozen<URITranslatorConfigurationBuilder>
-{
+public final class URITranslatorConfiguration implements Frozen<URITranslatorConfigurationBuilder> {
+
     final URI namespace;
     final Map<URI, URI> pathRedirects;
     final Map<URI, URI> schemaRedirects;
@@ -45,7 +44,7 @@ public final class URITranslatorConfiguration
         return newBuilder().freeze();
     }
 
-    URITranslatorConfiguration(final URITranslatorConfigurationBuilder builder)
+    URITranslatorConfiguration(URITranslatorConfigurationBuilder builder)
     {
         namespace = builder.namespace;
         pathRedirects = ImmutableMap.copyOf(builder.pathRedirects.build());

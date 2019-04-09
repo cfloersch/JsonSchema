@@ -30,23 +30,23 @@ import java.util.Map;
  *
  * @see URITranslatorConfiguration
  */
-public final class URITranslator
-{
+public final class URITranslator {
+
     private final URI namespace;
     private final Map<URI, URI> pathRedirects;
     private final Map<URI, URI> schemaRedirects;
 
-    public URITranslator(final URITranslatorConfiguration cfg)
+    public URITranslator(URITranslatorConfiguration cfg)
     {
         namespace = cfg.namespace;
         pathRedirects = ImmutableMap.copyOf(cfg.pathRedirects);
         schemaRedirects = ImmutableMap.copyOf(cfg.schemaRedirects);
     }
 
-    public URI translate(final URI source)
+    public URI translate(URI source)
     {
         URI uri = URIUtils.normalizeURI(namespace.resolve(source));
-        final String fragment = uri.getFragment();
+        String fragment = uri.getFragment();
 
         try {
             uri = new URI(uri.getScheme(), uri.getSchemeSpecificPart(), null);
@@ -66,8 +66,7 @@ public final class URITranslator
             uri = schemaRedirects.get(uri);
 
         try {
-            return new URI(uri.getScheme(), uri.getSchemeSpecificPart(),
-                fragment);
+            return new URI(uri.getScheme(), uri.getSchemeSpecificPart(), fragment);
         } catch (URISyntaxException e) {
             throw new IllegalStateException("How did I get there??", e);
         }

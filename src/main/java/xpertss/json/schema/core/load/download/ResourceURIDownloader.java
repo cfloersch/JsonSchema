@@ -16,11 +16,9 @@ import java.net.URI;
  * thrown if the resource cannot be found (instead of returning {@code null}).
  * </p>
  */
-public final class ResourceURIDownloader
-    implements URIDownloader
-{
-    private static final Class<ResourceURIDownloader> MYSELF
-        = ResourceURIDownloader.class;
+public final class ResourceURIDownloader implements URIDownloader {
+
+    private static final Class<ResourceURIDownloader> MYSELF = ResourceURIDownloader.class;
 
     private static final URIDownloader INSTANCE = new ResourceURIDownloader();
 
@@ -34,11 +32,11 @@ public final class ResourceURIDownloader
     }
 
     @Override
-    public InputStream fetch(final URI source)
+    public InputStream fetch(URI source)
         throws IOException
     {
-        final String resource = source.getPath();
-        final InputStream in = MYSELF.getResourceAsStream(resource);
+        String resource = source.getPath();
+        InputStream in = MYSELF.getResourceAsStream(resource);
 
         if (in == null)
             throw new IOException("resource " + resource + " not found");

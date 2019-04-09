@@ -2,17 +2,17 @@ package xpertss.json.schema.core.ref;
 
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.msgsimple.bundle.MessageBundle;
+import com.github.fge.msgsimple.load.MessageBundles;
 import xpertss.json.schema.core.exceptions.JsonReferenceException;
 import xpertss.json.schema.core.messages.JsonSchemaCoreMessageBundle;
 import xpertss.json.schema.core.report.ProcessingMessage;
 import xpertss.json.schema.core.util.URIUtils;
-import com.github.fge.msgsimple.bundle.MessageBundle;
-import com.github.fge.msgsimple.load.MessageBundles;
-import com.google.common.base.Optional;
 
 import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 /**
  * Representation of a JSON Reference
@@ -57,10 +57,9 @@ import java.net.URISyntaxException;
  *
  */
 @Immutable
-public abstract class JsonRef
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public abstract class JsonRef {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * The empty URI
@@ -113,14 +112,14 @@ public abstract class JsonRef
      *
      * @param uri the URI to build that reference
      */
-    protected JsonRef(final URI uri)
+    protected JsonRef(URI uri)
     {
-        final String scheme = uri.getScheme();
-        final String ssp = uri.getSchemeSpecificPart();
+        String scheme = uri.getScheme();
+        String ssp = uri.getSchemeSpecificPart();
         /*
          * Account for URIs with no fragment: substitute an empty one
          */
-        final String fragment = Optional.fromNullable(uri.getFragment()).or("");
+        String fragment = Optional.ofNullable(uri.getFragment()).orElse("");
 
         /*
          * Compute the fragment
@@ -157,11 +156,11 @@ public abstract class JsonRef
      * @return the JSON Reference
      * @throws NullPointerException the provided URI is null
      */
-    public static JsonRef fromURI(final URI uri)
+    public static JsonRef fromURI(URI uri)
     {
         BUNDLE.checkNotNull(uri, "jsonRef.nullURI");
 
-        final URI normalized = URIUtils.normalizeURI(uri);
+        URI normalized = URIUtils.normalizeURI(uri);
 
         if (HASHONLY_URI.equals(normalized) || EMPTY_URI.equals(normalized))
             return EmptyJsonRef.getInstance();
@@ -179,7 +178,7 @@ public abstract class JsonRef
      * @throws JsonReferenceException string is not a valid URI
      * @throws NullPointerException provided string is null
      */
-    public static JsonRef fromString(final String s)
+    public static JsonRef fromString(String s)
         throws JsonReferenceException
     {
         BUNDLE.checkNotNull(s, "jsonRef.nullInput");
@@ -231,7 +230,7 @@ public abstract class JsonRef
      * @param other the reference to resolve
      * @return the resolved reference
      */
-    public abstract JsonRef resolve(final JsonRef other);
+    public abstract JsonRef resolve(JsonRef other);
 
     /**
      * Return this JSON Reference's locator
@@ -283,7 +282,7 @@ public abstract class JsonRef
      * @param other the other reference
      * @return see above
      */
-    public final boolean contains(final JsonRef other)
+    public final boolean contains(JsonRef other)
     {
         return locator.equals(other.locator);
     }
@@ -295,7 +294,7 @@ public abstract class JsonRef
     }
 
     @Override
-    public final boolean equals(final Object obj)
+    public final boolean equals(Object obj)
     {
         if (obj == null)
             return false;

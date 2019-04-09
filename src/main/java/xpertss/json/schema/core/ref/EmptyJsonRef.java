@@ -7,9 +7,8 @@ package xpertss.json.schema.core.ref;
  * a dedicated class for it. For instance, resolving any other reference against
  * this one always returns the other reference, and it is never absolute.</p>
  */
-final class EmptyJsonRef
-    extends JsonRef
-{
+final class EmptyJsonRef extends JsonRef {
+
     private static final JsonRef INSTANCE = new EmptyJsonRef();
 
     private EmptyJsonRef()
@@ -29,7 +28,7 @@ final class EmptyJsonRef
     }
 
     @Override
-    public JsonRef resolve(final JsonRef other)
+    public JsonRef resolve(JsonRef other)
     {
         return other;
     }

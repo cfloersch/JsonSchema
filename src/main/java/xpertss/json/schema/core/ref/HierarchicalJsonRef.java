@@ -13,9 +13,8 @@ import java.net.URI;
  * <p>An example of URIs which are both absolute and opaque are jar URLs, which
  * have a dedicated class for this reason ({@link JarJsonRef}).</p>
  */
-final class HierarchicalJsonRef
-    extends JsonRef
-{
+final class HierarchicalJsonRef extends JsonRef {
+
     HierarchicalJsonRef(final URI uri)
     {
         super(uri);
@@ -24,13 +23,12 @@ final class HierarchicalJsonRef
     @Override
     public boolean isAbsolute()
     {
-        if (!legal)
-            return false;
+        if (!legal) return false;
         return locator.isAbsolute() && pointer.isEmpty();
     }
 
     @Override
-    public JsonRef resolve(final JsonRef other)
+    public JsonRef resolve(JsonRef other)
     {
         return fromURI(uri.resolve(other.uri));
     }

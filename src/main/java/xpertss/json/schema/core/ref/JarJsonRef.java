@@ -16,9 +16,8 @@ import java.net.URI;
  *
  * @see HierarchicalJsonRef
  */
-final class JarJsonRef
-    extends JsonRef
-{
+final class JarJsonRef extends JsonRef {
+
     /**
      * The URL part with the {@code !} included
      */
@@ -34,7 +33,7 @@ final class JarJsonRef
      *
      * @param uri the URI
      */
-    JarJsonRef(final URI uri)
+    JarJsonRef(URI uri)
     {
         super(uri);
         final String str = uri.toString();
@@ -52,7 +51,7 @@ final class JarJsonRef
      * @param jarPrefix the jar prefix
      * @param pathURI the path
      */
-    private JarJsonRef(final URI uri, final String jarPrefix, final URI pathURI)
+    private JarJsonRef(URI uri, String jarPrefix, URI pathURI)
     {
         super(uri);
         this.jarPrefix = jarPrefix;
@@ -66,13 +65,13 @@ final class JarJsonRef
     }
 
     @Override
-    public JsonRef resolve(final JsonRef other)
+    public JsonRef resolve(JsonRef other)
     {
         if (other.uri.isAbsolute())
             return other;
 
-        final URI targetPath = pathURI.resolve(other.uri);
-        final URI targetURI = URI.create(jarPrefix + targetPath.toString());
+        URI targetPath = pathURI.resolve(other.uri);
+        URI targetURI = URI.create(jarPrefix + targetPath.toString());
         return new JarJsonRef(targetURI, jarPrefix, targetPath);
     }
 }

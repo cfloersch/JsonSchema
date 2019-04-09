@@ -4,9 +4,8 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.bundle.PropertiesBundle;
 import com.github.fge.msgsimple.load.MessageBundleLoader;
 
-public final class JsonSchemaCoreMessageBundle
-    implements MessageBundleLoader
-{
+public final class JsonSchemaCoreMessageBundle implements MessageBundleLoader {
+    
     @Override
     public MessageBundle getBundle()
     {

@@ -48,10 +48,9 @@ import java.util.Map;
  * @see ProcessorSelectorPredicate
  */
 @Immutable
-public final class ProcessorSelector<IN extends MessageProvider, OUT extends MessageProvider>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessorSelector<IN extends MessageProvider, OUT extends MessageProvider> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * Map of predicates and their associated processors
@@ -78,9 +77,7 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
      * @param choices the list of choices
      * @param byDefault the default processor (can be null)
      */
-    private ProcessorSelector(
-        final Map<Predicate<IN>, Processor<IN, OUT>> choices,
-        final Processor<IN, OUT> byDefault)
+    private ProcessorSelector(Map<Predicate<IN>, Processor<IN, OUT>> choices, Processor<IN, OUT> byDefault)
     {
         this.choices = Maps.newLinkedHashMap(choices);
         this.byDefault = byDefault;
@@ -92,7 +89,7 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
      * @param selector a {@link ProcessorSelectorPredicate}
      * @see ProcessorSelectorPredicate#then(Processor)
      */
-    ProcessorSelector(final ProcessorSelectorPredicate<IN, OUT> selector)
+    ProcessorSelector(ProcessorSelectorPredicate<IN, OUT> selector)
     {
         this(selector.choices, selector.byDefault);
     }
@@ -104,8 +101,7 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
      * @return a {@link ProcessorSelectorPredicate}
      * @throws NullPointerException the predicate is null
      */
-    public ProcessorSelectorPredicate<IN, OUT> when(
-        final Predicate<IN> predicate)
+    public ProcessorSelectorPredicate<IN, OUT> when(Predicate<IN> predicate)
     {
         BUNDLE.checkNotNull(predicate, "processing.nullPredicate");
         return new ProcessorSelectorPredicate<IN, OUT>(this, predicate);
@@ -118,8 +114,7 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
      * @return a <b>new</b> selector
      * @throws NullPointerException default processor is null
      */
-    public ProcessorSelector<IN, OUT> otherwise(
-        final Processor<IN, OUT> byDefault)
+    public ProcessorSelector<IN, OUT> otherwise(Processor<IN, OUT> byDefault)
     {
         BUNDLE.checkNotNull(byDefault, "processing.nullProcessor");
         return new ProcessorSelector<IN, OUT>(choices, byDefault);
@@ -144,15 +139,14 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
         private final Map<Predicate<X>, Processor<X, Y>> map;
         private final Processor<X, Y> byDefault;
 
-        private Chooser(final Map<Predicate<X>, Processor<X, Y>> map,
-            final Processor<X, Y> byDefault)
+        private Chooser(Map<Predicate<X>, Processor<X, Y>> map, Processor<X, Y> byDefault)
         {
             this.map = ImmutableMap.copyOf(map);
             this.byDefault = byDefault;
         }
 
         @Override
-        public Y process(final ProcessingReport report, final X input)
+        public Y process(ProcessingReport report, X input)
             throws ProcessingException
         {
             Predicate<X> predicate;
@@ -175,7 +169,7 @@ public final class ProcessorSelector<IN extends MessageProvider, OUT extends Mes
         @Override
         public String toString()
         {
-            final StringBuilder sb = new StringBuilder("selector[")
+            StringBuilder sb = new StringBuilder("selector[")
                 .append(map.size()).append(" choices with ");
             if (byDefault == null)
                 sb.append("no ");

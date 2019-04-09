@@ -24,15 +24,14 @@ import com.github.fge.msgsimple.load.MessageBundles;
  *
  * @param <R> type of the processing output
  */
-public final class ProcessingResult<R extends MessageProvider>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessingResult<R extends MessageProvider> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final ProcessingReport report;
     private final R result;
 
-    private ProcessingResult(final ProcessingReport report, final R result)
+    private ProcessingResult(ProcessingReport report, R result)
     {
         BUNDLE.checkNotNull(report, "processing.nullReport");
         this.report = report;
@@ -52,12 +51,11 @@ public final class ProcessingResult<R extends MessageProvider>
      * @throws NullPointerException the processor or report are null
      */
     public static <IN extends MessageProvider, OUT extends MessageProvider>
-        ProcessingResult<OUT> of(final Processor<IN, OUT> processor,
-        final ProcessingReport report, final IN input)
+        ProcessingResult<OUT> of(Processor<IN, OUT> processor, ProcessingReport report, IN input)
         throws ProcessingException
     {
         BUNDLE.checkNotNull(processor, "processing.nullProcessor");
-        final OUT out = processor.process(report, input);
+        OUT out = processor.process(report, input);
         return new ProcessingResult<OUT>(report, out);
     }
 
@@ -73,9 +71,7 @@ public final class ProcessingResult<R extends MessageProvider>
      * @throws NullPointerException the processor or report are null
      */
     public static <IN extends MessageProvider, OUT extends MessageProvider>
-        ProcessingResult<OUT> uncheckedResult(
-        final Processor<IN, OUT> processor, final ProcessingReport report,
-        final IN input)
+        ProcessingResult<OUT> uncheckedResult(Processor<IN, OUT> processor, ProcessingReport report, IN input)
     {
         try {
             return of(processor, report, input);
@@ -118,11 +114,9 @@ public final class ProcessingResult<R extends MessageProvider>
         return report.isSuccess();
     }
 
-    private static ProcessingReport buildReport(final ProcessingReport report,
-        final ProcessingException e)
+    private static ProcessingReport buildReport(ProcessingReport report, ProcessingException e)
     {
-        final ListProcessingReport ret
-            = new ListProcessingReport(LogLevel.DEBUG, LogLevel.NONE);
+        ListProcessingReport ret = new ListProcessingReport(LogLevel.DEBUG, LogLevel.NONE);
         try {
             ret.fatal(e.getProcessingMessage()
                 .put("info", BUNDLE.getMessage("processing.moreMessages")));

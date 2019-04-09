@@ -19,9 +19,8 @@ import xpertss.json.schema.core.util.ValueHolder;
  * @param <IN> type of input
  * @param <OUT> type of output
  */
-public abstract class RawProcessor<IN, OUT>
-    implements Processor<ValueHolder<IN>, ValueHolder<OUT>>
-{
+public abstract class RawProcessor<IN, OUT> implements Processor<ValueHolder<IN>, ValueHolder<OUT>> {
+    
     private final String inputName;
     private final String outputName;
 
@@ -31,7 +30,7 @@ public abstract class RawProcessor<IN, OUT>
      * @param inputName name of the input
      * @param outputName name of the output
      */
-    protected RawProcessor(final String inputName, final String outputName)
+    protected RawProcessor(String inputName, String outputName)
     {
         this.inputName = inputName;
         this.outputName = outputName;
@@ -50,8 +49,7 @@ public abstract class RawProcessor<IN, OUT>
         throws ProcessingException;
 
     @Override
-    public final ValueHolder<OUT> process(final ProcessingReport report,
-        final ValueHolder<IN> input)
+    public final ValueHolder<OUT> process(ProcessingReport report, ValueHolder<IN> input)
         throws ProcessingException
     {
         final IN rawInput = input.getValue();
@@ -65,7 +63,7 @@ public abstract class RawProcessor<IN, OUT>
      * @param rawInput the raw input
      * @return a new message
      */
-    protected final ProcessingMessage newMessage(final IN rawInput)
+    protected final ProcessingMessage newMessage(IN rawInput)
     {
         return new ProcessingMessage().put(inputName, rawInput);
     }

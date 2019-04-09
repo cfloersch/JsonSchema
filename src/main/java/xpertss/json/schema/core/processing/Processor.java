@@ -18,8 +18,8 @@ import xpertss.json.schema.core.report.ProcessingReport;
  * @param <IN> input type for that processor
  * @param <OUT> output type for that processor
  */
-public interface Processor<IN extends MessageProvider, OUT extends MessageProvider>
-{
+public interface Processor<IN extends MessageProvider, OUT extends MessageProvider> {
+
     /**
      * Process the input
      *
@@ -28,6 +28,5 @@ public interface Processor<IN extends MessageProvider, OUT extends MessageProvid
      * @return the output
      * @throws ProcessingException processing failed
      */
-    OUT process(final ProcessingReport report, final IN input)
-        throws ProcessingException;
+    OUT process(ProcessingReport report, IN input) throws ProcessingException;
 }

@@ -28,11 +28,9 @@ import java.util.concurrent.ExecutionException;
  * @param <IN> input type for that processor
  * @param <OUT> output type for that processor
  */
-public final class CachingProcessor<IN extends MessageProvider, OUT extends MessageProvider>
-    implements Processor<IN, OUT>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class CachingProcessor<IN extends MessageProvider, OUT extends MessageProvider> implements Processor<IN, OUT> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private static final int DEFAULT_CACHE_SIZE = 512;
 
@@ -49,8 +47,7 @@ public final class CachingProcessor<IN extends MessageProvider, OUT extends Mess
     /**
      * The cache
      */
-    private final LoadingCache<Equivalence.Wrapper<IN>, ProcessingResult<OUT>>
-        cache;
+    private final LoadingCache<Equivalence.Wrapper<IN>, ProcessingResult<OUT>> cache;
 
     /**
      * Constructor
@@ -61,16 +58,16 @@ public final class CachingProcessor<IN extends MessageProvider, OUT extends Mess
      *
      * @param processor the processor
      */
-    public CachingProcessor(final Processor<IN, OUT> processor)
+    public CachingProcessor(Processor<IN, OUT> processor)
     {
         this(processor, Equivalences.<IN>equals());
     }
 
-    public CachingProcessor(final Processor<IN, OUT> processor,
-        final Equivalence<IN> equivalence)
+    public CachingProcessor(Processor<IN, OUT> processor, Equivalence<IN> equivalence)
     {
         this(processor, equivalence, DEFAULT_CACHE_SIZE);
     }
+
     /**
      * Main constructor
      *
@@ -79,8 +76,7 @@ public final class CachingProcessor<IN extends MessageProvider, OUT extends Mess
      * @param cacheSize the size of the cache, zero disables it
      * @throws NullPointerException processor or equivalence
      */
-    public CachingProcessor(final Processor<IN, OUT> processor,
-        final Equivalence<IN> equivalence, final int cacheSize)
+    public CachingProcessor(Processor<IN, OUT> processor, Equivalence<IN> equivalence, int cacheSize)
     {
         BUNDLE.checkNotNull(processor, "processing.nullProcessor");
         BUNDLE.checkNotNull(equivalence, "processing.nullEquivalence");
@@ -95,10 +91,10 @@ public final class CachingProcessor<IN extends MessageProvider, OUT extends Mess
     }
 
     @Override
-    public OUT process(final ProcessingReport report, final IN input)
+    public OUT process(ProcessingReport report, IN input)
         throws ProcessingException
     {
-        final ProcessingResult<OUT> result;
+        ProcessingResult<OUT> result;
         try {
             result = cache.get(equivalence.wrap(input));
         } catch (ExecutionException e) {

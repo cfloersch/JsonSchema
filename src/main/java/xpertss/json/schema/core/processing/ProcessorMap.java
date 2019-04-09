@@ -39,10 +39,9 @@ import java.util.Map;
  * @param <IN> the input type of processors
  * @param <OUT> the output type of processors
  */
-public final class ProcessorMap<K, IN extends MessageProvider, OUT extends MessageProvider>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessorMap<K, IN extends MessageProvider, OUT extends MessageProvider> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private final Function<IN, K> keyFunction;
     /**
@@ -61,7 +60,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
      * @param keyFunction function to extract a key from an input
      * @throws NullPointerException key function is null
      */
-    public ProcessorMap(final Function<IN, K> keyFunction)
+    public ProcessorMap(Function<IN, K> keyFunction)
     {
         BUNDLE.checkNotNull(keyFunction, "processing.nullFunction");
         this.keyFunction = keyFunction;
@@ -75,8 +74,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
      * @return this
      * @throws NullPointerException either the key or the processor are null
      */
-    public ProcessorMap<K, IN, OUT> addEntry(final K key,
-        final Processor<IN, OUT> processor)
+    public ProcessorMap<K, IN, OUT> addEntry(K key, Processor<IN, OUT> processor)
     {
         BUNDLE.checkNotNull(key, "processing.nullKey");
         BUNDLE.checkNotNull(processor, "processing.nullProcessor");
@@ -91,8 +89,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
      * @return this
      * @throws NullPointerException processor is null
      */
-    public ProcessorMap<K, IN, OUT> setDefaultProcessor(
-        final Processor<IN, OUT> defaultProcessor)
+    public ProcessorMap<K, IN, OUT> setDefaultProcessor(Processor<IN, OUT> defaultProcessor)
     {
         BUNDLE.checkNotNull(defaultProcessor, "processing.nullProcessor");
         this.defaultProcessor = defaultProcessor;
@@ -110,8 +107,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
      */
     public Processor<IN, OUT> getProcessor()
     {
-        return new Mapper<K, IN, OUT>(processors, keyFunction,
-            defaultProcessor);
+        return new Mapper<K, IN, OUT>(processors, keyFunction, defaultProcessor);
     }
 
     private static final class Mapper<K, IN extends MessageProvider, OUT extends MessageProvider>
@@ -121,8 +117,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
         private final Function<IN, K> f;
         private final Processor<IN, OUT> defaultProcessor;
 
-        private Mapper(final Map<K, Processor<IN, OUT>> processors,
-            final Function<IN, K> f, final Processor<IN, OUT> defaultProcessor)
+        private Mapper(Map<K, Processor<IN, OUT>> processors, Function<IN, K> f, Processor<IN, OUT> defaultProcessor)
         {
             this.processors = ImmutableMap.copyOf(processors);
             this.f = f;
@@ -130,10 +125,10 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
         }
 
         @Override
-        public OUT process(final ProcessingReport report, final IN input)
+        public OUT process(ProcessingReport report, IN input)
             throws ProcessingException
         {
-            final K key = f.apply(input);
+            K key = f.apply(input);
             Processor<IN, OUT> processor = processors.get(key);
 
             if (processor == null)
@@ -150,7 +145,7 @@ public final class ProcessorMap<K, IN extends MessageProvider, OUT extends Messa
         @Override
         public String toString()
         {
-            final StringBuilder sb = new StringBuilder("map[")
+            StringBuilder sb = new StringBuilder("map[")
                 .append(processors.size()).append(" entries with ");
             if (defaultProcessor == null)
                 sb.append("no ");

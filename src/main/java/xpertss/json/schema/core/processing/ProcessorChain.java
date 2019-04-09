@@ -44,10 +44,9 @@ import javax.annotation.concurrent.Immutable;
  * @param <OUT> the output type for that chain
  */
 @Immutable
-public final class ProcessorChain<IN extends MessageProvider, OUT extends MessageProvider>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessorChain<IN extends MessageProvider, OUT extends MessageProvider> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * The resulting processor
@@ -63,8 +62,7 @@ public final class ProcessorChain<IN extends MessageProvider, OUT extends Messag
      * @return a single element processing chain
      * @throws NullPointerException processor is null
      */
-    public static <X extends MessageProvider, Y extends MessageProvider>
-        ProcessorChain<X, Y> startWith(final Processor<X, Y> p)
+    public static <X extends MessageProvider, Y extends MessageProvider> ProcessorChain<X, Y> startWith( Processor<X, Y> p)
     {
         BUNDLE.checkNotNull(p, "processing.nullProcessor");
         return new ProcessorChain<X, Y>(p);
@@ -75,7 +73,7 @@ public final class ProcessorChain<IN extends MessageProvider, OUT extends Messag
      *
      * @param processor the processor
      */
-    private ProcessorChain(final Processor<IN, OUT> processor)
+    private ProcessorChain(Processor<IN, OUT> processor)
     {
         this.processor = processor;
     }
@@ -107,23 +105,16 @@ public final class ProcessorChain<IN extends MessageProvider, OUT extends Messag
      * @see ProcessingMessage#asException()
      * @see ProcessingMessage#setExceptionProvider(ExceptionProvider)
      */
-    public ProcessorChain<IN, OUT> failOnError(final ProcessingMessage message)
+    public ProcessorChain<IN, OUT> failOnError(ProcessingMessage message)
     {
-        final Processor<OUT, OUT> fail = new Processor<OUT, OUT>()
-        {
-            @Override
-            public OUT process(final ProcessingReport report, final OUT input)
-                throws ProcessingException
-            {
-                if (!report.isSuccess())
-                    throw message.asException();
-                return input;
-            }
+        final Processor<OUT, OUT> fail = (report, input) -> {
+            if (!report.isSuccess())
+                throw message.asException();
+            return input;
         };
 
-        final ProcessorMerger<IN, OUT, OUT> merger
-            = new ProcessorMerger<IN, OUT, OUT>(processor, fail);
-        return new ProcessorChain<IN, OUT>(merger);
+        ProcessorMerger<IN, OUT, OUT> merger = new ProcessorMerger<IN, OUT, OUT>(processor, fail);
+        return new ProcessorChain<>(merger);
     }
 
     /**
@@ -135,13 +126,11 @@ public final class ProcessorChain<IN extends MessageProvider, OUT extends Messag
      * processor appended
      * @throws NullPointerException processor to append is null
      */
-    public <NEWOUT extends MessageProvider> ProcessorChain<IN, NEWOUT>
-        chainWith(final Processor<OUT, NEWOUT> p)
+    public <NEWOUT extends MessageProvider> ProcessorChain<IN, NEWOUT> chainWith(Processor<OUT, NEWOUT> p)
     {
         BUNDLE.checkNotNull(p, "processing.nullProcessor");
-        final Processor<IN, NEWOUT> merger
-            = new ProcessorMerger<IN, OUT, NEWOUT>(processor, p);
-        return new ProcessorChain<IN, NEWOUT>(merger);
+        Processor<IN, NEWOUT> merger = new ProcessorMerger<>(processor, p);
+        return new ProcessorChain<>(merger);
     }
 
     public Processor<IN, OUT> getProcessor()
@@ -149,25 +138,23 @@ public final class ProcessorChain<IN extends MessageProvider, OUT extends Messag
         return processor;
     }
 
-    private static final class ProcessorMerger<X extends MessageProvider,
-        Y extends MessageProvider, Z extends MessageProvider>
+    private static final class ProcessorMerger<X extends MessageProvider, Y extends MessageProvider, Z extends MessageProvider>
         implements Processor<X, Z>
     {
         private final Processor<X, Y> p1;
         private final Processor<Y, Z> p2;
 
-        private ProcessorMerger(final Processor<X, Y> p1,
-            final Processor<Y, Z> p2)
+        private ProcessorMerger(Processor<X, Y> p1, Processor<Y, Z> p2)
         {
             this.p1 = p1;
             this.p2 = p2;
         }
 
         @Override
-        public Z process(final ProcessingReport report, final X input)
+        public Z process(ProcessingReport report, X input)
             throws ProcessingException
         {
-            final Y intermediate = p1.process(report, input);
+            Y intermediate = p1.process(report, input);
             return p2.process(report, intermediate);
         }
 

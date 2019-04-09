@@ -19,10 +19,9 @@ import java.util.Map;
  * @param <IN> the input type of processors
  * @param <OUT> the output type of processors
  */
-public final class ProcessorSelectorPredicate<IN extends MessageProvider, OUT extends MessageProvider>
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessorSelectorPredicate<IN extends MessageProvider, OUT extends MessageProvider> {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     /**
      * The predicate
@@ -47,8 +46,7 @@ public final class ProcessorSelectorPredicate<IN extends MessageProvider, OUT ex
      *
      * @see ProcessorSelector#when(Predicate)
      */
-    ProcessorSelectorPredicate(final ProcessorSelector<IN, OUT> selector,
-        final Predicate<IN> predicate)
+    ProcessorSelectorPredicate(ProcessorSelector<IN, OUT> selector, Predicate<IN> predicate)
     {
         this.predicate = predicate;
         choices = Maps.newLinkedHashMap(selector.choices);
@@ -62,7 +60,7 @@ public final class ProcessorSelectorPredicate<IN extends MessageProvider, OUT ex
      * @return a new {@link ProcessorSelector}
      * @throws NullPointerException the processor is null
      */
-    public ProcessorSelector<IN, OUT> then(final Processor<IN, OUT> processor)
+    public ProcessorSelector<IN, OUT> then(Processor<IN, OUT> processor)
     {
         BUNDLE.checkNotNull(processor, "processing.nullProcessor");
         choices.put(predicate, processor);

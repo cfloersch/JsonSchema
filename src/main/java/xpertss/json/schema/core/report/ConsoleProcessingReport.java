@@ -3,16 +3,14 @@ package xpertss.json.schema.core.report;
 /**
  * A simple processing report printing its messages to {@code System.out}
  */
-public final class ConsoleProcessingReport
-    extends AbstractProcessingReport
-{
-    public ConsoleProcessingReport(final LogLevel logLevel,
-        final LogLevel exceptionThreshold)
+public final class ConsoleProcessingReport extends AbstractProcessingReport {
+
+    public ConsoleProcessingReport(LogLevel logLevel, LogLevel exceptionThreshold)
     {
         super(logLevel, exceptionThreshold);
     }
 
-    public ConsoleProcessingReport(final LogLevel logLevel)
+    public ConsoleProcessingReport(LogLevel logLevel)
     {
         super(logLevel);
     }
@@ -22,7 +20,7 @@ public final class ConsoleProcessingReport
     }
 
     @Override
-    public void log(final LogLevel level, final ProcessingMessage message)
+    public void log(LogLevel level, ProcessingMessage message)
     {
         System.out.println(message);
     }

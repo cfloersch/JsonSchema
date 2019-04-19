@@ -3,11 +3,9 @@ package xpertss.json.schema.core.report;
 /**
  * A report provider providing {@link ListProcessingReport} instances
  */
-public final class ListReportProvider
-    extends AbstractReportProvider
-{
-    public ListReportProvider(final LogLevel logLevel,
-        final LogLevel exceptionThreshold)
+public final class ListReportProvider extends AbstractReportProvider {
+
+    public ListReportProvider(LogLevel logLevel, LogLevel exceptionThreshold)
     {
         super(logLevel, exceptionThreshold);
     }
@@ -19,14 +17,13 @@ public final class ListReportProvider
     }
 
     @Override
-    public ProcessingReport newReport(final LogLevel logLevel)
+    public ProcessingReport newReport(LogLevel logLevel)
     {
         return new ListProcessingReport(logLevel);
     }
 
     @Override
-    public ProcessingReport newReport(final LogLevel logLevel,
-        final LogLevel exceptionThreshold)
+    public ProcessingReport newReport(LogLevel logLevel, LogLevel exceptionThreshold)
     {
         return new ListProcessingReport(logLevel, exceptionThreshold);
     }

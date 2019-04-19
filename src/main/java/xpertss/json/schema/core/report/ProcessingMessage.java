@@ -54,11 +54,9 @@ import java.util.Map;
  * <p>All mutation methods of a message return {@code this}.</p>
  */
 @NotThreadSafe
-public final class ProcessingMessage
-    implements AsJson
-{
-    private static final MessageBundle BUNDLE
-        = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
+public final class ProcessingMessage implements AsJson {
+
+    private static final MessageBundle BUNDLE = MessageBundles.getBundle(JsonSchemaCoreMessageBundle.class);
 
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
@@ -75,8 +73,7 @@ public final class ProcessingMessage
     /**
      * Exception provider
      */
-    private ExceptionProvider exceptionProvider
-        = SimpleExceptionProvider.getInstance();
+    private ExceptionProvider exceptionProvider = SimpleExceptionProvider.getInstance();
 
     private LogLevel level;
 
@@ -98,8 +95,7 @@ public final class ProcessingMessage
      */
     public String getMessage()
     {
-        return map.containsKey("message") ? map.get("message").textValue()
-            : "(no message)";
+        return map.containsKey("message") ? map.get("message").textValue() : "(no message)";
     }
 
     /**
@@ -118,7 +114,7 @@ public final class ProcessingMessage
      * @param message the message as a string
      * @return this
      */
-    public ProcessingMessage setMessage(final String message)
+    public ProcessingMessage setMessage(String message)
     {
         args.clear();
         return put("message", message);
@@ -131,7 +127,7 @@ public final class ProcessingMessage
      * @return this
      * @throws NullPointerException log level is null
      */
-    public ProcessingMessage setLogLevel(final LogLevel level)
+    public ProcessingMessage setLogLevel(LogLevel level)
     {
         BUNDLE.checkNotNull(level, "processing.nullLevel");
         this.level = level;
@@ -145,11 +141,9 @@ public final class ProcessingMessage
      * @return this
      * @throws NullPointerException exception provider is null
      */
-    public ProcessingMessage setExceptionProvider(
-        final ExceptionProvider exceptionProvider)
+    public ProcessingMessage setExceptionProvider(ExceptionProvider exceptionProvider)
     {
-        BUNDLE.checkNotNull(exceptionProvider,
-            "processing.nullExceptionProvider");
+        BUNDLE.checkNotNull(exceptionProvider, "processing.nullExceptionProvider");
         this.exceptionProvider = exceptionProvider;
         return this;
     }
@@ -166,7 +160,7 @@ public final class ProcessingMessage
      * @param value the value as a {@link JsonNode}
      * @return this
      */
-    public ProcessingMessage put(final String key, final JsonNode value)
+    public ProcessingMessage put(String key, JsonNode value)
     {
         if (key == null)
             return this;
@@ -183,7 +177,7 @@ public final class ProcessingMessage
      * @param value the value
      * @return this
      */
-    public ProcessingMessage putArgument(final String key, final JsonNode value)
+    public ProcessingMessage putArgument(String key, JsonNode value)
     {
         addArgument(key, value);
         return put(key, value);
@@ -196,7 +190,7 @@ public final class ProcessingMessage
      * @param asJson the value, which implements {@link AsJson}
      * @return this
      */
-    public ProcessingMessage put(final String key, final AsJson asJson)
+    public ProcessingMessage put(String key, AsJson asJson)
     {
         return put(key, asJson.asJson());
     }
@@ -208,7 +202,7 @@ public final class ProcessingMessage
      * @param asJson the value
      * @return this
      */
-    public ProcessingMessage putArgument(final String key, final AsJson asJson)
+    public ProcessingMessage putArgument(String key, AsJson asJson)
     {
         addArgument(key, asJson.asJson());
         return put(key, asJson);
@@ -221,7 +215,7 @@ public final class ProcessingMessage
      * @param value the value
      * @return this
      */
-    public ProcessingMessage put(final String key, final String value)
+    public ProcessingMessage put(String key, String value)
     {
         return value == null ? putNull(key) : put(key, FACTORY.textNode(value));
     }
@@ -233,7 +227,7 @@ public final class ProcessingMessage
      * @param value the value as an integer
      * @return this
      */
-    public ProcessingMessage put(final String key, final int value)
+    public ProcessingMessage put(String key, int value)
     {
         return put(key, FACTORY.numberNode(value));
     }
@@ -245,7 +239,7 @@ public final class ProcessingMessage
      * @param value the value
      * @return this
      */
-    public ProcessingMessage putArgument(final String key, final int value)
+    public ProcessingMessage putArgument(String key, int value)
     {
         addArgument(key, value);
         return put(key, value);
@@ -261,7 +255,7 @@ public final class ProcessingMessage
      * @param <T> the type of the value
      * @return this
      */
-    public <T> ProcessingMessage put(final String key, final T value)
+    public <T> ProcessingMessage put(String key, T value)
     {
         return value == null
             ? putNull(key)
@@ -276,7 +270,7 @@ public final class ProcessingMessage
      * @param <T> the type of the value
      * @return this
      */
-    public <T> ProcessingMessage putArgument(final String key, final T value)
+    public <T> ProcessingMessage putArgument(String key, T value)
     {
         addArgument(key, value);
         return put(key, value);
@@ -294,7 +288,7 @@ public final class ProcessingMessage
      * @param <T> the element type of the collection
      * @return this
      */
-    public <T> ProcessingMessage put(final String key, final Iterable<T> values)
+    public <T> ProcessingMessage put(String key, Iterable<T> values)
     {
         if (values == null)
             return putNull(key);
@@ -317,14 +311,13 @@ public final class ProcessingMessage
      * @param values the collection of values
      * @return this
      */
-    public <T> ProcessingMessage putArgument(final String key,
-        final Iterable<T> values)
+    public <T> ProcessingMessage putArgument(String key, Iterable<T> values)
     {
         addArgument(key, values);
         return put(key, values);
     }
 
-    private void addArgument(final String key, final Object value)
+    private void addArgument(String key, Object value)
     {
         if (key != null)
             args.add(value);
@@ -347,7 +340,7 @@ public final class ProcessingMessage
      * @param key the key
      * @return this
      */
-    private ProcessingMessage putNull(final String key)
+    private ProcessingMessage putNull(String key)
     {
         if (key == null)
             return this;

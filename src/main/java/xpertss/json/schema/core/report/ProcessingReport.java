@@ -8,9 +8,8 @@ import xpertss.json.schema.core.exceptions.ProcessingException;
  * <p>While you can implement this interface yourself, it is recommended that
  * you extend {@link AbstractProcessingReport} instead.</p>
  */
-public interface ProcessingReport
-    extends Iterable<ProcessingMessage>
-{
+public interface ProcessingReport extends Iterable<ProcessingMessage> {
+
     /**
      * Get the log level of this report
      *

@@ -12,8 +12,8 @@ import xpertss.json.schema.core.exceptions.ProcessingException;
  * <p>All messages within {@link ProcessingException}s have level {@link
  * #FATAL}.</p>
  */
-public enum LogLevel
-{
+public enum LogLevel {
+
     DEBUG("debug"),
     INFO("info"),
     WARNING("warning"),
@@ -24,7 +24,7 @@ public enum LogLevel
 
     private final String s;
 
-    LogLevel(final String s)
+    LogLevel(String s)
     {
         this.s = s;
     }

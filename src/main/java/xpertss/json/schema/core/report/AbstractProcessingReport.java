@@ -16,9 +16,8 @@ import java.util.List;
  * When entering this method, the message's log level will already have been set
  * correctly.</p>
  */
-public abstract class AbstractProcessingReport
-    implements ProcessingReport
-{
+public abstract class AbstractProcessingReport implements ProcessingReport {
+
     /**
      * The highest log level seen so far
      */
@@ -40,8 +39,7 @@ public abstract class AbstractProcessingReport
      * @param logLevel the log threshold for this report
      * @param exceptionThreshold the exception threshold for this report
      */
-    protected AbstractProcessingReport(final LogLevel logLevel,
-        final LogLevel exceptionThreshold)
+    protected AbstractProcessingReport(LogLevel logLevel, LogLevel exceptionThreshold)
     {
         this.logLevel = logLevel;
         this.exceptionThreshold = exceptionThreshold;
@@ -55,7 +53,7 @@ public abstract class AbstractProcessingReport
      *
      * @param logLevel the log threshold
      */
-    protected AbstractProcessingReport(final LogLevel logLevel)
+    protected AbstractProcessingReport(LogLevel logLevel)
     {
         this(logLevel, LogLevel.FATAL);
     }
@@ -85,35 +83,35 @@ public abstract class AbstractProcessingReport
     }
 
     @Override
-    public final void debug(final ProcessingMessage message)
+    public final void debug(ProcessingMessage message)
         throws ProcessingException
     {
         dispatch(message.setLogLevel(LogLevel.DEBUG));
     }
 
     @Override
-    public final void info(final ProcessingMessage message)
+    public final void info(ProcessingMessage message)
         throws ProcessingException
     {
         dispatch(message.setLogLevel(LogLevel.INFO));
     }
 
     @Override
-    public final void warn(final ProcessingMessage message)
+    public final void warn(ProcessingMessage message)
         throws ProcessingException
     {
         dispatch(message.setLogLevel(LogLevel.WARNING));
     }
 
     @Override
-    public final void error(final ProcessingMessage message)
+    public final void error(ProcessingMessage message)
         throws ProcessingException
     {
         dispatch(message.setLogLevel(LogLevel.ERROR));
     }
 
     @Override
-    public final void fatal(final ProcessingMessage message)
+    public final void fatal(ProcessingMessage message)
         throws ProcessingException
     {
         dispatch(message.setLogLevel(LogLevel.FATAL));
@@ -134,8 +132,7 @@ public abstract class AbstractProcessingReport
      * @param level the level of the message
      * @param message the message itself
      */
-    public abstract void log(final LogLevel level,
-        final ProcessingMessage message);
+    public abstract void log(LogLevel level, ProcessingMessage message);
 
     /**
      * Main dispatch method
@@ -148,7 +145,7 @@ public abstract class AbstractProcessingReport
      * @throws ProcessingException the message's level and report configuration
      * require that an exception be thrown
      */
-    protected final void dispatch(final ProcessingMessage message)
+    protected final void dispatch(ProcessingMessage message)
         throws ProcessingException
     {
         final LogLevel level = message.getLogLevel();
@@ -168,7 +165,7 @@ public abstract class AbstractProcessingReport
     }
 
     @Override
-    public final void mergeWith(final ProcessingReport other)
+    public final void mergeWith(ProcessingReport other)
         throws ProcessingException
     {
         /*
@@ -184,9 +181,8 @@ public abstract class AbstractProcessingReport
     @Override
     public final String toString()
     {
-        final StringBuilder sb
-            = new StringBuilder(getClass().getCanonicalName()).append(": ")
-                .append(isSuccess() ? "success" : "failure").append('\n');
+        StringBuilder sb = new StringBuilder(getClass().getCanonicalName()).append(": ")
+                                .append(isSuccess() ? "success" : "failure").append('\n');
         final List<ProcessingMessage> messages = Lists.newArrayList(this);
         if (!messages.isEmpty()) {
             sb.append("--- BEGIN MESSAGES ---\n");

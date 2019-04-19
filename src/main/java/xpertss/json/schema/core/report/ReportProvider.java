@@ -12,8 +12,8 @@ import xpertss.json.schema.core.processing.Processor;
  * json-schema-validator</a> uses this, for instance, in its main validator
  * class.</p>
  */
-public interface ReportProvider
-{
+public interface ReportProvider {
+
     /**
      * Generate a new report
      *
@@ -28,7 +28,7 @@ public interface ReportProvider
      * @param logLevel the new log level
      * @return a new report
      */
-    ProcessingReport newReport(final LogLevel logLevel);
+    ProcessingReport newReport(LogLevel logLevel);
 
     /**
      * Generate a new report with an adapted log level and exception threshold
@@ -37,6 +37,5 @@ public interface ReportProvider
      * @param exceptionThreshold the new exception threshold
      * @return a new report
      */
-    ProcessingReport newReport(final LogLevel logLevel,
-        final LogLevel exceptionThreshold);
+    ProcessingReport newReport(LogLevel logLevel, LogLevel exceptionThreshold);
 }

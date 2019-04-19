@@ -14,21 +14,18 @@ import java.util.List;
 /**
  * {@link List}-based implementation of a {@link ProcessingReport}
  */
-public final class ListProcessingReport
-    extends AbstractProcessingReport
-    implements AsJson
-{
+public final class ListProcessingReport extends AbstractProcessingReport implements AsJson {
+
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     private final List<ProcessingMessage> messages = Lists.newArrayList();
 
-    public ListProcessingReport(final LogLevel logLevel,
-        final LogLevel exceptionThreshold)
+    public ListProcessingReport(LogLevel logLevel, LogLevel exceptionThreshold)
     {
         super(logLevel, exceptionThreshold);
     }
 
-    public ListProcessingReport(final LogLevel logLevel)
+    public ListProcessingReport(LogLevel logLevel)
     {
         super(logLevel);
     }
@@ -37,13 +34,13 @@ public final class ListProcessingReport
     {
     }
 
-    public ListProcessingReport(final ProcessingReport other)
+    public ListProcessingReport(ProcessingReport other)
     {
         this(other.getLogLevel(), other.getExceptionThreshold());
     }
 
     @Override
-    public void log(final LogLevel level, final ProcessingMessage message)
+    public void log(LogLevel level, ProcessingMessage message)
     {
         messages.add(message);
     }

@@ -9,8 +9,8 @@ import xpertss.json.schema.core.processing.Processor;
  * {@link Processor}s. This allows a processor to grab a context-dependent
  * message for more accurate reporting.</p>
  */
-public interface MessageProvider
-{
+public interface MessageProvider {
+    
     /**
      * Provide a message template for this context
      *

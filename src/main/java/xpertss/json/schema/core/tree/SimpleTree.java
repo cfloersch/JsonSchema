@@ -15,9 +15,8 @@ import xpertss.json.schema.core.util.AsJson;
  *
  * @see JsonPointer
  */
-public interface SimpleTree
-    extends AsJson
-{
+public interface SimpleTree extends AsJson {
+    
     /**
      * Return the node this tree was created with
      *

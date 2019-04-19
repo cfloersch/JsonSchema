@@ -25,9 +25,8 @@ import javax.annotation.concurrent.Immutable;
  */
 @Immutable
 @ParametersAreNonnullByDefault
-public abstract class BaseSchemaTree
-    implements SchemaTree
-{
+public abstract class BaseSchemaTree implements SchemaTree {
+
     private static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     protected final SchemaKey key;
@@ -70,8 +69,7 @@ public abstract class BaseSchemaTree
      */
     private final JsonRef currentRef;
 
-    protected BaseSchemaTree(final SchemaKey key, final JsonNode baseNode,
-        final JsonPointer pointer)
+    protected BaseSchemaTree(SchemaKey key, JsonNode baseNode, JsonPointer pointer)
     {
         Preconditions.checkNotNull(key);
         Preconditions.checkNotNull(baseNode);
@@ -92,8 +90,7 @@ public abstract class BaseSchemaTree
     }
 
     @Deprecated
-    protected BaseSchemaTree(final JsonRef loadingRef, final JsonNode baseNode,
-        final JsonPointer pointer)
+    protected BaseSchemaTree(JsonRef loadingRef, JsonNode baseNode, JsonPointer pointer)
     {
         dollarSchema = extractDollarSchema(baseNode);
 
@@ -111,8 +108,7 @@ public abstract class BaseSchemaTree
         currentRef = nextRef(startingRef, pointer, baseNode);
     }
 
-    protected BaseSchemaTree(final BaseSchemaTree other,
-        final JsonPointer newPointer)
+    protected BaseSchemaTree(BaseSchemaTree other, JsonPointer newPointer)
     {
         key = other.key;
 
@@ -159,7 +155,7 @@ public abstract class BaseSchemaTree
      * @see JsonRef#resolve(JsonRef)
      */
     @Override
-    public final JsonRef resolve(final JsonRef other)
+    public final JsonRef resolve(JsonRef other)
     {
         return currentRef.resolve(other);
     }
@@ -195,7 +191,7 @@ public abstract class BaseSchemaTree
     @Override
     public final JsonNode asJson()
     {
-        final ObjectNode ret = FACTORY.objectNode();
+        ObjectNode ret = FACTORY.objectNode();
 
         ret.put("loadingURI", FACTORY.textNode(key.getLoadingRef().toString()));
         ret.put("pointer", FACTORY.textNode(pointer.toString()));
@@ -252,7 +248,7 @@ public abstract class BaseSchemaTree
      * @return a JSON Reference, or {@code null}
      */
     @Nullable
-    protected static JsonRef idFromNode(final JsonNode node)
+    protected static JsonRef idFromNode(JsonNode node)
     {
         if (!node.path("id").isTextual())
             return null;
@@ -272,8 +268,7 @@ public abstract class BaseSchemaTree
      * @param startingNode the starting node
      * @return the calculated reference
      */
-    private static JsonRef nextRef(final JsonRef startingRef,
-        final JsonPointer ptr, final JsonNode startingNode)
+    private static JsonRef nextRef(JsonRef startingRef, JsonPointer ptr, JsonNode startingNode)
     {
         JsonRef ret = startingRef;
         JsonRef idRef;
@@ -291,7 +286,7 @@ public abstract class BaseSchemaTree
         return ret;
     }
 
-    private static JsonRef extractDollarSchema(final JsonNode schema)
+    private static JsonRef extractDollarSchema(JsonNode schema)
     {
         final JsonNode node = schema.path("$schema");
 

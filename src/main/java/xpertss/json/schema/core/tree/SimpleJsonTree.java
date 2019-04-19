@@ -9,21 +9,20 @@ import javax.annotation.concurrent.Immutable;
  * A simple {@link JsonTree}
  */
 @Immutable
-public final class SimpleJsonTree
-    extends BaseJsonTree
-{
-    public SimpleJsonTree(final JsonNode baseNode)
+public final class SimpleJsonTree extends BaseJsonTree {
+
+    public SimpleJsonTree(JsonNode baseNode)
     {
         super(baseNode);
     }
 
-    private SimpleJsonTree(final JsonNode baseNode, final JsonPointer pointer)
+    private SimpleJsonTree(JsonNode baseNode, final JsonPointer pointer)
     {
         super(baseNode, pointer);
     }
 
     @Override
-    public SimpleJsonTree append(final JsonPointer pointer)
+    public SimpleJsonTree append(JsonPointer pointer)
     {
         return new SimpleJsonTree(baseNode, this.pointer.append(pointer));
     }

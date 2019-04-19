@@ -8,9 +8,8 @@ import com.github.fge.jackson.jsonpointer.JsonPointer;
 /**
  * Base implementation of a {@link JsonTree}
  */
-public abstract class BaseJsonTree
-    implements JsonTree
-{
+public abstract class BaseJsonTree implements JsonTree {
+
     protected static final JsonNodeFactory FACTORY = JacksonUtils.nodeFactory();
 
     /**
@@ -37,7 +36,7 @@ public abstract class BaseJsonTree
      *
      * @param baseNode the base node
      */
-    protected BaseJsonTree(final JsonNode baseNode)
+    protected BaseJsonTree(JsonNode baseNode)
     {
         this(baseNode, JsonPointer.empty());
     }
@@ -48,7 +47,7 @@ public abstract class BaseJsonTree
      * @param baseNode the base node
      * @param pointer the pointer into the base node
      */
-    protected BaseJsonTree(final JsonNode baseNode, final JsonPointer pointer)
+    protected BaseJsonTree(JsonNode baseNode, JsonPointer pointer)
     {
         this.baseNode = baseNode;
         node = pointer.path(baseNode);

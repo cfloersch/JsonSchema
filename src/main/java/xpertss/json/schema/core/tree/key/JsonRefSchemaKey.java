@@ -8,10 +8,9 @@ import javax.annotation.Nullable;
 /**
  * A unique schema key for JSON Schemas loaded via URIs
  */
-public final class JsonRefSchemaKey
-    extends SchemaKey
-{
-    JsonRefSchemaKey(final JsonRef ref)
+public final class JsonRefSchemaKey extends SchemaKey {
+
+    JsonRefSchemaKey(JsonRef ref)
     {
         super(ref);
     }

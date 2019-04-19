@@ -26,11 +26,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * #forJsonRef(JsonRef)}).</p>
  */
 @ParametersAreNonnullByDefault
-public abstract class SchemaKey
-{
+public abstract class SchemaKey {
+
     protected final JsonRef loadingRef;
 
-    protected SchemaKey(final JsonRef loadingRef)
+    protected SchemaKey(JsonRef loadingRef)
     {
         this.loadingRef = loadingRef;
     }

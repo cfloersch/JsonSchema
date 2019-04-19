@@ -10,9 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * A unique schem key for schemas loaded anonymously
  */
-public final class AnonymousSchemaKey
-    extends SchemaKey
-{
+public final class AnonymousSchemaKey extends SchemaKey {
+
     private static final AtomicLong ID_GEN = new AtomicLong(0L);
 
     private final long id;

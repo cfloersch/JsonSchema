@@ -12,9 +12,8 @@ import javax.annotation.Nullable;
  * <p>In addition to navigation capabilities and node retrieval, this tree
  * returns URI context information and JSON Reference resolution.</p>
  */
-public interface SchemaTree
-    extends SimpleTree
-{
+public interface SchemaTree extends SimpleTree {
+
     /**
      * Relocate the tree relatively to the current tree's pointer
      *
@@ -22,7 +21,7 @@ public interface SchemaTree
      * @return a new tree
      * @see JsonPointer#append(JsonPointer)
      */
-    SchemaTree append(final JsonPointer pointer);
+    SchemaTree append(JsonPointer pointer);
 
     /**
      * Relocate the tree with an absolute pointer
@@ -30,7 +29,7 @@ public interface SchemaTree
      * @param pointer the pointer
      * @return a new tree
      */
-    SchemaTree setPointer(final JsonPointer pointer);
+    SchemaTree setPointer(JsonPointer pointer);
 
     /**
      * Resolve a JSON Reference against the current resolution context
@@ -39,7 +38,7 @@ public interface SchemaTree
      * @return the resolved reference
      * @see JsonRef#resolve(JsonRef)
      */
-    JsonRef resolve(final JsonRef other);
+    JsonRef resolve(JsonRef other);
 
     /**
      * Tell whether a JSON Reference is contained within this schema tree
@@ -55,7 +54,7 @@ public interface SchemaTree
      * @return see description
      * @see #resolve(JsonRef)
      */
-    boolean containsRef(final JsonRef ref);
+    boolean containsRef(JsonRef ref);
 
     /**
      * Return a matching pointer in this tree for a fully resolved reference
@@ -67,7 +66,7 @@ public interface SchemaTree
      * @return the matching pointer, or {@code null} if not found
      */
     @Nullable
-    JsonPointer matchingPointer(final JsonRef ref);
+    JsonPointer matchingPointer(JsonRef ref);
 
     /**
      * DO NOT USE!

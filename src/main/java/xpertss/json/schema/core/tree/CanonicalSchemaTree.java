@@ -21,16 +21,15 @@ import javax.annotation.concurrent.Immutable;
  */
 @Immutable
 @ParametersAreNonnullByDefault
-public final class CanonicalSchemaTree
-    extends BaseSchemaTree
-{
+public final class CanonicalSchemaTree extends BaseSchemaTree {
+
     /**
      * Main constructor
      *
      * @param key the schema key
      * @param baseNode the base node
      */
-    public CanonicalSchemaTree(final SchemaKey key, final JsonNode baseNode)
+    public CanonicalSchemaTree(SchemaKey key, JsonNode baseNode)
     {
         super(key, baseNode, JsonPointer.empty());
     }
@@ -42,46 +41,44 @@ public final class CanonicalSchemaTree
      * @deprecated use {@link #CanonicalSchemaTree(SchemaKey, JsonNode)} instead
      */
     @Deprecated
-    public CanonicalSchemaTree(final JsonNode baseNode)
+    public CanonicalSchemaTree(JsonNode baseNode)
     {
         this(SchemaKey.anonymousKey(), baseNode);
     }
 
     @Deprecated
-    public CanonicalSchemaTree(final JsonRef loadingRef,
-        final JsonNode baseNode)
+    public CanonicalSchemaTree(JsonRef loadingRef, JsonNode baseNode)
     {
         this(SchemaKey.forJsonRef(loadingRef), baseNode);
     }
 
-    private CanonicalSchemaTree(final CanonicalSchemaTree other,
-        final JsonPointer newPointer)
+    private CanonicalSchemaTree(CanonicalSchemaTree other, JsonPointer newPointer)
     {
         super(other, newPointer);
     }
 
     @Override
-    public SchemaTree append(final JsonPointer pointer)
+    public SchemaTree append(JsonPointer pointer)
     {
         final JsonPointer newPointer = this.pointer.append(pointer);
         return new CanonicalSchemaTree(this, newPointer);
     }
 
     @Override
-    public SchemaTree setPointer(final JsonPointer pointer)
+    public SchemaTree setPointer(JsonPointer pointer)
     {
         return new CanonicalSchemaTree(this, pointer);
     }
 
     @Override
-    public boolean containsRef(final JsonRef ref)
+    public boolean containsRef(JsonRef ref)
     {
         return key.getLoadingRef().contains(ref);
     }
 
     @Nullable
     @Override
-    public JsonPointer matchingPointer(final JsonRef ref)
+    public JsonPointer matchingPointer(JsonRef ref)
     {
         if (!ref.isLegal())
             return null;

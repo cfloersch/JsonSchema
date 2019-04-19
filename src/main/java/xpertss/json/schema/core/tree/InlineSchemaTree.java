@@ -34,9 +34,8 @@ import java.util.Map;
  */
 @Immutable
 @ParametersAreNonnullByDefault
-public final class InlineSchemaTree
-    extends BaseSchemaTree
-{
+public final class InlineSchemaTree extends BaseSchemaTree {
+
     /**
      * The list of contexts whose URIs are absolute JSON References
      */
@@ -54,7 +53,7 @@ public final class InlineSchemaTree
      * @param key the schema key
      * @param baseNode the base node
      */
-    public InlineSchemaTree(final SchemaKey key, final JsonNode baseNode)
+    public InlineSchemaTree(SchemaKey key, JsonNode baseNode)
     {
         super(key, baseNode, JsonPointer.empty());
 
@@ -75,7 +74,7 @@ public final class InlineSchemaTree
      * @deprecated use {@link #InlineSchemaTree(SchemaKey, JsonNode)} instead
      */
     @Deprecated
-    public InlineSchemaTree(final JsonNode baseNode)
+    public InlineSchemaTree(JsonNode baseNode)
     {
         this(SchemaKey.anonymousKey(), baseNode);
     }
@@ -89,13 +88,12 @@ public final class InlineSchemaTree
      * @deprecated use {@link #InlineSchemaTree(SchemaKey, JsonNode)} instead
      */
     @Deprecated
-    public InlineSchemaTree(final JsonRef loadingRef, final JsonNode baseNode)
+    public InlineSchemaTree(JsonRef loadingRef, JsonNode baseNode)
     {
         this(SchemaKey.forJsonRef(loadingRef), baseNode);
     }
 
-    private InlineSchemaTree(final InlineSchemaTree other,
-        final JsonPointer newPointer)
+    private InlineSchemaTree(InlineSchemaTree other, JsonPointer newPointer)
     {
         super(other, newPointer);
         absRefs = other.absRefs;
@@ -103,27 +101,27 @@ public final class InlineSchemaTree
     }
 
     @Override
-    public SchemaTree append(final JsonPointer pointer)
+    public SchemaTree append(JsonPointer pointer)
     {
         final JsonPointer newPointer = this.pointer.append(pointer);
         return new InlineSchemaTree(this, newPointer);
     }
 
     @Override
-    public SchemaTree setPointer(final JsonPointer pointer)
+    public SchemaTree setPointer(JsonPointer pointer)
     {
 
         return new InlineSchemaTree(this, pointer);
     }
 
     @Override
-    public boolean containsRef(final JsonRef ref)
+    public boolean containsRef(JsonRef ref)
     {
         return getMatchingPointer(ref) != null;
     }
 
     @Override
-    public JsonPointer matchingPointer(final JsonRef ref)
+    public JsonPointer matchingPointer(JsonRef ref)
     {
         final JsonPointer ret = getMatchingPointer(ref);
         if (ret == null)
@@ -133,7 +131,7 @@ public final class InlineSchemaTree
     }
 
     @Nullable
-    private JsonPointer getMatchingPointer(final JsonRef ref)
+    private JsonPointer getMatchingPointer(JsonRef ref)
     {
         if (otherRefs.containsKey(ref))
             return otherRefs.get(ref);
@@ -154,9 +152,9 @@ public final class InlineSchemaTree
      * @return the matching pointer, or {@code null} if not found
      */
     @Nullable
-    private JsonPointer refMatchingPointer(final JsonRef ref)
+    private JsonPointer refMatchingPointer(JsonRef ref)
     {
-        final JsonPointer refPtr = ref.getPointer();
+        JsonPointer refPtr = ref.getPointer();
 
         /*
          * When using inline addressing, we must favor whatever "id" has defined
@@ -194,9 +192,7 @@ public final class InlineSchemaTree
      *
      * @see #idFromNode(JsonNode)
      */
-    private static void walk(final JsonRef baseRef, final JsonNode node,
-        final JsonPointer ptr, final Map<JsonRef, JsonPointer> absMap,
-        final Map<JsonRef, JsonPointer> otherMap)
+    private static void walk(JsonRef baseRef, JsonNode node, JsonPointer ptr, Map<JsonRef, JsonPointer> absMap, Map<JsonRef, JsonPointer> otherMap)
     {
         /*
          * FIXME: this means we won't go through schemas in keywords such as
@@ -205,8 +201,8 @@ public final class InlineSchemaTree
         if (!node.isObject())
             return;
 
-        final JsonRef ref = idFromNode(node);
-        final Map<JsonRef, JsonPointer> targetMap;
+        JsonRef ref = idFromNode(node);
+        Map<JsonRef, JsonPointer> targetMap;
 
         JsonRef nextRef = baseRef;
 
@@ -219,7 +215,6 @@ public final class InlineSchemaTree
         final Map<String, JsonNode> tmp = JacksonUtils.asMap(node);
 
         for (final Map.Entry<String, JsonNode> entry: tmp.entrySet())
-            walk(nextRef, entry.getValue(), ptr.append(entry.getKey()), absMap,
-                otherMap);
+            walk(nextRef, entry.getValue(), ptr.append(entry.getKey()), absMap, otherMap);
     }
 }

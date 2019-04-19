@@ -1,0 +1,6 @@
+Need to impl Draft 6 and 7
+  Syntax
+  Digest
+  Validators
+
+  Then associate those with the DraftV6Library, DraftV6HyperSchemaLibrary, DraftV7Library, and DraftV7HyperSchemaLibrary

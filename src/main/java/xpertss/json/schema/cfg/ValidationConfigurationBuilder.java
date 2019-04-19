@@ -8,6 +8,10 @@ import xpertss.json.schema.core.ref.JsonRef;
 import xpertss.json.schema.library.DraftV3Library;
 import xpertss.json.schema.library.DraftV4HyperSchemaLibrary;
 import xpertss.json.schema.library.DraftV4Library;
+import xpertss.json.schema.library.DraftV6HyperSchemaLibrary;
+import xpertss.json.schema.library.DraftV6Library;
+import xpertss.json.schema.library.DraftV7HyperSchemaLibrary;
+import xpertss.json.schema.library.DraftV7Library;
 import xpertss.json.schema.library.Library;
 import xpertss.json.schema.messages.JsonSchemaConfigurationBundle;
 import xpertss.json.schema.messages.JsonSchemaValidationBundle;
@@ -43,12 +47,10 @@ public final class ValidationConfigurationBuilder implements Thawed<ValidationCo
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV4, DraftV4Library.get());
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV4_HYPERSCHEMA, DraftV4HyperSchemaLibrary.get());
 
-        /* TODO
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV6, DraftV6Library.get());
-        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV6_HYPERSCHEMA, DraftV7HyperSchemaLibrary.get());
-        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV7, DraftV6Library.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV6_HYPERSCHEMA, DraftV6HyperSchemaLibrary.get());
+        DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV7, DraftV7Library.get());
         DEFAULT_LIBRARIES.put(SchemaVersion.DRAFTV7_HYPERSCHEMA, DraftV7HyperSchemaLibrary.get());
-         */
     }
 
     /**

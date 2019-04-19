@@ -21,7 +21,7 @@ public final class TimeAttribute extends AbstractDateFormatAttribute {
 
     private TimeAttribute()
     {
-        super("time", "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,12}((+|-)HH:mm|Z)");
+        super("time", "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)");
     }
 
     public static FormatAttribute getInstance()
@@ -39,7 +39,7 @@ public final class TimeAttribute extends AbstractDateFormatAttribute {
            .appendLiteral(':')
            .appendValue(SECOND_OF_MINUTE, 2)
            .optionalStart()
-           .appendFraction(NANO_OF_SECOND, 0, 12, true)
+           .appendFraction(NANO_OF_SECOND, 2, 9, true)
            .optionalEnd()
            .appendOffset("+HH:MM", "Z")
            .toFormatter(Locale.getDefault(Locale.Category.FORMAT))

@@ -1,0 +1,166 @@
+[
+    {
+        "data": "12:33:33Z",
+        "valid": true
+    },
+    {
+        "data": "12:33:33.1Z",
+        "valid": true
+    },
+    {
+        "data": "12:33:33.101Z",
+        "valid": true
+    },
+    {
+        "data": "12:33:33.100000001Z",
+        "valid": true
+    },
+    {
+        "data": "00:00:00.000000000Z",
+        "valid": true
+    },
+    {
+        "data": "12:33:33+00:00",
+        "valid": true
+    },
+    {
+        "data": "12:33:33-05:00",
+        "valid": true
+    },
+    {
+        "data": "12:33:33-00:30",
+        "valid": true
+    },
+    {
+        "data": "12:33:33.1-00:30",
+        "valid": true
+    },
+    {
+        "data": "12:33:33.123456789-00:30",
+        "valid": true
+    },
+    {
+        "data": "00:00:00.000000000-00:30",
+        "valid": true
+    },
+    {
+        "data": "12:33:33",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "12:33:33",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "12:33:33.Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "12:33:33.Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "12:33:33.1234567890Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "12:33:33.1234567890Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "25:33:33Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "25:33:33Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "24:63:33Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "24:63:33Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "24:33:63Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "24:33:63Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "2:33:33Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "2:33:33Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "8pm",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "8pm",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "24:00:00Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "24:00:00Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "12:60:00Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "12:60:00Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "12:22:60Z",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "12:22:60Z",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    },
+    {
+        "data": "20:00",
+        "valid": false,
+        "message": "err.format.invalidDate",
+        "msgData": {
+            "value": "20:00",
+            "expected": [ "HH:mm:ss((+|-)HH:mm|Z)", "HH:mm:ss.[0-9]{1,9}((+|-)HH:mm|Z)" ]
+        },
+        "msgParams": [ "value", "expected" ]
+    }
+]

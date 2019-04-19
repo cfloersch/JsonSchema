@@ -1,7 +1,6 @@
 package xpertss.json.schema.format.helpers;
 
 import com.github.fge.jackson.NodeType;
-import com.google.common.collect.Sets;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.report.ProcessingReport;
 import xpertss.json.schema.format.AbstractFormatAttribute;
@@ -10,6 +9,7 @@ import com.github.fge.msgsimple.bundle.MessageBundle;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 
 /**
  * Abstract class for date/time related format attributes
@@ -38,7 +38,7 @@ public abstract class AbstractDateFormatAttribute extends AbstractFormatAttribut
         } catch (DateTimeParseException ignored) {
             // TODO Catch exception and determine if the issue is format or actual non-existent dates
             report.error(newMsg(data, bundle, "err.format.invalidDate")
-               .putArgument("value", value).putArgument("expected", Sets.newHashSet(formats)));
+               .putArgument("value", value).putArgument("expected", Arrays.asList(formats)));
         }
     }
 }

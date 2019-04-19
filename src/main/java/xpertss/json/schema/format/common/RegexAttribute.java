@@ -4,7 +4,6 @@ import com.github.fge.jackson.NodeType;
 import xpertss.json.schema.core.exceptions.ProcessingException;
 import xpertss.json.schema.core.report.ProcessingReport;
 import xpertss.json.schema.core.util.RegexECMA262Helper;
-import xpertss.json.schema.core.util.RhinoHelper;
 import xpertss.json.schema.format.AbstractFormatAttribute;
 import xpertss.json.schema.format.FormatAttribute;
 import xpertss.json.schema.processors.data.FullData;

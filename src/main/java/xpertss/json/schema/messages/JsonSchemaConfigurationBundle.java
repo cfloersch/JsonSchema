@@ -6,7 +6,7 @@ import com.github.fge.msgsimple.load.MessageBundleLoader;
 
 public final class JsonSchemaConfigurationBundle implements MessageBundleLoader {
 
-    private static final String PATH = "com/github/fge/jsonschema/validator/configuration.properties";
+    private static final String PATH = "xpertss/json/schema/validator/configuration.properties";
 
     @Override
     public MessageBundle getBundle()
